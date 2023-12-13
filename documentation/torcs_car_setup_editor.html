@@ -1,0 +1,1267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+
+
+  
+  
+  
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+
+
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <title>Torcs Car Setup Editor :: Vicente Marti</title><link title="estilos_web" rel="stylesheet" href="estilos.css" type="text/css">
+
+
+
+
+
+  
+  
+  
+  
+  <meta content="Vicente Marti Centelles" name="author">
+
+
+
+
+
+  
+  
+  
+  
+  <meta name="Keywords" content="torcs, open, racing, car, simulator, formula 1, setup, editor, phisics, blender">
+
+
+
+
+
+  
+  
+  
+  
+  <meta name="Description" content="Setup of car for torcs with a glui/opengl interface. You can setup the engine (torque, power), the car speed, suspension, wheels..."></head>
+<body style="background-repeat: no-repeat; background-position: 50%; background-attachment: fixed; background-image: url(images/formula-torcs-bacground.png);">
+
+
+
+
+
+<h1>Torcs Car Setup Editor v0.11</h1>
+
+
+
+
+
+<img style="position: absolute; top: 8px; right: 30px; width: 120px; height: 74px;" alt="TORCS Car Setup Editor" title="TORCS Car Setup Editor" src="images/formula-torcs-car.png">
+<p></p>
+
+
+
+
+
+<p>Torcs Car Setup Editor is an Open Source program with the GNU
+GENERAL PUBLIC LICENSE designed to edit the physics of cars for TORCS
+(The Open Racing Car Simulator).</p>
+
+
+
+
+
+<p>The program is programmed using OpenGL (with <a href="http://glui.sourceforge.net/">GLUI</a>). So it
+works
+for Windows
+and Linux.</p>
+
+
+<h2>Download</h2>
+
+
+<p><a href="http://f1torcs.lycos.es/index.html">Download</a> Torcs Car Setup Editor v0.11</p>
+
+
+
+
+
+<h2>Installation</h2>
+
+
+
+
+
+<h3>Windows(98, XP, Vista)</h3>
+
+
+
+
+
+<p>Unzip the torcs-car-setup-editor.zip and copy the
+torcs-car-setup-editor folder into your torcs directory ("C:\torcs" or
+similar). Now run&nbsp;torcs-car-setup-editor.exe (you can create a
+shortcut to your desktop).</p>
+
+
+
+
+
+<p>You can also compile it from the devc++ project that is
+included.</p>
+
+
+
+
+
+<h3>Linux</h3>
+
+
+
+
+
+<p>The program is already compiled.&nbsp;</p><p>To run the program:</p><p>./torcs-car-setup-editor
+</p>-------------------------------------------<br><p>How to compile tcse in linux<br>-----------------------------<br></p><p>Download the source and compile it (you need the GLUI
+library, I used glui-2.35). You can download <a href="http://glui.sourceforge.net/" target="_blank">glui</a>
+on souceforge.net. The glui is already compiled in the tcse sources.</p>Explanation for ubuntu 8.04<br><p><br><br><br>You need the gcc compiler:<br><br>sudo apt-get install g++-4.2<br><br>You need freeglut:<br><br>sudo apt-get install freeglut3 freeglut3-dev <br><br>and glut:<br><br>sudo apt-get install glut-doc libglut3 libglut3-dev<br><br>you may need the glui library but it is compiled<br>in the folder ./libs and the header file<br>is located in ./include<br><br>now you can compile the project wiht make:<br><br>make<br><br><br><br>------------------------------<br>to install tcse:<br>---------------------------------<br>sudo ./install.sh<br><br>the program is installed in: /usr/local/share/games/torcs/tcse<br><br><br><br>-------------------------------------------<br>to run torcs-car-setup-editor<br>-------------------------------------------<br>in the terminal just type: tcse</p><p><br><br><br></p><h2>Main Features</h2>
+
+
+
+
+
+<p>Torcs Car Setup Editor will help you in the setup of cars, the
+main features are:</p>
+
+
+
+
+
+<ul>
+
+
+
+
+
+  <li>You don't need to edit the xml files in a text editor. You
+can edit all with the program.</li>
+
+
+
+
+
+  <li>Real time display of the engine curve and calculation of
+the power of the car in the same graph.</li>
+
+
+
+
+
+  <li>Symmetrical edit option. You can edit left and right at the
+same time.</li>
+
+
+
+
+
+  <li>Calculation of the max speed of the car for every gear at
+revs limiter.</li>
+
+
+
+
+
+  <li>Calculation of the revs, torque and power when you change
+the gear up at max revs.</li>
+
+
+
+
+
+  <li>View of the ac file in a 3D window.</li>
+
+
+
+
+
+  <li>Edit some parameters of the car (wheel position, axle
+position, driver position, bonnet position...) in the 3D window.</li>
+
+
+
+
+
+  <li>Display of the acceleration, grip, speed and braking of the
+car.
+This is useful to see how affects the modification of a parameter in
+the
+car.</li>
+
+
+
+
+
+</ul>
+
+
+
+
+
+<h2>Using the Torcs Car Setup Editor</h2>
+
+
+
+
+
+<p>If you click on the X&nbsp;button in the upper right of
+the main window or a subwindow you will close the program. Don' t click
+on the X&nbsp;button in the upper right of the subwindow, click on
+Close Window or Accept instead.</p>
+
+
+
+
+
+<h2>The main window of &nbsp;Torcs Car Setup Editor</h2>
+
+
+
+
+
+<p>In the main window you can edit some parameters of the car </p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 563px; height: 714px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor Main Window" src="images/tcse_01.png"></p>
+
+
+
+
+
+<p style="text-align: justify;">In the opengl window you
+can see some parameters that are displayed here. First you can see the
+graphic of the engine. On the upper left side of the graphic you can
+see the max power and the max torue of the engine.</p>
+
+
+
+
+
+<p style="text-align: justify;">Under the graph you can
+see some data of your car: acceleration, grip, speed and braking. This
+can be useful fut it's not 100% perfect.</p>
+
+
+
+
+
+<p style="text-align: justify;">The gear ratio section
+shows some info about the car. The most useful is the max speed in km/h
+for each gear at revs limiter. The next column shows the revs you get
+when you change at the next gear and finally the power and torque at the
+next gear at these revs.</p>
+
+
+
+
+
+<p style="text-align: justify;">The last part shows info
+when you save a file, import a xml...</p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 307px; height: 733px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor Main Window" src="images/tcse_02.png"></p>
+
+
+
+
+
+<h2>Aerodynamics and wings</h2>
+
+
+
+
+
+<p>The setup of the Cx, front area and the front&nbsp;lift
+and rear
+lift (front &amp; rear lift due to body not wings) can be setup in
+this
+window.</p>
+
+
+
+
+
+<p>The front and rear wing are also setup here.</p>
+
+
+
+
+
+<h2>Wings, Mass, Fuel...</h2>
+
+
+
+
+
+<p>You can setup the mass of the car and the weight repartition
+and the fuel. Very simple.</p>
+
+
+
+
+
+<h2>Engine Advanced</h2>
+
+
+
+
+
+<p>You can adjust the points of the engine. Moreover to the
+program provides several engines that you can load by selecting it in
+the list and clicking on load engine.</p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 843px; height: 577px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor Main Window" src="images/tcse_03.png"></p>
+
+
+
+
+
+<p>The full rpm scale is used in the graph (full: all the points are
+displayed, and if full is not selected the points displayed are from 1
+to revs maxi).</p>
+
+
+
+
+<p>Load engine: you can load a engine by selecting it from the list box and click on load Engine.</p>
+
+
+
+
+<p>Scale all CV scales all the engine curve to setup the peak to the number indicated.&nbsp;</p>
+
+
+
+
+<p>Constant CV: self explanatory.</p>
+
+
+
+
+<p>Scale all TQ scales all the engine curve to setup the peak to the number indicated.&nbsp;</p>
+
+
+
+
+<p>Constant TQ: self explanatory.</p>
+
+
+
+
+<p>Change RPM points: changes the rpm points from 0 to revs limiter.</p>
+
+
+
+
+<p>Change Shape: changes the power curve of the engine acording a 3rd grade ecuation (power= a + b*rpm +c*rpm^2 + d*rpm^3).</p>
+
+
+
+
+<p></p>
+
+
+
+
+<h2>Suspension and anti roll bar</h2>
+
+
+
+
+
+<p>You can adjust all the parameters (Spring (lbs/in), suspension
+course (m), bellcrank, packers (mm), slow bump (lbs/in/s), slow rebound
+(lbs/in/s), fast bump (lbs/in/s), fast rebound (lbs/in/s)). The
+Symmetrical edit is a
+useful tool to save lots of time. If you click on the advanced button
+you will find more parameters.</p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 460px; height: 580px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor Suspension" src="images/tcse_14.png"></p>
+
+
+
+
+
+<p></p>
+
+
+
+
+
+<h2>Wheel and tyres</h2>
+
+
+
+
+
+<p>You can adjust (position, rim diameter, tire width, tire
+height-width ratio, inertia, initial ride height, toe, camber,
+stiffness, dynamic friction, rolling resistance and my) all the
+parameters. The Symmetrical edit is a
+useful tool
+to save lots of time.&nbsp;</p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 447px; height: 669px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor Wheels and tires" src="images/tcse_06.png"></p>
+
+
+
+
+
+<p></p>
+
+
+
+
+
+<h2>Gear</h2>
+
+
+
+
+
+<p>You can setup the gear ratio from the main window and if you
+go to the advanced you will find new parameters.</p>
+
+
+
+
+
+<p>You can select the number of gears, setup the inertia of the
+clutch,
+the inertia and efficiency of all the gears and you can setup the max
+speed (at revs limiter) of each gear (therefore the gear ratio is
+automatically updated). The auto calculate button will calculate all
+the gears, the "space" in km/h between two &nbsp;gears is reduced
+increasingly by the % indicated. The min speed to the calculation is
+the speed of the 1st gear and the max speed the speed of the higher
+gear
+used.</p>
+
+
+
+<p>The optimal shift point function calculates the optimal shift points
+(using the criteria that maximizes the area under the engine power
+curve). It take a while because it's an iterative method to maximize
+the area. If the shift point is larger than the revs limiter i't's
+better to shift at revs limiter.</p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 551px; height: 413px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor Gears" src="images/tcse_05.png"></p>
+
+
+
+
+
+<p></p>
+
+
+
+
+
+<h2>Steer, axles and differential</h2>
+
+
+
+
+
+<p>In the steer and differential window you can setup the steer
+and the front, rear or central differentials of the car. Moreover the
+drivetrain (4WD, RWD, FWD) can be setup here.</p>
+
+
+
+
+
+<p>There are different kinds of differentials you can choose in
+the listbox:</p>
+
+
+
+
+
+<ul>
+
+
+
+
+
+  <li>NONE</li>
+
+
+
+
+
+  <li>FREE</li>
+
+
+
+
+
+  <li>SPOOL</li>
+
+
+
+
+
+  <li>LIMITED SLIP</li>
+
+
+
+
+
+  <li>VISCOUS COUPLER</li>
+
+
+
+
+
+</ul>
+
+
+
+
+
+<p>&nbsp;&nbsp;&nbsp; Other parameters like ratio,
+inertia, efficiency, min torque bias and max torque bias can be setup
+here.</p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 444px; height: 630px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor Differential" src="images/tcse_07.png"></p>
+
+
+
+
+
+<p></p>
+
+
+
+
+
+<h2>Disk Brakes &amp; brake system</h2>
+
+
+
+
+
+<p>You can adjust all the parameters of the diskc brakes. The
+Symmetrical edit is a
+useful tool
+to save lots of time.&nbsp;</p>
+
+
+
+
+
+<p>The front rear brake balance repartition can be adjusted and
+the max pressure of the brake.</p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 405px; height: 301px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor Brakes" src="images/tcse_08.png"></p>
+
+
+
+
+
+<p></p>
+
+
+
+
+
+<h2>Advanced Open Save</h2>
+
+
+
+
+
+<p>You can save the cardata to a txt file (the native TCSE
+format) or a xml file. The file can be exported to:</p>
+
+
+
+
+
+<ul>
+
+
+
+
+
+  <li> ../cars/carname/carname.xml</li>
+
+
+
+
+
+  <li>../drivers/human/carname.xml</li>
+
+
+
+
+
+  <li>../drivers/human/trackname/carname.xml</li>
+
+
+
+
+
+  <li>../drivers/human/drivername/drivernumber/default.xml</li>
+
+
+
+
+
+  <li>../drivers/human/drivername/driviernumber/trackname.xml</li>
+
+
+
+
+
+</ul>
+
+
+
+
+
+<p>This is done in one click at the appropriate button.</p>
+
+
+
+
+
+<p>If the folder doesn't exists the program will ask you if you
+want it to be created automatically and export the file. For example if
+you want to create a new car similar to the car sc-f1: start tcse, then
+change the carname to sc-f1 and click on import xml. Now modify the car
+setup with tcse and then change the carname to the carname you want
+(my-f1 for example), then click on export xml. The program will ask you
+if you want to create the folder my-f1 and export the xml, click to
+this button and therefore you have your car on&nbsp;
+../cars/carname/carname.xml. Now you just need to add the 3dfiles and
+textures to this folder.</p>
+
+
+
+
+
+<p>Moreover you can import directly
+the&nbsp;../cars/carname/carname.xml or you can use the filebrowser
+(to
+select the file double click on the xml file).</p>
+
+
+
+
+
+<p>When &nbsp;you save a xml file a backup is automatically
+generated in the folder
+xml-backups/carname/carname-day-month-daynumber-hour-minute-second-year.xml.</p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 925px; height: 427px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor Save" src="images/tcse_09.png"></p>
+
+
+
+
+
+<p></p>
+
+
+
+
+
+<h2>Carname and autor info</h2>
+
+
+
+
+
+<p>You can setup the carname, the full carname and the car
+category (F1, historic, nascar...) here.</p>
+
+
+
+
+
+<p>The autor name and email are automatically saved and they are
+used when you export the xml. Therefore your name and email are
+automatically added.</p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 344px; height: 258px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor Save" src="images/tcse_10.png"></p>
+
+
+
+
+
+<p></p>
+
+
+
+
+
+<h2>Car dimensions, driver position, bonnet position</h2>
+
+
+
+
+
+<p>These parameters can be edited here. It's easy to setup this
+in the 3d view of the car.</p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 199px; height: 424px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor Driver, car dimensions..." src="images/tcse_11.png"></p>
+
+
+
+
+
+<p></p>
+
+
+
+
+
+<h2>Sound and Graphic</h2>
+
+
+
+
+
+<p>It's possible to setup the engine sound and other graphic
+properties.</p>
+
+
+
+
+
+<p>You can change all the 3d filenames (.ac or .acc) from your
+car name in one click on autogenerate carname and the number of car
+shapes (the number of ranges).</p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 542px; height: 526px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor Graphic" src="images/tcse_12.png"></p>
+
+
+
+
+
+<p>The autogenerate funcition creates the names following the next algorithm:</p>
+
+
+
+
+<p>&nbsp;&nbsp;&nbsp; graphicenv = carname+fileType;<br>
+
+
+
+
+&nbsp;&nbsp;&nbsp; carRange1= carname+fileType;<br>
+
+
+
+
+&nbsp;&nbsp;&nbsp; carRange2= carname+"-lod1"+fileType;<br>
+
+
+
+
+&nbsp;&nbsp;&nbsp; carRange3= carname+"-lod2"+fileType;<br>
+
+
+
+
+&nbsp;&nbsp;&nbsp; carRange4= carname+"-lod3"+fileType;<br>
+
+
+
+
+&nbsp;&nbsp;&nbsp; carRange5= carname+"-lod4"+fileType;<br>
+
+
+
+
+</p>
+
+
+
+
+<h3>Car lights and flames</h3>
+
+
+
+
+
+<p>You can adjust the lights and flames of your car. If you don't
+activate them they are not exproted in the xml.</p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 707px; height: 579px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor Graphic: Lights and flames" src="images/tcse_13.png"></p>
+
+
+
+
+
+<p></p>
+
+
+
+
+
+<h2>View AC3D file</h2>
+
+
+
+
+
+<p>In this window you can see the ac file of your car (the car
+range 1 of the Graphic/Ranges section).</p>
+
+
+
+
+
+<p>You can setup some parameters like the wheel position,
+position of the front and rear axle...</p>
+
+
+
+
+
+<p style="text-align: center;"><img style="border: 0px solid ; width: 908px; height: 715px;" alt="Torcs Car Setup Editor" title="Torcs Car Setup Editor3D view" src="images/tcse_04.png"></p>
+
+
+
+
+
+<p></p>
+
+
+
+
+
+<h2>Command Line</h2>
+
+
+
+
+
+<p>The command line will save you some time to setup some
+parameters.
+I'ts under development and in future versions it will have more
+commands. The commans implemented in version 0.10 are:</p>
+
+
+
+
+
+<ul>
+
+
+
+
+
+  <li>carname= : setup the carname.</li>
+
+
+
+
+
+  <li>carnamef= : setup full carname.</li>
+
+
+
+
+
+  <li>simmetrical : activate the simmetrical edit mode.</li>
+
+
+
+
+
+  <li>vmax= [r= ]: setup the vmax of the higest gear in km/h and
+autocalculate all the gears. r is the % of reduction (5% by default) in
+km/h between to consecutive gears.</li>
+
+
+
+
+
+  <li>rl= : revs limiter (red line) in rpm.</li>
+
+
+
+
+
+  <li>cv= : the max power in cv, all the engine curve is
+calculated.</li>
+
+
+
+
+
+  <li>tq= :&nbsp;the max torque in Nm, all the engine curve
+is calculated.</li>
+
+
+
+
+
+  <li>gears= : setup the number of gears of the car.</li>
+
+
+
+
+
+  <li>exit: close the program.</li>
+
+
+
+
+
+  <li>quit: close the program.</li>
+
+
+
+
+
+  <li>autor= : autor name.</li>
+
+
+
+
+
+  <li>autore= : autor email.</li>
+
+
+
+
+
+  <li>carcat= :setup car category.</li>
+
+
+
+
+
+  <li>track= setup the current track.</li>
+
+
+
+
+
+  <li>open : open the cardata for the current car.</li>
+
+
+
+
+
+  <li>open= : open the cardata for the car.</li>
+
+
+
+
+
+  <li>opent :&nbsp;open the cardata for the current car and
+for the current track.</li>
+
+
+
+
+
+  <li>opent= :open the cardata for the car and for the current
+track.</li>
+
+
+
+
+
+  <li>openct= :open the cardata for current the car and for the
+track.</li>
+
+
+
+
+
+  <li>save : saves the cardata for current car.</li>
+
+
+
+
+
+  <li>save= : saves the cardata for car.</li>
+
+
+
+
+
+  <li>savet : saves the cardata for current car for the current
+track.</li>
+
+
+
+
+
+  <li>savet=: saves the cardata for car for the current track.</li>
+
+
+
+
+
+  <li>xml : export xml file for current car.</li>
+
+
+
+
+
+  <li>xml= : export xml file for car.</li>
+
+
+
+
+
+  <li>import : import xml file for current car.</li>
+
+
+
+
+
+  <li>import= : import xml file of the car.</li>
+
+
+
+
+
+  <li>rpmscale=auto : set the rpm scale of the engine graph from
+0rpm to revs maxi.</li>
+
+
+
+
+
+  <li>rpmscale=full : set the rpm scale of the engine graph from
+0rpm to the last point.</li>
+
+
+
+
+
+  <li>punit=hp : set up the units of engine power to hp (the
+label of units (CV) is not modified). 1CV = 735.49875W.<br>
+
+
+
+
+
+  </li>
+
+
+
+
+
+  <li>punit=cv : set up the units of engine power to cv (this is
+te default). 1HP = 745.69872W.</li>
+
+
+
+  <li>osp : calculate the optimal shift points (using the criteria that maximizes the area under the engine power curve).</li>
+
+
+
+
+
+</ul>
+
+
+
+
+
+<h2>Future versions of Torcs Car Setup Editor</h2>
+
+
+
+
+
+<p>In new version of the program</p>
+
+
+
+
+
+<ul>
+
+
+
+
+
+  <li>Add a telemetry viewer and analizer when telemetry
+available in TORCS.</li>
+
+
+
+
+
+  <li>Read the xml (and ac or acc for graphics) file of the track
+to draw a map of the car and calculate the distance of the main
+straight, the radious of the curves... in order to help to setup the
+car for the track.</li>
+
+
+
+
+
+  <li>Add more parameters to edit.</li>
+
+
+
+
+
+  <li>Improve the gears section (now you can select the number of
+gears and they are exported to the xml file properly).</li>
+
+
+
+
+
+  <li>Read acc files and png images in the 3D window. (Now only
+ac and uncompressed rgb files are loaded).</li>
+
+
+
+
+
+  <li>Modify the engine power and torque with a click on the
+graph.</li>
+
+
+
+
+
+  <li>Improve the file browser. This will be useful to read and
+save carsetup data.</li>
+
+
+
+
+
+  <li>Improve the calculation of the display of the acceleration,
+grip, speed and braking of the car.</li>
+
+
+
+
+
+  <li>Create and html report of the car with phisics data, engine
+graph.. and 3D
+images of the car.</li>
+
+
+
+
+
+  <li>Improve the create engine tool. Use a spline for example.</li>
+
+
+
+
+
+  <li>Save the engine graph in png format.</li>
+
+
+
+
+
+  <li>Add an undo function.</li>
+
+
+
+
+
+  <li>Improve the command line.</li>
+
+
+
+
+
+</ul>
+
+
+
+
+
+<p></p>
+
+
+
+
+
+<p>&nbsp;<a href="http://f1torcs.lycos.es/index.html" target="_blank">Vicente
+Marti Home Page</a></p>
+
+
+
+
+
+</body></html>

@@ -1,0 +1,6 @@
+--------------------
+- Steer Setup -
+--------------------
+If you increase the Max Lock the car can steer more.
+
+--------------------

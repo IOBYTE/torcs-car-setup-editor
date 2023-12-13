@@ -1,0 +1,215 @@
+clkdtm for track e-track-1 car-data-created-by-Torcs-Car-Setup-Editor
+#TorcsCarSetupEditorVersion
+0.1
+#carname
+clkdtm
+#engineparams
+0.115 10000 8500 2000 1.1 
+#rpmValue
+0 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 11000 12000 13000 14000 15000 16000 17000 18000 19000 20000 
+#tqValue
+1000 347.07 407.193 470.048 521.972 536.237 531.561 478.118 412.441 312.292 166.113 971 890 821 762 712 667 628 593 562 534 
+#turboS
+1
+#turbo
+3000 1 0.75 
+#numberOfGears
+6
+#gearbox_shift_time
+0.25
+#gearboxratio
+-2 2.66 1.78 1.3 1 0.74 0.6 1.81 
+#gearboxinertia
+0.115 0.0037 0.003 0.0037 0.0048 0.0064 0.0107 0.015 0.015 
+#gearboxefficiency
+0.957 0.955 0.957 0.95 0.983 0.948 0.94 0.94 
+#antirollbar1
+0 0.2 2.5 
+#antirollbar2
+0 0.2 2.5 
+#suspension1
+5500 0.2 1 0 80 80 100 100 
+#suspension2
+5500 0.2 1 0 80 80 100 100 
+#suspension3
+5500 0.2 1 0 80 80 100 100 
+#suspension4
+5500 0.2 1 0 80 80 100 100 
+#aerodynamics
+0.34 1.9 0.9 0.7 
+#frontwing
+0.3 0 2.33 0.1 
+#rearwing
+1.2 5 -2.2 1 
+#massdata
+0.45 0.5 0.5 0.5 100 80 1050 0.25 
+#brakesystem
+0.55 50000 
+#brake1
+380 50 0.3 0.1241 
+#brake2
+380 50 0.3 0.1241 
+#brake3
+350 25 0.3 0.0714 
+#brake4
+350 25 0.3 0.0714 
+#wheel1
+-0.84 17 255 0.4 1.22 100 0 -5 20 80 0.02 1.5 
+#wheel2
+0.84 17 255 0.4 1.22 100 0 -5 20 80 0.02 1.5 
+#wheel3
+-0.81 18 330 0.3 1.22 100 0 -2 20 80 0.02 1.7 
+#wheel4
+0.81 18 330 0.3 1.22 100 0 -2 20 80 0.02 1.7 
+#steer
+45 120 
+#curr_drivetrain_type
+0
+#drivetrain
+0.0091
+#curr_frontdifferential_type
+4
+#frontifferential
+0.0488 4.5 0.9625 50 60 
+#curr_reardifferential_type
+0
+#reardifferential
+0.0488 4.5 0.9625 50 60 
+#curr_centraldifferential_type
+4
+#centraldifferential
+0.0488 4.5 0.9625 50 60 
+#frontaxle
+1.37 0.0056 0.06 
+#rearaxle
+-1.26 0.008 0.02 
+#enginesample
+clkdtmb2.wav
+#rmpscale
+0.9
+#wheelTexture
+tex-wheel.rgb
+#shadowTexture
+shadow.rgb
+#tachometerTexture
+rpm8500.rgb
+#speedometerTexture
+speed360.rgb
+#graphicenv
+clkdtm.ac
+#tachometerMinMax
+0 10000 #speedometerMinMax
+0 360 #carRange1
+clkdtm.acc
+#carRange2
+clkdtm-lod1.acc
+#carRange3
+clkdtm-lod2.acc
+#carRange4
+clkdtm-lod3.acc
+#carRange5
+formula-torcs.ac
+#carRange1data
+30
+#carRange1data
+1
+#carRange1data
+1
+#carRange2data
+20
+#carRange2data
+1
+#carRange2data
+1
+#carRange3data
+10
+#carRange3data
+1
+#carRange3data
+1
+#carRange4data
+0
+#carRange4data
+0
+#carRange4data
+1
+#carRange5data
+0
+#carRange5data
+0
+#carRange5data
+0
+#bonnetPosition
+-0.5 0 1.1 
+#driverPosition
+-0.33 0 0.75 
+#carCategory
+F1
+#carBodyDimensions
+4.683 1.65 1.17 
+#carOverallDimensions
+4.7 1.7 
+#head1a
+2.11 0.65 0.44 0.2 
+#head1b
+2.11 -0.65 0.44 0.2 
+#head2a
+2.18 0.47 0.42 0.2 
+#head2b
+2.18 -0.47 0.42 0.2 
+#reara
+1.17 0.75 0.31 0.15 
+#rearb
+1.17 -0.75 0.31 0.15 
+#brakea
+1.17 0.75 0.31 0.15 
+#brakeb
+1.17 -0.75 0.31 0.15 
+#rearc
+-1.77 0.75 0.31 0.15 
+#reard
+-1.77 -0.75 0.31 0.15 
+#brakec
+-1.77 0.75 0.31 0.15 
+#braked
+-1.77 -0.75 0.31 0.15 
+#brake2a
+-2.3 0 0.42 0.1 
+#brake2b
+-2.3 0 0.44 0.1 
+#head1aS
+0
+#head1bS
+0
+#head2aS
+0
+#head2bS
+0
+#rearaS
+0
+#rearbS
+0
+#brakeaS
+0
+#brakebS
+0
+#rearcS
+0
+#reardS
+0
+#brakecS
+0
+#brakedS
+0
+#brake2aS
+0
+#brake2bS
+0
+#flameS
+1
+#flamePower
+1.5
+#flame1
+-2.23 -0.48 0.2 
+#flame2
+1.37 -0.84 0.57 

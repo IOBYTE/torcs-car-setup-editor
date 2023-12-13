@@ -1,0 +1,43 @@
+-------------------------------------------
+How to compile tcse in linux
+-----------------------------
+
+Explanation for ubuntu 8.04
+
+
+You need the gcc compiler:
+
+sudo apt-get install g++-4.2
+
+You need freeglut:
+
+sudo apt-get install freeglut3 freeglut3-dev 
+
+and glut:
+
+sudo apt-get install glut-doc libglut3 libglut3-dev
+
+you may need the glui library but it is compiled
+in the folder ./libs and the header file
+is located in ./include
+
+now you can compile the project wiht make:
+
+make
+
+
+
+------------------------------
+to install tcse:
+---------------------------------
+sudo ./install.sh
+
+the program is installed in: /usr/local/share/games/torcs/tcse
+
+
+
+-------------------------------------------
+to run torcs-car-setup-editor
+-------------------------------------------
+in the terminal just type: tcse
+

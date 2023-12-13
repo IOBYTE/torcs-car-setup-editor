@@ -1,0 +1,5 @@
+--------------------
+-      GEARS       -
+--------------------
+The best way to setup the gears is the to setup the speed
+of the car at revs limiter. And then click on autogenerate.

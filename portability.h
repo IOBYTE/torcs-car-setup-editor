@@ -21,6 +21,7 @@ bool makedir( const char* name );
 #include <dir.h>
 #else
 #include <sys/stat.h>
+#include <unistd.h>
 #endif //WIN32
 
 #endif //MK_PORTABILITY_H

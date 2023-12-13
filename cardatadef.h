@@ -70,12 +70,12 @@
     float steer[2] = {45,120};
     
     /* DRIVETRAIN */
-    char *drivetrain_type[] = { "RWD", "FWD", "4WD" };
+    const char *drivetrain_type[] = { "RWD", "FWD", "4WD" };
     int curr_drivetrain_type = 0; // list box drivetrain
     float drivetrain = 0.0091;
     
     /* DIFFERENTIAL */
-    char *differential_type[] = { "FREE", "SPOOL", "LIMITED SLIP", "VISCOUS COUPLER", "NONE" };
+    const char *differential_type[] = { "FREE", "SPOOL", "LIMITED SLIP", "VISCOUS COUPLER", "NONE" };
     int curr_frontdifferential_type = 4; // list box frong differential
     int curr_reardifferential_type = 0; // list box rear differential
     int curr_centraldifferential_type = 4; // list box central differential

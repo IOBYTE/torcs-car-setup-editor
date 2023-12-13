@@ -1,14 +1,14 @@
 # Project: torcs-car-setup-editor
 # Makefile created from the makefilo of Dev-C++ 4.9.9.0
 
-CPP  = g++-4.2
+CPP  = g++
 CC   = gcc
 
 OBJ  = main.o export-xml.o open-car-data.o save-car-data.o tracks.o import-xml.o engine.o help-window.o loadEngine.o calcParmamsABSG.o warningWindow.o fileBrowser.o ac3dLoader/ac3d.o ac3dLoader/mainAC3dloader.o ac3dLoader/render.o ac3dLoader/texture.o gears.o graphic.o command_line.o portability.o read-dir.o $(RES)
 LINKOBJ  = main.o export-xml.o open-car-data.o save-car-data.o tracks.o import-xml.o engine.o help-window.o loadEngine.o calcParmamsABSG.o warningWindow.o fileBrowser.o ac3dLoader/ac3d.o ac3dLoader/mainAC3dloader.o ac3dLoader/render.o ac3dLoader/texture.o gears.o graphic.o command_line.o portability.o read-dir.o $(RES)
-LIBS =  -L"/usr/lib" -L"./lib_linux" -lglui -lglut -lstdc++ 
-INCS =  -I"/usr/include"  -I"./include"
-CXXINCS =  -I"./include"  -I"/usr/include"
+LIBS =  -L"/usr/local/lib" -lGL -lGLU -lglut -lglui
+INCS =  -I"/usr/local/include"
+CXXINCS =  -I"/usr/local/include"
 BIN  = torcs-car-setup-editor
 CXXFLAGS = $(CXXINCS)  
 CFLAGS = $(INCS)  

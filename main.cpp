@@ -128,7 +128,7 @@ float tqctNew = 400.0;
 float cvctNew = 300.0;
 extern float cvEngineShape[4];
 
-char *tracks[100] = {"t0","t1","t2","t3","t4","t5"};
+const char *tracks[100] = {"t0","t1","t2","t3","t4","t5"};
 int trackVal;
 std::string trackname = "e-track-1";
 std::string track1;

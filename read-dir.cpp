@@ -15,6 +15,9 @@
 #include <dirent.h>
 #include <iostream> // para el cout
 #include <vector>
+
+#include "portability.h"
+
 using namespace std;
 
 

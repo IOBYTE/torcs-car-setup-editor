@@ -19,15 +19,13 @@
 
 bool makedir( const char* dir )
 {
-	mkdir( dir );
-
-	return true; //Return error instead if failed?
+	return mkdir( dir ) == 0;
 }
 #else
 #include <sys/stat.h>
 
 bool makedir( const char* dir )
 {
-	mkdir( dir, 0755 );
+	return mkdir( dir, 0755 ) == 0;
 }
 #endif //WIN32

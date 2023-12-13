@@ -17,6 +17,7 @@
 #include <string.h>
 #include <string>
 #include <time.h>
+#include <GL/glut.h>
 #include <GL/glui.h>
 #include <vector>
 #include "cardata.h"

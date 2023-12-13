@@ -14,7 +14,7 @@
 
 #include <string.h>
 #include <string>
-#include <iostream.h>
+#include <iostream>
 #include <GL/glui.h>
 
 #include "../portability.h"
@@ -38,6 +38,8 @@
 #include "ac3d.h"
 
 #include "../cardata.h"
+
+using namespace std;
 
 GLUI    *gluiLoadAC3D;
 GLUI    *gluiLoadAC3D2;

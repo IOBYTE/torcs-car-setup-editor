@@ -37,7 +37,6 @@ set(srcs
 	cardata.h
 	cardatadef.h
 	portability.h
-	torcs-car-setup-editor_private.h
 	)
 
 add_executable(carsetupeditor ${loader_srcs} ${srcs})

@@ -81,7 +81,7 @@ int listDir (std::string dirPath, vector<string> &directori )
     cout << endl;
     
     /* Go to the original present working directory */
-    chdir(pwd_str);
+    return chdir(pwd_str);
 }    
 
 

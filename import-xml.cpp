@@ -89,11 +89,10 @@ string bufer;
     int lineComentEnd = -1;
     int lineComentLines = -1;
 
-    while (!f.eof()!=0)
+    while (!f.eof())
         {
             
             getline(f, bufer);
-            f.ignore(); // igonere the '\n'
             
             lineComentBegin = bufer.find("<!--");
             lineComentEnd = bufer.rfind("-->");
@@ -112,14 +111,13 @@ string bufer;
             
             if (lineComentLines == 1)
             {
-              while (!f.eof()!=0)
+              while (!f.eof())
               {
                 lineComentEnd = bufer.rfind("-->");
                 //cout << "Coment Line: " << bufer << endl;
                 bufer = "";
                 if (lineComentEnd >= 0) break;
                 getline(f, bufer);
-                f.ignore(); // igonere the '\n'
               }
               lineComentLines = -2;
             }            

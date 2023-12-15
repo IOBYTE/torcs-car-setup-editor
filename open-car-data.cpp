@@ -36,9 +36,9 @@ void numberOfGearsDisable   ( void );
 
 void activateDeativateGraphicRanges ( int k );
 
-void opencardata( int i )
+void opencardata( int j )
 {
-        switch ( i )
+        switch ( j )
     {
        case 1:
            fichero3[0]='\0';

@@ -75,11 +75,11 @@ extern float drivetrain;
 /* DIFFERENTIAL */
 extern char *differential_type[];
 extern int curr_frontdifferential_type;
-extern float frontdifferential[3];
+extern float frontdifferential[5];
 extern int curr_reardifferential_type;
-extern float reardifferential[3];
+extern float reardifferential[5];
 extern int curr_centraldifferential_type;
-extern float centraldifferential[3];
+extern float centraldifferential[5];
     
 /* FRONT AND REAR AXLES */
 extern float frontaxle[3];

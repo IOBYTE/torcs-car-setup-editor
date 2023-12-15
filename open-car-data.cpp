@@ -63,10 +63,10 @@ void opencardata( int j )
     ifstream f;  //fichero de salid
     int i;
     float tcseFileVersion;
-    f.open(fichero3);  //apertura del fichero o creacción si no existe
+    f.open(fichero3);  //opening the file or creating it if it does not exist
     if(!f)
         {
-        cout << "Error obrint el fitxer" << endl;
+        cout << "Error opening the file " << fichero3 << endl;
         warningMsg(1);
         }    
     else

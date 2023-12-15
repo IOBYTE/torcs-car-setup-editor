@@ -52,7 +52,7 @@ std::string fichero4;
 
 extern std::string file_Name;
 
-bool fileReaded = false;
+bool fileRead = false;
 
 void readXmlFile( int k )
 {
@@ -72,18 +72,18 @@ string bufer;
            fichero4 += "/";
            fichero4 += carname;
            fichero4 += ".xml";
-    }    
+    }
 
     ifstream f;  //fichero de salid
     int i;
     f.open(fichero4.c_str());  //apertura del fichero o creacción si no existe
     if(!f)
         {
-        cout << "Error openig the file " << fichero4 << endl;
-        fileReaded = false;
-        }    
+        cout << "Error opening the file " << fichero4 << endl;
+        fileRead = false;
+        }
     else
-    {    
+    {
     /* read the data of the xml file */
     int lineComentBegin = -1;
     int lineComentEnd = -1;
@@ -91,24 +91,24 @@ string bufer;
 
     while (!f.eof())
         {
-            
+
             getline(f, bufer);
-            
+
             lineComentBegin = bufer.find("<!--");
             lineComentEnd = bufer.rfind("-->");
-            
-            
+
+
             if (lineComentBegin >=0)
             {
                 lineComentLines = 1;
-            }    
+            }
 
             if (lineComentBegin >= 0 && lineComentEnd >= 0)
             {
                 lineComentLines = 2;
                 //cout << "Coment Line <!--*-->: " << bufer << endl;
             }
-            
+
             if (lineComentLines == 1)
             {
               while (!f.eof())
@@ -120,28 +120,28 @@ string bufer;
                 getline(f, bufer);
               }
               lineComentLines = -2;
-            }            
-            
+            }
+
             int k;
             int isBlank = 0;
             int nSpace = 0;
             for ( k=0; k < bufer.size(); k++)
             {
                 if (bufer.at(k) == ' ')
-                { 
+                {
                     nSpace++;
-                }            
+                }
             }
             if ( nSpace == bufer.size()-1)
             {
                 isBlank = 1;
-            }    
-   
+            }
+
             if (lineComentLines == -1 && isBlank == 0)
             {
                 xmlLine.push_back(bufer);
-            }    
-               
+            }
+
             //cout << bufer << endl;
             lineComentLines = -1;
             isBlank = 0;
@@ -155,21 +155,21 @@ string bufer;
     cout << "Line " << k << " :" << xmlLine.at(k) << "---" << endl;
     cout << "------------------" << endl;
     */
-    cout << "Readed " << xmlLine.size() << " lines from " << fichero4  << endl;
-    fileReaded = true;
+    cout << "Read " << xmlLine.size() << " lines from " << fichero4  << endl;
+    fileRead = true;
     f.close();
-    }    
-}    
+    }
+}
 
-void getXmlValf ( 
-    float &valueReaded, 
-    string name = "revs limiter", 
+void getXmlValf (
+    float &valueRead,
+    string name = "revs limiter",
     string section = "Engine",
     string subSection1 = "subSection1",
     string subSection2 = "subSection2" )
 {
       /* find */
-    //cout << xmlLine[8] << endl;       
+    //cout << xmlLine[8] << endl;
     int idxSection = 0;
     int idxSubSection1 = 0;
     int idxSubSection2 = 0;
@@ -190,18 +190,18 @@ void getXmlValf (
     if (xmlLine[line].find("<section")<0)
     {
         idxSection = -1;
-    }    
+    }
     if (idxSection > 0) break;
-    line++;    
+    line++;
     }
 
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Section " << "name=\"" + section +  "\""  << " not found." << endl;
-        } 
+        }
     else
 { //   else 1
-    
+
     line++;
     /* SEARCH THE SUBSECTION1 IF DEFINED*/
     if (subSection1 != "subSection1")
@@ -212,15 +212,15 @@ void getXmlValf (
     //cout << "idx: " << idxSection << endl;
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
     if (idxSubSection1 > 0) break;
-    line++;    
+    line++;
     }
 
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Section " << subSection1 << " not found." << endl;
-        } 
-    }    
-    //line++;     
+        }
+    }
+    //line++;
 
     /* SEARCH THE SUBSECTION2 IF DEFINED*/
     if (subSection2 != "subSection2")
@@ -231,16 +231,16 @@ void getXmlValf (
     //cout << "idx: " << idxSection << endl;
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
     if (idxSubSection2 > 0) break;
-    line++;    
+    line++;
     }
 
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Section " << subSection2 << " not found." << endl;
-        } 
-    }    
+        }
+    }
     //line++;
-    
+
     while ( line < xmlLine.size() )
     {
     idxAtt = xmlLine[line].find("name=\"" + name +  "\"" );
@@ -249,11 +249,11 @@ void getXmlValf (
     if (idxAtt > 0) break;
     line++;
     }
-    
+
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Name name=\"" << name << "\" not found." << endl;
-        } 
+        }
     else
 { // else 2
     while ( line < xmlLine.size() )
@@ -263,7 +263,7 @@ void getXmlValf (
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
     if (idx > 0) break;
     line++;
-    }   
+    }
     if ( idx < 0 )
     {
         cout << "Value " << val << " not found" << endl;
@@ -276,28 +276,28 @@ void getXmlValf (
     //cout << "Value string: " << valueString << endl;
     if (xmlLine[line].find("<attnum")>0)
     {
-        valueReaded = atof( valueString.c_str() ); /* atoi --> int */
-        cout << "Value " << section << ":" << name << " readed: " << valueReaded << endl;   
+        valueRead = atof( valueString.c_str() ); /* atoi --> int */
+        cout << "Value " << section << ":" << name << " read: " << valueRead << endl;
     }
-    }//else3    
+    }//else3
 }//else2
-}//else1    
-    
-   
-    GLUI_Master.sync_live_all();       
-    }     
+}//else1
+
+
+    GLUI_Master.sync_live_all();
+    }
 ///////////////////////////////////////////////////////////////////
 
-void getXmlVali ( 
-    int &valueReaded, 
-    string name = "revs limiter", 
+void getXmlVali (
+    int &valueRead,
+    string name = "revs limiter",
     string section = "Engine",
     string subSection1 = "subSection1",
     string subSection2 = "subSection2" )
 {
 
    /* find */
-    //cout << xmlLine[8] << endl;       
+    //cout << xmlLine[8] << endl;
     int idxSection = 0;
     int idxSubSection1 = 0;
     int idxSubSection2 = 0;
@@ -318,18 +318,18 @@ void getXmlVali (
     if (xmlLine[line].find("<section")<0)
     {
         idxSection = -1;
-    }    
+    }
     if (idxSection > 0) break;
-    line++;    
+    line++;
     }
 
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Section " << "name=\"" + section +  "\""  << " not found." << endl;
-        } 
+        }
     else
 { //   else 1
-    
+
     line++;
     /* SEARCH THE SUBSECTION1 IF DEFINED*/
     if (subSection1 != "subSection1")
@@ -340,15 +340,15 @@ void getXmlVali (
     //cout << "idx: " << idxSection << endl;
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
     if (idxSubSection1 > 0) break;
-    line++;    
+    line++;
     }
 
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Section " << subSection1 << " not found." << endl;
-        } 
-    }    
-    //line++;     
+        }
+    }
+    //line++;
 
     /* SEARCH THE SUBSECTION2 IF DEFINED*/
     if (subSection2 != "subSection2")
@@ -359,16 +359,16 @@ void getXmlVali (
     //cout << "idx: " << idxSection << endl;
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
     if (idxSubSection2 > 0) break;
-    line++;    
+    line++;
     }
 
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Section " << subSection2 << " not found." << endl;
-        } 
-    }    
+        }
+    }
     //line++;
-    
+
     while ( line < xmlLine.size() )
     {
     idxAtt = xmlLine[line].find("name=\"" + name +  "\"" );
@@ -377,11 +377,11 @@ void getXmlVali (
     if (idxAtt > 0) break;
     line++;
     }
-    
+
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Name name=\"" << name << "\" not found." << endl;
-        } 
+        }
     else
 { // else 2
     while ( line < xmlLine.size() )
@@ -391,7 +391,7 @@ void getXmlVali (
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
     if (idx > 0) break;
     line++;
-    }   
+    }
     if ( idx < 0 )
     {
         cout << "Value " << val << " not found" << endl;
@@ -404,29 +404,29 @@ void getXmlVali (
     //cout << "Value string: " << valueString << endl;
     if (xmlLine[line].find("<attnum")>0)
     {
-        valueReaded = atoi( valueString.c_str() ); /* atoi --> int */
-        cout << "Value " << name << " readed: " << valueReaded << endl;   
+        valueRead = atoi( valueString.c_str() ); /* atoi --> int */
+        cout << "Value " << name << " read: " << valueRead << endl;
     }
-    }//else3    
+    }//else3
 }//else2
-}//else1    
-    
-   
-    GLUI_Master.sync_live_all();       
-    }     
+}//else1
+
+
+    GLUI_Master.sync_live_all();
+    }
 
 ////////////////////////////////////////////////////////////////////
 
-void getXmlVal ( 
-    std::string &valueReaded, 
-    string name = "revs limiter", 
+void getXmlVal (
+    std::string &valueRead,
+    string name = "revs limiter",
     string section = "Engine",
     string subSection1 = "subSection1",
     string subSection2 = "subSection2" )
 {
 
    /* find */
-    //cout << xmlLine[8] << endl;       
+    //cout << xmlLine[8] << endl;
     int idxSection = 0;
     int idxSubSection1 = 0;
     int idxSubSection2 = 0;
@@ -449,18 +449,18 @@ void getXmlVal (
     if (xmlLine[line].find("<section")<0)
     {
         idxSection = -1;
-    }    
+    }
     if (idxSection > 0) break;
-    line++;    
+    line++;
     }
 
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Section " << "name=\"" + section +  "\""  << " not found." << endl;
-        } 
+        }
     else
 { //   else 1
-    
+
     line++;
     /* SEARCH THE SUBSECTION1 IF DEFINED*/
     if (subSection1 != "subSection1")
@@ -471,15 +471,15 @@ void getXmlVal (
     //cout << "idx: " << idxSection << endl;
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
     if (idxSubSection1 > 0) break;
-    line++;    
+    line++;
     }
 
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Section " << subSection1 << " not found." << endl;
-        } 
-    }    
-    //line++;     
+        }
+    }
+    //line++;
 
     /* SEARCH THE SUBSECTION2 IF DEFINED*/
     if (subSection2 != "subSection2")
@@ -504,28 +504,28 @@ void getXmlVal (
     {
         startOfSubSection2T = -1;
         endOfSubSection2T = -1;
-    }  
+    }
     if (endOfSubSection2 >= 0 && startOfSubSection2T == -1)
     {
         startOfSubSection2T = -1;
         endOfSubSection2T = 1;
-    }  
-    if (endOfSubSection2T == 1) 
+    }
+    if (endOfSubSection2T == 1)
     {
      cout << "Value " << val << " not found" << endl;   break;
-    }    
- */   
+    }
+ */
     if (idxSubSection2 > 0) break;
-    line++;    
+    line++;
     }
 
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Section " << subSection2 << " not found." << endl;
-        } 
-    }    
+        }
+    }
     //line++;
-    
+
     while ( line < xmlLine.size() )
     {
     idxAtt = xmlLine[line].find("name=\"" + name +  "\"" );
@@ -534,11 +534,11 @@ void getXmlVal (
     if (idxAtt > 0) break;
     line++;
     }
-    
+
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Name name=\"" << name << "\" not found." << endl;
-        } 
+        }
     else
 { // else 2
     while ( line < xmlLine.size() )
@@ -547,9 +547,9 @@ void getXmlVal (
     //cout << "idx: " << idx << endl;
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
     if (idx > 0) break;
-    line++;   
+    line++;
 
-    }   
+    }
     if ( idx < 0 )
     {
         cout << "Value " << val << " not found" << endl;
@@ -559,29 +559,29 @@ void getXmlVal (
     idx1 = idx + val.length();
     idx2 = xmlLine[line].find("\"",idx1);
     valueString.assign(xmlLine[line],idx1,idx2-idx1);
-    valueReaded = valueString;
-    cout << "Value " << name << " readed: " << valueReaded << endl;
-    }//else3    
+    valueRead = valueString;
+    cout << "Value " << name << " read: " << valueRead << endl;
+    }//else3
 }//else2
-}//else1    
-    
-   
-    GLUI_Master.sync_live_all();       
-    }    
+}//else1
+
+
+    GLUI_Master.sync_live_all();
+    }
 
 
 ///////////////////////////////////////////////////////////////////
 
-void getXmlNumberOfGears ( 
-    int &valueReaded, 
-    string name = "revs limiter", 
+void getXmlNumberOfGears (
+    int &valueRead,
+    string name = "revs limiter",
     string section = "Engine",
     string subSection1 = "subSection1",
     string subSection2 = "subSection2" )
 {
 
    /* find */
-    //cout << xmlLine[8] << endl;       
+    //cout << xmlLine[8] << endl;
     int idxSection = 0;
     int idxSubSection1 = 0;
     int idxSubSection2 = 0;
@@ -602,18 +602,18 @@ void getXmlNumberOfGears (
     if (xmlLine[line].find("<section")<0)
     {
         idxSection = -1;
-    }    
+    }
     if (idxSection > 0) break;
-    line++;    
+    line++;
     }
 
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Section " << "name=\"" + section +  "\""  << " not found." << endl;
-        } 
+        }
     else
 { //   else 1
-    
+
     line++;
     /* SEARCH THE SUBSECTION1 IF DEFINED*/
     if (subSection1 != "subSection1")
@@ -624,15 +624,15 @@ void getXmlNumberOfGears (
     //cout << "idx: " << idxSection << endl;
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
     if (idxSubSection1 > 0) break;
-    line++;    
+    line++;
     }
 
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Section " << subSection1 << " not found." << endl;
-        } 
-    }    
-    //line++;     
+        }
+    }
+    //line++;
 
     /* SEARCH THE SUBSECTION2 IF DEFINED*/
     if (subSection2 != "subSection2")
@@ -643,16 +643,16 @@ void getXmlNumberOfGears (
     //cout << "idx: " << idxSection << endl;
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
     if (idxSubSection2 > 0) break;
-    line++;    
+    line++;
     }
 
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Section " << subSection2 << " not found." << endl;
-        } 
-    }    
+        }
+    }
     //line++;
-    
+
     while ( line < xmlLine.size() )
     {
     idxAtt = xmlLine[line].find("name=\"" + name +  "\"" );
@@ -661,23 +661,23 @@ void getXmlNumberOfGears (
     if (idxAtt > 0) break;
     line++;
     }
-    
+
     if ( line + 1 >= xmlLine.size() )
         {
         cout << "Name name=\"" << name << "\" not found." << endl;
-        } 
+        }
     else
 { // else 2
 
-        valueReaded = atoi( subSection2.c_str() ); /* atoi --> int */
-        cout << "Value " << name << " readed: " << valueReaded << endl;   
-         
+        valueRead = atoi( subSection2.c_str() ); /* atoi --> int */
+        cout << "Value " << name << " read: " << valueRead << endl;
+
 }//else2
-}//else1    
-    
-   
-    GLUI_Master.sync_live_all();       
-    }     
+}//else1
+
+
+    GLUI_Master.sync_live_all();
+    }
 
 ////////////////////////////////////////////////////////////////////
 
@@ -686,8 +686,8 @@ void getXmlNumberOfGears (
 
 ////////////////////////////////////////////////////////////////////
 
-void getXmlParamName ( std::string &valueReaded ) 
-{     
+void getXmlParamName ( std::string &valueRead )
+{
     int idxParams = 0;
     int idxName = 0;
     std::string paramsString = "<params";
@@ -706,41 +706,41 @@ void getXmlParamName ( std::string &valueReaded )
       idxParams = xmlLine.at(line).find( paramsString );
 
       if (idxParams >= 0) break;
-      line++;    
+      line++;
     }
 
     if ( line + 1 >= xmlLine.size() )
     {
         cout << paramsString << " not found." << endl;
-    } 
- 
+    }
+
     else
-{ //   else 1   
-    
+{ //   else 1
+
     idxName = xmlLine.at(line).find(nameString);
-    
+
     if (idxName < 0)
         {
         cout << "<params name not found." << endl;
-        } 
+        }
     else
 { // else 2
     idx1 = idxName + nameString.length();
     idx2 = xmlLine.at(line).find("\"",idx1);
-    valueReaded.assign(xmlLine.at(line),idx1,idx2-idx1);
-    cout << "Value <params name readed: " << valueReaded << endl;   
+    valueRead.assign(xmlLine.at(line),idx1,idx2-idx1);
+    cout << "Value <params name read: " << valueRead << endl;
 }//else2
-}//else1    
-    
-   
-    GLUI_Master.sync_live_all();       
-    }    
+}//else1
+
+
+    GLUI_Master.sync_live_all();
+    }
 
 /* ------------------------------------------------*/
 void importxml( int param )
-{  
-    
-    
+{
+
+
 
     switch (param)
     {
@@ -749,17 +749,17 @@ void importxml( int param )
     break;
     default:
     readXmlFile( 0 );
-    }    
-    if (fileReaded == false )
+    }
+    if (fileRead == false )
     {
         cout << "File: " << fichero4 << " not imported." << endl;
         warningMsg(2);
     }
-         
-    if (fileReaded == true )
+
+    if (fileRead == true )
     {
     getXmlParamName(fullCarName);
-    
+
     getXmlValf (engineparams[0],"inertia","Engine");
     getXmlValf (engineparams[1],"revs maxi","Engine");
     getXmlValf (engineparams[2],"revs limiter","Engine");
@@ -787,7 +787,7 @@ void importxml( int param )
     getXmlValf (rpmValue[18],"rpm","Engine","data points","19");
     getXmlValf (rpmValue[19],"rpm","Engine","data points","20");
     getXmlValf (rpmValue[20],"rpm","Engine","data points","21");
-    
+
     getXmlValf (tqValue[0],"Tq","Engine","data points","1");
     getXmlValf (tqValue[1],"Tq","Engine","data points","2");
     getXmlValf (tqValue[2],"Tq","Engine","data points","3");
@@ -810,10 +810,10 @@ void importxml( int param )
     getXmlValf (tqValue[19],"Tq","Engine","data points","20");
     getXmlValf (tqValue[20],"Tq","Engine","data points","21");
     CalcCV(); // after reading the tq we calculate the cv to update the values of cv
-    
+
     std::string bufferValStr = "";
     getXmlVal (bufferValStr,"turbo","Engine","data points");
-    if (bufferValStr == "true") 
+    if (bufferValStr == "true")
     {
         turboS = 1;
         GLUI_Master.sync_live_all();
@@ -822,11 +822,11 @@ void importxml( int param )
     {
         turboS = 0;
         GLUI_Master.sync_live_all();
-    }        
+    }
     getXmlValf (turbo[0],"turbo rpm","Engine","data points");
     getXmlValf (turbo[1],"turbo factor","Engine","data points");
     getXmlValf (turbo[2],"turbo lag","Engine","data points");
-    
+
     getXmlValf (gearbox_shift_time,"shift time","Gearbox");
     getXmlValf (gearboxratio[0],"ratio","Gearbox","gears","r");
     getXmlValf (gearboxratio[1],"ratio","Gearbox","gears","1");
@@ -836,7 +836,7 @@ void importxml( int param )
     getXmlValf (gearboxratio[5],"ratio","Gearbox","gears","5");
     getXmlValf (gearboxratio[6],"ratio","Gearbox","gears","6");
     getXmlValf (gearboxratio[7],"ratio","Gearbox","gears","7");
-    
+
     getXmlNumberOfGears (numberOfGears,"ratio","Gearbox","gears","1");
     getXmlNumberOfGears (numberOfGears,"ratio","Gearbox","gears","2");
     getXmlNumberOfGears (numberOfGears,"ratio","Gearbox","gears","3");
@@ -846,8 +846,8 @@ void importxml( int param )
     getXmlNumberOfGears (numberOfGears,"ratio","Gearbox","gears","7");
     numberOfGearsDisable( );
 
-    
-    
+
+
     getXmlValf (gearboxinertia[0],"inertia","Clutch");
     getXmlValf (gearboxinertia[1],"inertia","Gearbox","gears","r");
     getXmlValf (gearboxinertia[2],"inertia","Gearbox","gears","1");
@@ -857,7 +857,7 @@ void importxml( int param )
     getXmlValf (gearboxinertia[6],"inertia","Gearbox","gears","5");
     getXmlValf (gearboxinertia[7],"inertia","Gearbox","gears","6");
     getXmlValf (gearboxinertia[8],"inertia","Gearbox","gears","7");
-    
+
     getXmlValf (gearboxefficiency[0],"efficiency","Gearbox","gears","r");
     getXmlValf (gearboxefficiency[1],"efficiency","Gearbox","gears","1");
     getXmlValf (gearboxefficiency[2],"efficiency","Gearbox","gears","2");
@@ -866,7 +866,7 @@ void importxml( int param )
     getXmlValf (gearboxefficiency[5],"efficiency","Gearbox","gears","5");
     getXmlValf (gearboxefficiency[6],"efficiency","Gearbox","gears","6");
     getXmlValf (gearboxefficiency[7],"efficiency","Gearbox","gears","7");
-    
+
     getXmlValf (antirollbar1[0],"spring","Front Anti-Roll Bar");
     getXmlValf (antirollbar1[1],"suspension course","Front Anti-Roll Bar");
     getXmlValf (antirollbar1[2],"bellcrank","Front Anti-Roll Bar");
@@ -874,7 +874,7 @@ void importxml( int param )
     getXmlValf (antirollbar2[0],"spring","Rear Anti-Roll Bar");
     getXmlValf (antirollbar2[1],"suspension course","Rear Anti-Roll Bar");
     getXmlValf (antirollbar2[2],"bellcrank","Rear Anti-Roll Bar");
-    
+
     getXmlValf (suspension1[0],"spring","Front Right Suspension");
     getXmlValf (suspension1[1],"suspension course","Front Right Suspension");
     getXmlValf (suspension1[2],"bellcrank","Front Right Suspension");
@@ -910,7 +910,7 @@ void importxml( int param )
     getXmlValf (suspension4[5],"slow rebound","Rear Left Suspension");
     getXmlValf (suspension4[6],"fast bump","Rear Left Suspension");
     getXmlValf (suspension4[7],"fast rebound","Rear Left Suspension");
-    
+
     getXmlValf (aerodynamics[0],"Cx","Aerodynamics");
     getXmlValf (aerodynamics[1],"front area","Aerodynamics");
     getXmlValf (aerodynamics[2],"front Clift","Aerodynamics");
@@ -925,7 +925,7 @@ void importxml( int param )
     getXmlValf (rearwing[1],"angle","Rear Wing");
     getXmlValf (rearwing[2],"xpos","Rear Wing");
     getXmlValf (rearwing[3],"zpos","Rear Wing");
-    
+
     getXmlValf (massdata[0],"front-rear weight repartition","Car");
     getXmlValf (massdata[1],"front right-left weight repartition","Car");
     getXmlValf (massdata[2],"rear right-left weight repartition","Car");
@@ -934,10 +934,10 @@ void importxml( int param )
     getXmlValf (massdata[5],"initial fuel","Car");
     getXmlValf (massdata[6],"mass","Car");
     getXmlValf (massdata[7],"GC height","Car");
-    
+
     getXmlValf (brakesystem[0],"front-rear brake repartition","Brake System");
     getXmlValf (brakesystem[1],"max pressure","Brake System");
-    
+
     getXmlValf (brake1[0],"disk diameter","Front Right Brake");
     getXmlValf (brake1[1],"piston area","Front Right Brake");
     getXmlValf (brake1[2],"mu","Front Right Brake");
@@ -957,7 +957,7 @@ void importxml( int param )
     getXmlValf (brake4[1],"piston area","Rear Left Brake");
     getXmlValf (brake4[2],"mu","Rear Left Brake");
     getXmlValf (brake4[3],"inertia","Rear Left Brake");
-    
+
     getXmlValf (wheel1[0],"ypos","Front Right Wheel");
     getXmlValf (wheel1[1],"rim diameter","Front Right Wheel");
     getXmlValf (wheel1[2],"tire width","Front Right Wheel");
@@ -1009,29 +1009,29 @@ void importxml( int param )
     getXmlValf (wheel4[9],"dynamic friction","Rear Left Wheel");
     getXmlValf (wheel4[10],"rolling resistance","Rear Left Wheel");
     getXmlValf (wheel4[11],"mu","Rear Left Wheel");
-    
+
     getXmlValf (steer[0],"steer lock","Steer");
     getXmlValf (steer[1],"max steer speed","Steer");
-    
+
     bufferValStr = "";
     getXmlVal (bufferValStr,"type","Drivetrain");
     int i;
     for (i = 0; i < 3; i++)
     {
-        if (bufferValStr == drivetrain_type[i]) 
+        if (bufferValStr == drivetrain_type[i])
         {
             curr_drivetrain_type = i;
             list_drivetrain_type->set_int_val(curr_drivetrain_type);
         }
     }
-    getXmlValf (drivetrain,"inertia","Drivetrain");          
+    getXmlValf (drivetrain,"inertia","Drivetrain");
 
     //curr_frontdifferential_type
     bufferValStr = "";
     getXmlVal (bufferValStr,"type","Front Differential");
     for (i = 0; i < 5; i++)
     {
-        if (bufferValStr == differential_type[i]) 
+        if (bufferValStr == differential_type[i])
         {
             curr_frontdifferential_type = i;
             list_frontdifferential_type->set_int_val(curr_frontdifferential_type);
@@ -1041,14 +1041,14 @@ void importxml( int param )
     getXmlValf (frontdifferential[1],"ratio","Front Differential");
     getXmlValf (frontdifferential[2],"efficiency","Front Differential");
     getXmlValf (frontdifferential[3],"min torque bias","Front Differential");
-    getXmlValf (frontdifferential[4],"max torque bias","Front Differential"); 
-    
+    getXmlValf (frontdifferential[4],"max torque bias","Front Differential");
+
     //curr_reardifferential_type
     bufferValStr = "";
     getXmlVal (bufferValStr,"type","Rear Differential");
     for (i = 0; i < 5; i++)
     {
-        if (bufferValStr == differential_type[i]) 
+        if (bufferValStr == differential_type[i])
         {
             curr_reardifferential_type = i;
             list_reardifferential_type->set_int_val(curr_reardifferential_type);
@@ -1058,14 +1058,14 @@ void importxml( int param )
     getXmlValf (reardifferential[1],"ratio","Rear Differential");
     getXmlValf (reardifferential[2],"efficiency","Rear Differential");
     getXmlValf (reardifferential[3],"min torque bias","Rear Differential");
-    getXmlValf (reardifferential[4],"max torque bias","Rear Differential"); 
+    getXmlValf (reardifferential[4],"max torque bias","Rear Differential");
 
     //curr_centraldifferential_type
     bufferValStr = "";
     getXmlVal (bufferValStr,"type","Central Differential");
     for (i = 0; i < 5; i++)
     {
-        if (bufferValStr == differential_type[i]) 
+        if (bufferValStr == differential_type[i])
         {
             curr_centraldifferential_type = i;
             list_centraldifferential_type->set_int_val(curr_centraldifferential_type);
@@ -1075,7 +1075,7 @@ void importxml( int param )
     getXmlValf (centraldifferential[1],"ratio","Central Differential");
     getXmlValf (centraldifferential[2],"efficiency","Central Differential");
     getXmlValf (centraldifferential[3],"min torque bias","Central Differential");
-    getXmlValf (centraldifferential[4],"max torque bias","Central Differential"); 
+    getXmlValf (centraldifferential[4],"max torque bias","Central Differential");
 
     getXmlValf (frontaxle[0],"xpos","Front Axle");
     getXmlValf (frontaxle[1],"inertia","Front Axle");
@@ -1084,45 +1084,45 @@ void importxml( int param )
     getXmlValf (rearaxle[0],"xpos","Rear Axle");
     getXmlValf (rearaxle[1],"inertia","Rear Axle");
     getXmlValf (rearaxle[2],"roll center height","Rear Axle");
-    
+
     getXmlVal (enginesample,"engine sample","Sound");
     getXmlValf (rmpscale,"rpm scale","Sound");
-    
+
     getXmlVal (graphicenv,"env","Graphic Objects");
     getXmlVal (wheelTexture,"wheel texture","Graphic Objects");
     getXmlVal (shadowTexture,"shadow texture","Graphic Objects");
     getXmlVal (tachometerTexture,"tachometer texture","Graphic Objects");
     getXmlVal (speedometerTexture,"speedometer texture","Graphic Objects");
-    
+
     getXmlVali (tachometerMinMax[0],"tachometer min value","Graphic Objects");
     getXmlVali (tachometerMinMax[1],"tachometer max value","Graphic Objects");
-    
+
     getXmlVali (speedometerMinMax[0],"speedometer min value","Graphic Objects");
     getXmlVali (speedometerMinMax[1],"speedometer max value","Graphic Objects");
-    
+
     getXmlVal (carRange1,"car","Ranges", "1");
     getXmlVal (carRange2,"car","Ranges", "2");
     getXmlVal (carRange3,"car","Ranges", "3");
     getXmlVal (carRange4,"car","Ranges", "4");
     getXmlVal (carRange5,"car","Ranges", "5");
-    
+
     getXmlVali (carRange1dataA,"threshold","Ranges", "1");
     getXmlVali (carRange2dataA,"threshold","Ranges", "2");
     getXmlVali (carRange3dataA,"threshold","Ranges", "3");
     getXmlVali (carRange4dataA,"threshold","Ranges", "4");
     getXmlVali (carRange5dataA,"threshold","Ranges", "5");
-    
+
     bufferValStr = "";
     std::string yesStr = "yes";
     getXmlVal (bufferValStr,"wheels","Ranges","1");
     carRange1dataB = 0;
     if (bufferValStr == yesStr) carRange1dataB = 1;
-    
+
     bufferValStr = "";
     carRange2dataB = 0;
     getXmlVal (bufferValStr,"wheels","Ranges","2");
     if (bufferValStr == yesStr) carRange2dataB = 1;
-    
+
     bufferValStr = "";
     carRange3dataB = 0;
     getXmlVal (bufferValStr,"wheels","Ranges","3");
@@ -1131,15 +1131,15 @@ void importxml( int param )
     bufferValStr = "";
     carRange4dataB = 0;
     getXmlVal (bufferValStr,"wheels","Ranges","4");
-    if (bufferValStr == yesStr) carRange4dataB = 1;    
+    if (bufferValStr == yesStr) carRange4dataB = 1;
 
     bufferValStr = "";
     carRange5dataB = 0;
-    getXmlVal (bufferValStr,"wheels","Ranges","5"); 
-    if (bufferValStr == yesStr) carRange5dataB = 1;    
-    
+    getXmlVal (bufferValStr,"wheels","Ranges","5");
+    if (bufferValStr == yesStr) carRange5dataB = 1;
+
     GLUI_Master.sync_live_all();
-    
+
     int numberOfRanges = 0;
     getXmlNumberOfGears (numberOfRanges,"threshold","Graphic Objects","Ranges","1");
     cout << numberOfRanges <<  endl;
@@ -1151,14 +1151,14 @@ void importxml( int param )
     cout << numberOfRanges <<  endl;
     getXmlNumberOfGears (numberOfRanges,"threshold","Graphic Objects","Ranges","5");
     cout << numberOfRanges <<  endl;
-    
+
     if (numberOfRanges == 5) {
     carRange5dataC = 1;
     carRange4dataC = 1;
     carRange3dataC = 1;
     carRange2dataC = 1;
     carRange1dataC = 1;
-    }    
+    }
     if (numberOfRanges == 4) {
     carRange5dataC = 0;
     carRange4dataC = 1;
@@ -1187,23 +1187,23 @@ void importxml( int param )
     carRange2dataC = 0;
     carRange1dataC = 1;
     }
-    activateDeativateGraphicRanges ( 0 ); 
+    activateDeativateGraphicRanges ( 0 );
 
     getXmlValf (bonnetPosition[0],"xpos","Bonnet");
     getXmlValf (bonnetPosition[1],"ypos","Bonnet");
     getXmlValf (bonnetPosition[2],"zpos","Bonnet");
-    
+
     getXmlValf (driverPosition[0],"xpos","Driver");
     getXmlValf (driverPosition[1],"ypos","Driver");
     getXmlValf (driverPosition[2],"zpos","Driver");
-    
+
     getXmlVal (carCategory,"category","Car");
     getXmlValf (carBodyDimensions[0],"body length","Car");
     getXmlValf (carBodyDimensions[1],"body width","Car");
     getXmlValf (carBodyDimensions[2],"body height","Car");
     getXmlValf (carOverallDimensions[0],"overall length","Car");
     getXmlValf (carOverallDimensions[1],"overall width","Car");
-    
+
     vector<string> lightNumbers;
     lightNumbers.push_back("0");
     lightNumbers.push_back("1");
@@ -1220,7 +1220,7 @@ void importxml( int param )
     lightNumbers.push_back("12");
     lightNumbers.push_back("13");
     lightNumbers.push_back("14");
-    
+
 
     int k;
     //head1----------------------------------------------
@@ -1246,8 +1246,8 @@ void importxml( int param )
         getXmlValf (head1b[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
         getXmlValf (head1b[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         break;
-        }      
-    }   
+        }
+    }
 
     //head2----------------------------------------------
     for (k=1;k<lightNumbers.size();k++)
@@ -1272,9 +1272,9 @@ void importxml( int param )
         getXmlValf (head2b[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
         getXmlValf (head2b[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         break;
-        }      
-    }  
-    
+        }
+    }
+
 
     //rear----------------------------------------------
     for (k=1;k<lightNumbers.size();k++)
@@ -1300,7 +1300,7 @@ void importxml( int param )
         getXmlValf (rearb[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         k++;
         getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
-        }      
+        }
     if (bufferValStr == "rear")
         {
         rearcS = 1;
@@ -1320,7 +1320,7 @@ void importxml( int param )
         getXmlValf (reard[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         break;
         }
-    } 
+    }
 
     //brake----------------------------------------------
     for (k=1;k<lightNumbers.size();k++)
@@ -1334,7 +1334,7 @@ void importxml( int param )
         getXmlValf (brakea[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
         getXmlValf (brakea[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
         getXmlValf (brakea[3],"size","Graphic Objects","Light",lightNumbers.at(k));
-        cout << "readed brake 1" << endl;
+        cout << "read brake 1" << endl;
         k++;
         getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
         }
@@ -1345,10 +1345,10 @@ void importxml( int param )
         getXmlValf (brakeb[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
         getXmlValf (brakeb[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
         getXmlValf (brakeb[3],"size","Graphic Objects","Light",lightNumbers.at(k));
-        cout << "readed brake 2" << endl;
+        cout << "read brake 2" << endl;
         k++;
         getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
-        }      
+        }
     if (bufferValStr == "brake")
         {
         brakecS = 3;
@@ -1356,7 +1356,7 @@ void importxml( int param )
         getXmlValf (brakec[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
         getXmlValf (brakec[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
         getXmlValf (brakec[3],"size","Graphic Objects","Light",lightNumbers.at(k));
-        cout << "readed brake 3" << endl;
+        cout << "read brake 3" << endl;
         k++;
         getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
         }
@@ -1367,7 +1367,7 @@ void importxml( int param )
         getXmlValf (braked[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
         getXmlValf (braked[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
         getXmlValf (braked[3],"size","Graphic Objects","Light",lightNumbers.at(k));
-        cout << "readed brake 3" << endl;
+        cout << "read brake 3" << endl;
         //k = lightNumbers.size(); //exit for the for
         break;
         }
@@ -1397,38 +1397,38 @@ void importxml( int param )
         getXmlValf (brake2b[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
         getXmlValf (brake2b[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         break;
-        }      
-    }  
+        }
+    }
      /* FLAMES */
      getXmlValf (flamePower,"power","Exhaust");
-     if (flamePower > 0.0) 
+     if (flamePower > 0.0)
      {
          flameS = 1;
      }
      else  flameS = 0;
      cout << "flameS= " << flameS << endl;
-       
+
      getXmlValf (flame1[0],"xpos","Exhaust","1");
      getXmlValf (flame1[1],"ypos","Exhaust","1");
      getXmlValf (flame1[2],"zpos","Exhaust","1");
      getXmlValf (flame2[0],"xpos","Exhaust","2");
      getXmlValf (flame2[1],"ypos","Exhaust","2");
      getXmlValf (flame2[2],"zpos","Exhaust","2");
-     
+
      gearboxRatioSpeed ( 1 ); /* calc the speed of each gear */
-                 
+
     cout << "File: " << fichero4 << " imported." << endl;
-    
+
     text1 = "File: ";
     text1 += fichero4;
     text1 += " imported.";
-    
+
     /*for ( i=0; i<xmlLine.size();i++)
     {
         xmlLine.at(i)="";
     }  */
-    xmlLine.clear();  
+    xmlLine.clear();
     GLUI_Master.sync_live_all();
-}    
+}
 }
 

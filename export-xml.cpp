@@ -930,7 +930,7 @@ char textdata2[150];
     int i;
     f.open(fichero4);  //apertura del fichero o creacción si no existe
     if(!f)
-        cout << "Error openig the file " << fichero4 << endl;
+        cout << "Error opening the file " << fichero4 << endl;
     else
     {    
     /* read the data of the xml file */
@@ -941,7 +941,7 @@ char textdata2[150];
             xmlLine.push_back(bufer);
             //cout << bufer << endl;
         }
-    cout << "Readed " << xmlLine.size() << " lines from " << fichero4  << endl;
+    cout << "Read " << xmlLine.size() << " lines from " << fichero4  << endl;
     f.close();
     }
 
@@ -974,7 +974,7 @@ char textdata2[150];
     ofstream f2;  //fichero de salid
     f2.open(fichero4);  //apertura del fichero o creacción si no existe
     if(!f2)
-        cout << "Error openig the file " << fichero4 << endl;
+        cout << "Error opening the file " << fichero4 << endl;
     else
     {    
     /* WRITHE the data in the xml file */

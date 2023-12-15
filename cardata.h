@@ -26,6 +26,10 @@ extern float  rpmValue[21];
 extern float  cvValue[21]; /* don' import */
 extern int turboS;
 extern float turbo[3];
+extern float engineCapacity;
+extern int engineCylinders;
+extern std::string engineShape;
+extern std::string enginePosition;
 
 /* GEARBOX */
 extern int numberOfGears;

@@ -405,7 +405,7 @@ void getXmlVali (
     if (xmlLine[line].find("<attnum")>0)
     {
         valueRead = atoi( valueString.c_str() ); /* atoi --> int */
-        cout << "Value " << name << " read: " << valueRead << endl;
+        cout << "Value " << section << ":" << name << " read: " << valueRead << endl;
     }
     }//else3
 }//else2
@@ -560,8 +560,8 @@ void getXmlVal (
     idx2 = xmlLine[line].find("\"",idx1);
     valueString.assign(xmlLine[line],idx1,idx2-idx1);
     valueRead = valueString;
-    cout << "Value " << name << " read: " << valueRead << endl;
-    }//else3
+    cout << "Value " << section << ":" << name << " read: " << valueRead << endl;
+   }//else3
 }//else2
 }//else1
 
@@ -765,6 +765,11 @@ void importxml( int param )
     getXmlValf (engineparams[2],"revs limiter","Engine");
     getXmlValf (engineparams[3],"tickover","Engine");
     getXmlValf (engineparams[4],"fuel cons factor","Engine");
+
+    getXmlValf (engineCapacity, "capacity","Engine");
+    getXmlVali (engineCylinders, "cylinders","Engine");
+    getXmlVal (engineShape, "shape","Engine");
+    getXmlVal (enginePosition, "position","Engine");
 
     getXmlValf (rpmValue[0],"rpm","Engine","data points","1");
     getXmlValf (rpmValue[1],"rpm","Engine","data points","2");

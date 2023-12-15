@@ -174,7 +174,9 @@ GLUI_TextBox    *helpTextBox;
 GLUI_TextBox    *warningTextBox;
 GLUI_FileBrowser *fb;
 GLUI_FileBrowser *fb2;
-GLUI_Listbox *list_drivetrain_type; // we ned it extern to update when reading the value
+GLUI_Listbox *list_engine_shape;
+GLUI_Listbox *list_engine_position;
+GLUI_Listbox *list_drivetrain_type; // we need it extern to update when reading the value
 GLUI_Listbox *list_frontdifferential_type;
 GLUI_Listbox *list_reardifferential_type;
 GLUI_Listbox *list_centraldifferential_type;
@@ -2334,6 +2336,20 @@ new GLUI_Column( glui10, false );
     ->set_int_limits( 0, 3000 );
 
    new GLUI_Column( glui11, false );
+
+
+  GLUI_Panel *engine_type_panel = new GLUI_Panel( glui11, "Type" );
+   (new GLUI_Spinner( engine_type_panel, "capacity", &engineCapacity))
+    ->set_float_limits( 0, 20000 );
+   (new GLUI_Spinner( engine_type_panel, "cylinders", &engineCylinders))
+    ->set_int_limits( 0, 16 );
+   list_engine_shape = new GLUI_Listbox( engine_type_panel, "Shape:", &curr_engine_shape );
+   for( i=0; i<4; i++ )
+    list_engine_shape->add_item( i, engine_shape[i] );
+   list_engine_position = new GLUI_Listbox( engine_type_panel, "Position:", &curr_engine_position );
+   for( i=0; i<5; i++ )
+    list_engine_position->add_item( i, engine_position[i] );
+
 
   GLUI_Panel *engine_turbo_panel = new GLUI_Panel( glui11, "Turbo" );
     new GLUI_Checkbox(engine_turbo_panel, "Activate", &turboS);

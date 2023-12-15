@@ -368,7 +368,7 @@ case 1: /* cv */
   cvmax = CalcMaxEngine(cvValue,rpmValue,1,points,rpmatcvmax,0);
   //cout << "cvmax: " << cvmax << "at rpm:"<< rpmatcvmax <<endl;
   /* update all engine points */
-  for (i=0;i<22;i++)
+  for (i=0;i<21;i++)
   {
      cvValue[i]=cvValue[i]*cvmaxNew/cvmax;
   }
@@ -380,7 +380,7 @@ case 2: /* tq */
   /* calc the max of tq in all the range*/
   tqmax = CalcMaxEngine(tqValue,rpmValue,1,points,rpmattqmax,0);
   /* update all engine points */
-  for (i=0;i<22;i++)
+  for (i=0;i<21;i++)
   {
      tqValue[i]=tqValue[i]*tqmaxNew/tqmax;
   }
@@ -391,7 +391,7 @@ break;
 case 3: /* tq */
 
   /* update all engine points */
-  for (i=0;i<22;i++)
+  for (i=0;i<21;i++)
   {
      tqValue[i]=tqctNew;
   }
@@ -402,7 +402,7 @@ break;
 case 4: /* cv */
 
   /* update all engine points */
-  for (i=0;i<22;i++)
+  for (i=0;i<21;i++)
   {
      cvValue[i]=cvctNew;
   }

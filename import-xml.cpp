@@ -34,6 +34,9 @@
 using namespace std;
 
 
+extern GLUI_Listbox *list_engine_capacity_units;
+extern GLUI_Listbox *list_engine_shape;
+extern GLUI_Listbox *list_engine_position;
 extern GLUI_Listbox *list_drivetrain_type;
 extern GLUI_Listbox *list_frontdifferential_type;
 extern GLUI_Listbox *list_reardifferential_type;
@@ -569,6 +572,160 @@ void getXmlVal (
     GLUI_Master.sync_live_all();
     }
 
+////////////////////////////////////////////////////////////////////
+
+void getXmlUnits (
+    std::string &valueRead,
+    const std::string &name,
+    const std::string &section,
+    const std::string &subSection1 = "",
+    const std::string &subSection2 = "" )
+{
+
+   /* find */
+    //cout << xmlLine[8] << endl;
+    int idxSection = 0;
+    int idxSubSection1 = 0;
+    int idxSubSection2 = 0;
+    int idxAtt = 0;
+    int idx = 0;
+    int idx1 = 0;
+    int idx2 = 0;
+    int line = 0;
+    int endOfSubSection2 = -1;
+    int endOfSubSection1 = -1;
+    string units = "unit=\"";
+    string valueString;
+
+    /* SEARCH THE SECTION */
+    while ( line < xmlLine.size() )
+    {
+    idxSection = xmlLine[line].find("name=\"" + section +  "\"" );
+    //cout << "idx: " << idxSection << endl;
+    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
+    if (xmlLine[line].find("<section")<0)
+    {
+        idxSection = -1;
+    }
+    if (idxSection > 0) break;
+    line++;
+    }
+
+    if ( line + 1 >= xmlLine.size() )
+        {
+        cout << "Section " << "name=\"" + section +  "\""  << " not found." << endl;
+        }
+    else
+{ //   else 1
+
+    line++;
+    /* SEARCH THE SUBSECTION1 IF DEFINED*/
+    if (!subSection1.empty())
+    {
+    while ( line < xmlLine.size() )
+    {
+    idxSubSection1 = xmlLine[line].find("name=\"" + subSection1 +  "\"" );
+    //cout << "idx: " << idxSection << endl;
+    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
+    if (idxSubSection1 > 0) break;
+    line++;
+    }
+
+    if ( line + 1 >= xmlLine.size() )
+        {
+        cout << "Section " << subSection1 << " not found." << endl;
+        }
+    }
+    //line++;
+
+    /* SEARCH THE SUBSECTION2 IF DEFINED*/
+    if (!subSection2.empty())
+    {
+    while ( line < xmlLine.size())
+    {
+    idxSubSection2 = xmlLine[line].find("name=\"" + subSection2 +  "\"");
+    //cout << "idx: " << idxSection << endl;
+    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
+
+/*
+    int startOfSubSection2 = -1;
+    int startOfSubSection2T = -1;
+    int endOfSubSection2T = -1;
+    startOfSubSection2 = xmlLine.at(line).find("<section");
+    endOfSubSection2 = xmlLine.at(line).find("</section>");
+    if (startOfSubSection2 >= 0 )
+    {
+        startOfSubSection2T = 1;
+    }
+    if (endOfSubSection2 >= 0 && startOfSubSection2T == 1)
+    {
+        startOfSubSection2T = -1;
+        endOfSubSection2T = -1;
+    }
+    if (endOfSubSection2 >= 0 && startOfSubSection2T == -1)
+    {
+        startOfSubSection2T = -1;
+        endOfSubSection2T = 1;
+    }
+    if (endOfSubSection2T == 1)
+    {
+     cout << "Value " << val << " not found" << endl;   break;
+    }
+ */
+    if (idxSubSection2 > 0) break;
+    line++;
+    }
+
+    if ( line + 1 >= xmlLine.size() )
+        {
+        cout << "Section " << subSection2 << " not found." << endl;
+        }
+    }
+    //line++;
+
+    while ( line < xmlLine.size() )
+    {
+    idxAtt = xmlLine[line].find("name=\"" + name +  "\"" );
+    //cout << "idx: " << idxAtt << endl;
+    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
+    if (idxAtt > 0) break;
+    line++;
+    }
+
+    if ( line + 1 >= xmlLine.size() )
+        {
+        cout << "Name name=\"" << name << "\" not found." << endl;
+        }
+    else
+{ // else 2
+    while ( line < xmlLine.size() )
+    {
+        idx = xmlLine[line].find(units);
+        cout << "idx: " << idx << endl;
+        cout << "Line " << line << ": "<< xmlLine[line] << endl;
+        if (idx > 0)
+            break;
+        line++;
+    }
+    if ( idx < 0 )
+    {
+        cout << "Units " << units << " not found" << endl;
+    }
+    else
+    { // else 3
+    idx1 = idx + units.length();
+    idx2 = xmlLine[line].find("\"",idx1);
+    valueString.assign(xmlLine[line],idx1,idx2-idx1);
+    valueRead = valueString;
+    cout << "Units " << section << ":" << name << " read: " << valueRead << endl;
+   }//else3
+}//else2
+}//else1
+
+
+    GLUI_Master.sync_live_all();
+    }
+
 
 ///////////////////////////////////////////////////////////////////
 
@@ -767,9 +924,42 @@ void importxml( int param )
     getXmlValf (engineparams[4],"fuel cons factor","Engine");
 
     getXmlValf (engineCapacity, "capacity","Engine");
+    string engineCapacityUnits;
+    getXmlUnits (engineCapacityUnits, "capacity","Engine");
+    for (int i = 0; i < 3; i++)
+    {
+        if (engineCapacityUnits == engine_capacity_units[i])
+        {
+            curr_engine_capacity_units = i;
+            list_engine_capacity_units->set_int_val(curr_engine_capacity_units);
+	    break;
+        }
+    }
+
     getXmlVali (engineCylinders, "cylinders","Engine");
+    string engineShape;
     getXmlVal (engineShape, "shape","Engine");
+    for (int i = 0; i < 4; i++)
+    {
+        if (engineShape == engine_shape[i])
+        {
+            curr_engine_shape = i;
+            list_engine_shape->set_int_val(curr_engine_shape);
+	    break;
+        }
+    }
+
+    string enginePosition;
     getXmlVal (enginePosition, "position","Engine");
+    for (int i = 0; i < 5; i++)
+    {
+        if (enginePosition == engine_position[i])
+        {
+            curr_engine_position = i;
+            list_engine_position->set_int_val(curr_engine_position);
+	    break;
+        }
+    }
 
     getXmlValf (rpmValue[0],"rpm","Engine","data points","1");
     getXmlValf (rpmValue[1],"rpm","Engine","data points","2");

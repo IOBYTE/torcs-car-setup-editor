@@ -174,6 +174,7 @@ GLUI_TextBox    *helpTextBox;
 GLUI_TextBox    *warningTextBox;
 GLUI_FileBrowser *fb;
 GLUI_FileBrowser *fb2;
+GLUI_Listbox *list_engine_capacity_units;
 GLUI_Listbox *list_engine_shape;
 GLUI_Listbox *list_engine_position;
 GLUI_Listbox *list_drivetrain_type; // we need it extern to update when reading the value
@@ -2341,6 +2342,9 @@ new GLUI_Column( glui10, false );
   GLUI_Panel *engine_type_panel = new GLUI_Panel( glui11, "Type" );
    (new GLUI_Spinner( engine_type_panel, "capacity", &engineCapacity))
     ->set_float_limits( 0, 20000 );
+   list_engine_capacity_units = new GLUI_Listbox( engine_type_panel, "Units:", &curr_engine_capacity_units );
+   for( i=0; i<3; i++ )
+    list_engine_capacity_units->add_item( i, engine_capacity_units[i] );
    (new GLUI_Spinner( engine_type_panel, "cylinders", &engineCylinders))
     ->set_int_limits( 0, 16 );
    list_engine_shape = new GLUI_Listbox( engine_type_panel, "Shape:", &curr_engine_shape );

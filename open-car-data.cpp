@@ -28,6 +28,10 @@ extern std::string trackname;
 extern void CalcCV(void);
 extern float TCSE_version;
 
+extern GLUI_Listbox *list_engine_capacity_units;
+extern GLUI_Listbox *list_engine_shape;
+extern GLUI_Listbox *list_engine_position;
+
 void warningMsg(int warningn);
 
 void gearboxRatioSpeed ( int k );
@@ -84,7 +88,49 @@ void opencardata( int j )
     f >> carname;
     f >> textdata; //#engineparams
     for (i=0; i<5; i++) {f >> engineparams[i];}
-    f >> textdata; //#rpmValue
+    f >> textdata; //#rpmValue or #engineCapacity
+    if (textdata == "engineCapacity")
+    {
+	f >> engineCapacity;
+	f >> textdata; // #engineCapacityUnits
+	string engineCapacityUnits;
+	f >> engineCapacityUnits;
+	for (int i = 0; i < 3; i++)
+	{
+            if (engineCapacityUnits == engine_capacity_units[i])
+	    {
+		curr_engine_capacity_units = i;
+		list_engine_capacity_units->set_int_val(curr_engine_capacity_units);
+		break;
+	    }
+	}
+	f >> textdata; // #engineCylinders
+	f >> engineCylinders;
+	f >> textdata; // #engineShape
+	string engineShape;
+	f >> engineShape;
+	for (int i = 0; i < 4; i++)
+	{
+            if (engineShape == engine_shape[i])
+	    {
+		curr_engine_shape = i;
+		list_engine_shape->set_int_val(curr_engine_shape);
+		break;
+	    }
+	}
+	f >> textdata; // #enginePosition
+	string enginePosition;
+	f >> enginePosition;
+	for (int i = 0; i < 5; i++)
+	{
+            if (enginePosition == engine_position[i])
+	    {
+		curr_engine_position = i;
+		list_engine_position->set_int_val(curr_engine_position);
+		break;
+	    }
+	}
+    }
     for (i=0; i<21; i++) {f >> rpmValue[i];}
     f >> textdata; //#tqValue
     for (i=0; i<21; i++) {f >> tqValue[i];}

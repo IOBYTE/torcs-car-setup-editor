@@ -21,7 +21,7 @@
 using namespace std;
 
 char fichero3[100];
-char textdata[150];
+std::string textdata;
 std::string bufer;
 
 extern std::string trackname;

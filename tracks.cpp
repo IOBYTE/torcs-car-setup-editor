@@ -164,8 +164,6 @@ void loadCarsList(void)
 }
 void updateCarName ( void )
 {
-     //carname = carsList[carsListVal];
-     carname="";
      carname = carsList[carsListVal];
      GLUI_Master.sync_live_all();
 }

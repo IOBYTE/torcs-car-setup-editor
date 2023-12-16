@@ -190,7 +190,7 @@ void getXmlValf (
     idxSection = xmlLine[line].find("name=\"" + section +  "\"" );
     //cout << "idx: " << idxSection << endl;
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (xmlLine[line].find("<section")<0)
+    if (xmlLine[line].find("<section") == std::string::npos)
     {
         idxSection = -1;
     }
@@ -277,7 +277,7 @@ void getXmlValf (
     idx2 = xmlLine[line].find("\"",idx1);
     valueString.assign(xmlLine[line],idx1,idx2-idx1);
     //cout << "Value string: " << valueString << endl;
-    if (xmlLine[line].find("<attnum")>0)
+    if (xmlLine[line].find("<attnum") != std::string::npos)
     {
         valueRead = atof( valueString.c_str() ); /* atoi --> int */
         cout << "Value " << section << ":" << name << " read: " << valueRead << endl;
@@ -318,7 +318,7 @@ void getXmlVali (
     idxSection = xmlLine[line].find("name=\"" + section +  "\"" );
     //cout << "idx: " << idxSection << endl;
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (xmlLine[line].find("<section")<0)
+    if (xmlLine[line].find("<section") == std::string::npos)
     {
         idxSection = -1;
     }
@@ -405,7 +405,7 @@ void getXmlVali (
     idx2 = xmlLine[line].find("\"",idx1);
     valueString.assign(xmlLine[line],idx1,idx2-idx1);
     //cout << "Value string: " << valueString << endl;
-    if (xmlLine[line].find("<attnum")>0)
+    if (xmlLine[line].find("<attnum") != std::string::npos)
     {
         valueRead = atoi( valueString.c_str() ); /* atoi --> int */
         cout << "Value " << section << ":" << name << " read: " << valueRead << endl;
@@ -449,7 +449,7 @@ void getXmlVal (
     idxSection = xmlLine[line].find("name=\"" + section +  "\"" );
     //cout << "idx: " << idxSection << endl;
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (xmlLine[line].find("<section")<0)
+    if (xmlLine[line].find("<section") == std::string::npos)
     {
         idxSection = -1;
     }
@@ -603,7 +603,7 @@ void getXmlUnits (
     idxSection = xmlLine[line].find("name=\"" + section +  "\"" );
     //cout << "idx: " << idxSection << endl;
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (xmlLine[line].find("<section")<0)
+    if (xmlLine[line].find("<section") == std::string::npos)
     {
         idxSection = -1;
     }
@@ -756,7 +756,7 @@ void getXmlNumberOfGears (
     idxSection = xmlLine[line].find("name=\"" + section +  "\"" );
     //cout << "idx: " << idxSection << endl;
     //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (xmlLine[line].find("<section")<0)
+    if (xmlLine[line].find("<section") == std::string::npos)
     {
         idxSection = -1;
     }

@@ -17,15 +17,15 @@
 #ifdef WIN32
 #include <dir.h>
 
-bool makedir( const char* dir )
+bool makedir( const char* name )
 {
-	return mkdir( dir ) == 0;
+	return mkdir( name ) == 0;
 }
 #else
 #include <sys/stat.h>
 
-bool makedir( const char* dir )
+bool makedir( const char* name )
 {
-	return mkdir( dir, 0755 ) == 0;
+	return mkdir( name, 0755 ) == 0;
 }
 #endif //WIN32

@@ -79,19 +79,16 @@ int listDir (std::string dirPath, vector<string> &directori );
 
 void cmd_line_cb (int k)
 {
-    std::string val="";
-    int pos = -1;
-    float buffer = 0.0;
-    int bufferInt =0;
-    std::string bufferStr = "";
+    std::string val;
+    int pos;
+    float buffer;
+    int bufferInt;
+    std::string bufferStr;
     
     std::string text = cmd_line->get_text();
     if (text =="exit" || text == "quit")
       exit(0);
-    else if (text.find(val="gears=")!=-1){
-        pos = -1;
-        bufferStr = "";
-        bufferInt = 0;
+    else if (text.find(val="gears=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         bufferInt = atoi( bufferStr.c_str() );
@@ -100,10 +97,7 @@ void cmd_line_cb (int k)
         numberOfGears=bufferInt;
         numberOfGearsDisable();
     }
-    else if (text.find(val="cv=")!=-1){
-        pos = -1;
-        bufferStr = "";
-        buffer = 0.0;
+    else if (text.find(val="cv=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         buffer = atof( bufferStr.c_str() );
@@ -112,10 +106,7 @@ void cmd_line_cb (int k)
         scaleAllEnginePoints ( 1 );
     }
 
-    else if (text.find(val="tq=")!=-1){
-        pos = -1;
-        bufferStr = "";
-        buffer = 0.0;
+    else if (text.find(val="tq=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         buffer = atof( bufferStr.c_str() );
@@ -124,10 +115,7 @@ void cmd_line_cb (int k)
         scaleAllEnginePoints ( 2 );
     }        
 
-    else if (text.find(val="vmax=")!=-1){
-        pos = -1;
-        bufferStr = "";
-        buffer = 0.0;
+    else if (text.find(val="vmax=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         buffer = atof( bufferStr.c_str() );
@@ -136,7 +124,6 @@ void cmd_line_cb (int k)
         gearboxRatioSpeed ( 0 );
         if (text.find(val="r="))
         {
-            pos = -1;
             bufferStr = "";
             buffer = 0.0;
             pos = text.find(val);
@@ -148,10 +135,7 @@ void cmd_line_cb (int k)
         gearboxRatioCalcAll ( 0 );
     }
 
-    else if (text.find(val="rl=")!=-1){
-        pos = -1;
-        bufferStr = "";
-        buffer = 0.0;
+    else if (text.find(val="rl=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         buffer = atof( bufferStr.c_str() );
@@ -160,43 +144,34 @@ void cmd_line_cb (int k)
         CalcCVTQmax();
     }     
 
-    else if (text.find(val="simmetrical")!=-1){
+    else if (text.find(val="simmetrical") != std::string::npos){
         simetricaledityn1 = 1;
         simetricaledityn2 = 1;
         simetricaledityn3 = 1;
     }
 
-    else if (text.find(val="carname=")!=-1){
-        pos = -1;
+    else if (text.find(val="carname=") != std::string::npos){
         bufferStr = "";
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         carname=bufferStr;
     }
-    else if (text.find(val="carnamef=")!=-1){
-        pos = -1;
-        bufferStr = "";
+    else if (text.find(val="carnamef=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         fullCarName=bufferStr;
     } 
-    else if (text.find(val="autor=")!=-1){
-        pos = -1;
-        bufferStr = "";
+    else if (text.find(val="autor=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         autorName=bufferStr;
     } 
-    else if (text.find(val="autore=")!=-1){
-        pos = -1;
-        bufferStr = "";
+    else if (text.find(val="autore=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         autorEmail=bufferStr;
     }
-    else if (text.find(val="carcat=")!=-1){
-        pos = -1;
-        bufferStr = "";
+    else if (text.find(val="carcat=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         carCategory=bufferStr;
@@ -204,9 +179,7 @@ void cmd_line_cb (int k)
     else if (text=="open"){
         opencardata( 1 );
     } 
-    else if (text.find(val="open=")!=-1){
-        pos = -1;
-        bufferStr = "";
+    else if (text.find(val="open=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         carname=bufferStr;
@@ -215,25 +188,19 @@ void cmd_line_cb (int k)
     else if (text=="opent"){
         opencardata( 2 );
     }
-    else if (text.find(val="opent=")!=-1){
-        pos = -1;
-        bufferStr = "";
+    else if (text.find(val="opent=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         carname=bufferStr;
         opencardata( 2 );
     }
-    else if (text.find(val="openct=")!=-1){
-        pos = -1;
-        bufferStr = "";
+    else if (text.find(val="openct=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         trackname=bufferStr;
         opencardata( 2 );
     } 
-    else if (text.find(val="track=")!=-1){
-        pos = -1;
-        bufferStr = "";
+    else if (text.find(val="track=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         trackname=bufferStr;
@@ -241,9 +208,7 @@ void cmd_line_cb (int k)
     else if (text=="save"){
         savecardata( 1 );
     }                
-    else if (text.find(val="save=")!=-1){
-        pos = -1;
-        bufferStr = "";
+    else if (text.find(val="save=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         carname=bufferStr;
@@ -252,9 +217,7 @@ void cmd_line_cb (int k)
     else if (text=="savet"){
         savecardata( 2 );
     } 
-    else if (text.find(val="savet=")!=-1){
-        pos = -1;
-        bufferStr = "";
+    else if (text.find(val="savet=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         carname=bufferStr;
@@ -263,9 +226,7 @@ void cmd_line_cb (int k)
     else if (text=="xml"){
         savexml( 1 );
     } 
-    else if (text.find(val="xml=")!=-1){
-        pos = -1;
-        bufferStr = "";
+    else if (text.find(val="xml=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         carname=bufferStr;
@@ -274,9 +235,7 @@ void cmd_line_cb (int k)
     else if (text=="import"){
         importxml( 0 );
     } 
-    else if (text.find(val="import=")!=-1){
-        pos = -1;
-        bufferStr = "";
+    else if (text.find(val="import=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         carname=bufferStr;

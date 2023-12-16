@@ -54,7 +54,7 @@ int calcEnginePointsLesRL (void)
     int i=0;
     int points = 21;
     
-    while (i < 22)
+    while (i < 21)
     {
         if ( rpmValue[i] >= engineparams[2] )
             {
@@ -73,7 +73,7 @@ int calcEnginePointsLesRM (void)
     int i=0;
     int points = 21;
     
-    while (i < 22)
+    while (i < 21)
     {
         if ( rpmValue[i] >= engineparams[1] )
             {

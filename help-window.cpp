@@ -28,14 +28,12 @@ extern GLUI_TextBox    *helpTextBox;
 
 std::string helpText = "";
 
-void openHelpFile(std::string &helpString, std::string file)
+void openHelpFile(std::string &helpString, const std::string &file)
 {
-    helpString = "";
-    std::string buffer = "";
+    helpString.clear();
     std::string filePath = "data/help_list/";
     filePath += file;
     ifstream f;  //fichero de salid
-    int i;    
     f.open(filePath.c_str());  //apertura del fichero o creacción si no existe
     if(!f)
         cout << "Error opening the " << filePath << " file." << endl;
@@ -43,11 +41,11 @@ void openHelpFile(std::string &helpString, std::string file)
     {
         while (!f.eof()!=0)
         {
-        getline(f, buffer);        
-        helpString += buffer;
-        helpString += "\n";
+	    std::string buffer;
+            getline(f, buffer);
+            helpString += buffer;
+            helpString += "\n";
         }
-        buffer = "";    
     } 
     f.close(); 
 }    

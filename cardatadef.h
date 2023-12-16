@@ -32,7 +32,7 @@
     const char *engine_capacity_units[] = { "l", "cc", "ci" };
     int curr_engine_capacity_units = 0;
     int engineCylinders = 0;
-    const char *engine_shape[] = { "V", "L", "H", "W" };
+    const char *engine_shape[] = { "v", "l", "h", "w" };
     int curr_engine_shape = 0;
     const char *engine_position[] = { "front", "front-mid", "mid", "rear-mid", "rear" };
     int curr_engine_position = 0;

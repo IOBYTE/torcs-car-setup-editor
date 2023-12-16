@@ -130,6 +130,23 @@ void printStr (std::string section, std::string mystring)
     }
 }
 
+void printEngineParams()
+{
+    ofstream f;
+    f.open(fichero2, ios::app);
+    if(!f)
+        cout << "Error obrint el fitxer" << endl;
+    else
+    {
+        f << "#engineparams" << endl;
+        f << cardata.engine.inertia << " "
+          << cardata.engine.revsMaxi << " "
+          << cardata.engine.revsLimiter << " "
+          << cardata.engine.tickover << " "
+          << cardata.engine.fuelConsFactor << endl;
+        f.close();
+    }
+}
 
 void savecardata( int i )
 {
@@ -177,7 +194,7 @@ void savecardata( int i )
     }
     printValf("#TorcsCarSetupEditorVersion",TCSE_version);
     printStr("#carname",cardata.carname);
-    printVal("#engineparams",cardata.engine.params,5);
+    printEngineParams();
     printValf("engineCapacity", cardata.engine.capacity);
     printStr("#engineCapacityUnits", cardata.engine.capacity_units[cardata.engine.curr_capacity_units]);
     printVali("#engineCylinders", cardata.engine.cylinders);

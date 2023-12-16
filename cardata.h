@@ -26,7 +26,11 @@ struct CarData
     /* ENGINE */
     struct Engine
     {
-        float params[5]={0.02,20000,19000,5000,1.2};
+        float inertia;
+        float revsMaxi;
+        float revsLimiter;
+        float tickover;
+        float fuelConsFactor;
         float tqValue[21] = {0,150,200,220,250,300,320,340,370,360,400,410,405,402,403,404,390,380,370,360,320};
         float rpmValue[21] = {0,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000,19000,20000};
         float cvValue[21] = { 0 };

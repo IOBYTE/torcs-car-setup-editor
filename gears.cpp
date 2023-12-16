@@ -97,7 +97,7 @@ int i;
 
   for (i = 0; i < 8; i++)
         {
-           finalRatio = cardata.engine.params[2]*60*wRadius*2.0*3.1416*0.001 / (gearbox_speed[i]);
+           finalRatio = cardata.engine.revsLimiter*60*wRadius*2.0*3.1416*0.001 / (gearbox_speed[i]);
 
            if ( finalRatio == 0.0 ) finalRatio = 1.0;
 
@@ -135,7 +135,7 @@ int i;
            if ( finalRatio == 0.0 ) finalRatio = 1.0;
 
 
-           gearbox_speed[i] = cardata.engine.params[2]*60*wRadius*2.0*3.1416*0.001/(finalRatio);
+           gearbox_speed[i] = cardata.engine.revsLimiter*60*wRadius*2.0*3.1416*0.001/(finalRatio);
 
         }
         break;
@@ -243,7 +243,7 @@ float calcAreaCVRPM( int n  )
     for (i=0;i<(cardata.numberOfGears-1);i++){
     areaShiftPoint[i+1]=integral(cardata.engine.rpmValue, cardata.engine.tqValue,optShiftPoint[i]*cardata.gearboxratio[i+2]/cardata.gearboxratio[i+1],optShiftPoint[i+1],n);
     }
-    areaShiftPoint[cardata.numberOfGears-1]=integral(cardata.engine.rpmValue, cardata.engine.tqValue,optShiftPoint[cardata.numberOfGears-2]*cardata.gearboxratio[cardata.numberOfGears]/cardata.gearboxratio[cardata.numberOfGears-1],cardata.engine.params[2],n);
+    areaShiftPoint[cardata.numberOfGears-1]=integral(cardata.engine.rpmValue, cardata.engine.tqValue,optShiftPoint[cardata.numberOfGears-2]*cardata.gearboxratio[cardata.numberOfGears]/cardata.gearboxratio[cardata.numberOfGears-1],cardata.engine.revsLimiter,n);
 
     /*
     areaShiftPoint[0]=integral(rpmValue, tqValue, rpmValue[0],optShiftPoint[0],n);
@@ -252,7 +252,7 @@ float calcAreaCVRPM( int n  )
     areaShiftPoint[3]=integral(rpmValue, tqValue,optShiftPoint[2]*gearboxratio[4]/gearboxratio[3],optShiftPoint[3],n);
     areaShiftPoint[4]=integral(rpmValue, tqValue,optShiftPoint[3]*gearboxratio[5]/gearboxratio[4],optShiftPoint[4],n);
     areaShiftPoint[5]=integral(rpmValue, tqValue,optShiftPoint[4]*gearboxratio[6]/gearboxratio[5],optShiftPoint[5],n);
-    areaShiftPoint[6]=integral(rpmValue, tqValue,optShiftPoint[5]*gearboxratio[7]/gearboxratio[6],params[2],n);
+    areaShiftPoint[6]=integral(rpmValue, tqValue,optShiftPoint[5]*gearboxratio[7]/gearboxratio[6],revsLimiter,n);
     */
 
 
@@ -342,8 +342,8 @@ float dGearRMS=1000.0;
         dGear[0]=derivativeGear;
         if (derivativeGear>upperLimit) optShiftPoint[0]+=dRPM*derivativeGear;
         else if (derivativeGear<lowerLimit) optShiftPoint[0]+=dRPM*derivativeGear;
-        if (optShiftPoint[0]>cardata.engine.params[1]){
-            optShiftPoint[0]=cardata.engine.params[1];
+        if (optShiftPoint[0]>cardata.engine.revsMaxi){
+            optShiftPoint[0]=cardata.engine.revsMaxi;
             dGear[0]=0.0;
         }
         cout << counter << " derivative " << derivativeGear<< " OSP1-2: " <<optShiftPoint[0] << endl;
@@ -354,8 +354,8 @@ float dGearRMS=1000.0;
         dGear[1]=derivativeGear;
         if (derivativeGear>upperLimit) optShiftPoint[1]+=dRPM*derivativeGear;
         else if (derivativeGear<lowerLimit) optShiftPoint[1]+=dRPM*derivativeGear;
-        if (optShiftPoint[1]>cardata.engine.params[1]){
-            optShiftPoint[1]=cardata.engine.params[1];
+        if (optShiftPoint[1]>cardata.engine.revsMaxi){
+            optShiftPoint[1]=cardata.engine.revsMaxi;
             dGear[1]=0.0;
         }
         cout << counter << " derivative " << derivativeGear<< " OSP2-3: " <<optShiftPoint[1] << endl;
@@ -366,8 +366,8 @@ float dGearRMS=1000.0;
         dGear[2]=derivativeGear;
         if (derivativeGear>upperLimit) optShiftPoint[2]+=dRPM*derivativeGear;
         else if (derivativeGear<lowerLimit) optShiftPoint[2]+=dRPM*derivativeGear;
-        if (optShiftPoint[2]>cardata.engine.params[1]){
-            optShiftPoint[2]=cardata.engine.params[1];
+        if (optShiftPoint[2]>cardata.engine.revsMaxi){
+            optShiftPoint[2]=cardata.engine.revsMaxi;
             dGear[2]=0.0;
         }
         cout << counter << " derivative " << derivativeGear<< " OSP3-4: " <<optShiftPoint[2] << endl;
@@ -378,8 +378,8 @@ float dGearRMS=1000.0;
         dGear[3]=derivativeGear;
         if (derivativeGear>upperLimit) optShiftPoint[3]+=dRPM*derivativeGear;
         else if (derivativeGear<lowerLimit) optShiftPoint[3]+=dRPM*derivativeGear;
-        if (optShiftPoint[3]>cardata.engine.params[1]){
-            optShiftPoint[3]=cardata.engine.params[1];
+        if (optShiftPoint[3]>cardata.engine.revsMaxi){
+            optShiftPoint[3]=cardata.engine.revsMaxi;
             dGear[3]=0.0;
         }
         cout << counter << " derivative " << derivativeGear<< " OSP4-5: " <<optShiftPoint[3] << endl;
@@ -390,8 +390,8 @@ float dGearRMS=1000.0;
         dGear[4]=derivativeGear;
         if (derivativeGear>upperLimit) optShiftPoint[4]+=dRPM*derivativeGear;
         else if (derivativeGear<lowerLimit) optShiftPoint[4]+=dRPM*derivativeGear;
-        if (optShiftPoint[4]>cardata.engine.params[1]){
-            optShiftPoint[4]=cardata.engine.params[1];
+        if (optShiftPoint[4]>cardata.engine.revsMaxi){
+            optShiftPoint[4]=cardata.engine.revsMaxi;
             dGear[4]=0.0;
         }
         cout << counter << " derivative " << derivativeGear<< " OSP5-6: " <<optShiftPoint[3] << endl;
@@ -402,8 +402,8 @@ float dGearRMS=1000.0;
         dGear[5]=derivativeGear;
         if (derivativeGear>upperLimit) optShiftPoint[5]+=dRPM*derivativeGear;
         else if (derivativeGear<lowerLimit) optShiftPoint[5]+=dRPM*derivativeGear;
-        if (optShiftPoint[5]>cardata.engine.params[1]){
-            optShiftPoint[5]=cardata.engine.params[1];
+        if (optShiftPoint[5]>cardata.engine.revsMaxi){
+            optShiftPoint[5]=cardata.engine.revsMaxi;
             dGear[5]=0.0;
         }
         cout << counter << " derivative " << derivativeGear<< " OSP6-7: " <<optShiftPoint[5] << endl;
@@ -467,7 +467,7 @@ float dGearRMS=1000.0;
         if (gearTTmaxRPM[i] < 0 || gearTTmaxRPM[i] > 20) gearTTmaxRPM[i] = 20;
         if (gearTTminRPM[i] < 0 || gearTTminRPM[i] > 20) gearTTminRPM[i] = 20;
         cout << "Transmision torque gear" << i+1 <<endl;
-        cout << gearboxratio[i+1]*interpolationTQCV(rpmValue, tqValue, params[2]) << " at " << params[2]<< " - " << gearTTmax[i] << " at " <<  rpmValue[gearTTmaxRPM[i]];
+        cout << gearboxratio[i+1]*interpolationTQCV(rpmValue, tqValue, revsLimiter) << " at " << revsLimiter<< " - " << gearTTmax[i] << " at " <<  rpmValue[gearTTmaxRPM[i]];
         cout << " - "<< gearTT[i][19] << " at " << rpmValue[19] << " rpm" <<endl;
     }
 
@@ -487,7 +487,7 @@ float dGearRMS=1000.0;
             }
         }
         cout << "GEAR " << i << endl;
-        cout << "tt at revs lim= "<< gearboxratio[i]*interpolationTQCV(rpmValue, tqValue, params[2])  <<" tt next gear "<< ttNextGear << " at " << rpmNextGear <<" rpm"<<endl;
+        cout << "tt at revs lim= "<< gearboxratio[i]*interpolationTQCV(rpmValue, tqValue, revsLimiter)  <<" tt next gear "<< ttNextGear << " at " << rpmNextGear <<" rpm"<<endl;
         cout << "optimalShiftPoint Gear"<<i<<" = "<< optimalShiftPoint[i] <<" rpm"<<endl;
     }
 */

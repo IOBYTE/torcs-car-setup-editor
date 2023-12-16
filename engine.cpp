@@ -57,7 +57,7 @@ int calcEnginePointsLesRL (void)
 
     while (i < 21)
     {
-        if ( cardata.engine.rpmValue[i] >= cardata.engine.params[2] )
+        if ( cardata.engine.rpmValue[i] >= cardata.engine.revsLimiter )
             {
               points = i;
               return points;
@@ -76,7 +76,7 @@ int calcEnginePointsLesRM (void)
 
     while (i < 21)
     {
-        if ( cardata.engine.rpmValue[i] >= cardata.engine.params[1] )
+        if ( cardata.engine.rpmValue[i] >= cardata.engine.revsMaxi )
             {
               points = i;
               return points;
@@ -164,16 +164,16 @@ float CalcMaxEngine(float vector[TAM], float vector2[TAM],int init, int tamv, fl
      {
          int points = calcEnginePointsLesRL ();
 
-         if (  revs > cardata.engine.params[2] )
+         if (  revs > cardata.engine.revsLimiter )
          {
-             revs = cardata.engine.params[2];
+             revs = cardata.engine.revsLimiter;
 
                 int i = 0 ;
                 while (i < 20)
                 {
-                    if (cardata.engine.params[2] >= vector2[i] && cardata.engine.params[2] <= vector2[i+1])
+                    if (cardata.engine.revsLimiter >= vector2[i] && cardata.engine.revsLimiter <= vector2[i+1])
                     {
-                        max=vector[i]+((vector[i+1]-vector[i])/(vector2[i+1]-vector2[i]))*(cardata.engine.params[2]-vector2[i]);
+                        max=vector[i]+((vector[i+1]-vector[i])/(vector2[i+1]-vector2[i]))*(cardata.engine.revsLimiter-vector2[i]);
                         break;
                     }
 
@@ -510,7 +510,7 @@ break;
 case 3: /* change the rpmengine points */
     for (i=0;i<21;i++)
     {
-       cardata.engine.rpmValue[i]=cardata.engine.params[1]/20.0*i;
+       cardata.engine.rpmValue[i]=cardata.engine.revsMaxi/20.0*i;
     }
 break;
 
@@ -523,5 +523,5 @@ GLUI_Master.sync_live_all();
 extern GLUI_Spinner *revsLimiterSpinner;
 void setRevsLimiterLimits ( void )
 {
-    revsLimiterSpinner -> set_float_limits( cardata.engine.params[3], cardata.engine.params[1] );
+    revsLimiterSpinner -> set_float_limits( cardata.engine.tickover, cardata.engine.revsMaxi );
 }

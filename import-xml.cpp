@@ -920,11 +920,11 @@ void importxml( int param )
     {
     getXmlParamName(cardata.fullCarName);
 
-    getXmlValf (cardata.engine.params[0],"inertia","Engine");
-    getXmlValf (cardata.engine.params[1],"revs maxi","Engine");
-    getXmlValf (cardata.engine.params[2],"revs limiter","Engine");
-    getXmlValf (cardata.engine.params[3],"tickover","Engine");
-    getXmlValf (cardata.engine.params[4],"fuel cons factor","Engine");
+    getXmlValf (cardata.engine.inertia,"inertia","Engine");
+    getXmlValf (cardata.engine.revsMaxi,"revs maxi","Engine");
+    getXmlValf (cardata.engine.revsLimiter,"revs limiter","Engine");
+    getXmlValf (cardata.engine.tickover,"tickover","Engine");
+    getXmlValf (cardata.engine.fuelConsFactor,"fuel cons factor","Engine");
 
     getXmlValf (cardata.engine.capacity, "capacity","Engine");
     string engineCapacityUnits;

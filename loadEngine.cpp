@@ -58,7 +58,11 @@ void loadEngine( int k )
             {    
                 int i; 
                 f >> buffer; //#engineparams
-                for (i=0; i<5; i++) {f >> cardata.engine.params[i];}
+                f >> cardata.engine.inertia;
+                f >> cardata.engine.revsMaxi;
+                f >> cardata.engine.revsLimiter;
+                f >> cardata.engine.tickover;
+                f >> cardata.engine.fuelConsFactor;
                 f >> buffer; //#rpmValue
                 for (i=0; i<21; i++) {f >> cardata.engine.rpmValue[i];}
                 f >> buffer; //#tqValue

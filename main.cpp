@@ -543,7 +543,7 @@ void lineGraph (void)
        int i;
        for (i=0;i<21;i++)
        {
-           if (cardata.engine.rpmValue[i]>cardata.engine.params[1]){
+           if (cardata.engine.rpmValue[i]>cardata.engine.revsMaxi){
                kMax = i;
                break;
            }
@@ -580,8 +580,8 @@ void lineGraph (void)
     glLineStipple (3, 0xAAAA);
     glBegin (GL_LINES);
             glColor3f (0.2, 0.4, 0.2);
-            glVertex2f(x0 + cardata.engine.params[2]/cardata.engine.rpmValue[kMax-1]*(100-2*x0),y0);
-            glVertex2f(x0 + cardata.engine.params[2]/cardata.engine.rpmValue[kMax-1]*(100-2*x0),(100-3));
+            glVertex2f(x0 + cardata.engine.revsLimiter/cardata.engine.rpmValue[kMax-1]*(100-2*x0),y0);
+            glVertex2f(x0 + cardata.engine.revsLimiter/cardata.engine.rpmValue[kMax-1]*(100-2*x0),(100-3));
     glEnd();
     glDisable (GL_LINE_STIPPLE);
 
@@ -648,7 +648,7 @@ text2 = cadena2;
     sprintf(bufferSTR, "%6.0f", cardata.engine.rpmValue[20]);
   }
   else {
-    sprintf(bufferSTR, "%6.0f", cardata.engine.params[1]);
+    sprintf(bufferSTR, "%6.0f", cardata.engine.revsMaxi);
   }
 
   maxRPM = bufferSTR;
@@ -962,7 +962,7 @@ char cadena5[150];
            finalRatio = cardata.centraldifferential[1]*cardata.gearboxratio[k];
            }
            if ( finalRatio <= 0.0 ) finalRatio = 1.0;
-           sprintf(cadena4, "%2.1f", cardata.engine.params[2]*60*wRadius*2.0*3.1416*0.001/(finalRatio));
+           sprintf(cadena4, "%2.1f", cardata.engine.revsLimiter*60*wRadius*2.0*3.1416*0.001/(finalRatio));
            text4 = cadena4;
             glRasterPos2f (x0 + 5 + 20, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
@@ -970,7 +970,7 @@ char cadena5[150];
         }
   for (k = 2; k < (cardata.numberOfGears+1); k++)
         {
-           sprintf(cadena4, "%2.1f", cardata.engine.params[2]*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]);
+           sprintf(cadena4, "%2.1f", cardata.engine.revsLimiter*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]);
            text4 = cadena4;
             glRasterPos2f (x0 + 5 + 32.5, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
@@ -978,7 +978,7 @@ char cadena5[150];
         }
   for (k = 2; k < (cardata.numberOfGears+1); k++)
         {
-           sprintf(cadena4, "%2.1f", interpolationTQCV(cardata.engine.rpmValue, cardata.engine.tqValue, cardata.engine.params[2]*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]));
+           sprintf(cadena4, "%2.1f", interpolationTQCV(cardata.engine.rpmValue, cardata.engine.tqValue, cardata.engine.revsLimiter*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]));
            text4 = cadena4;
             glRasterPos2f (x0 + 5 + 49, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
@@ -986,7 +986,7 @@ char cadena5[150];
         }
   for (k = 2; k < (cardata.numberOfGears+1); k++)
         {
-           sprintf(cadena4, "%2.1f", interpolationTQCV(cardata.engine.rpmValue, cardata.engine.cvValue, cardata.engine.params[2]*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]));
+           sprintf(cadena4, "%2.1f", interpolationTQCV(cardata.engine.rpmValue, cardata.engine.cvValue, cardata.engine.revsLimiter*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]));
            text4 = cadena4;
             glRasterPos2f (x0 + 5 + 62, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
@@ -1290,17 +1290,17 @@ loadAutorInfo();
   new GLUI_Column( glui , false);
    /* Engine parameters */
    GLUI_Panel *engineparams_panel = new GLUI_Panel( glui, "Engine configuartion" );
-   (new GLUI_Spinner( engineparams_panel, "inertia(kg.m2):", &cardata.engine.params[0] ))
+   (new GLUI_Spinner( engineparams_panel, "inertia(kg.m2):", &cardata.engine.inertia ))
     ->set_float_limits( 0.0, 0.5 );
-   (new GLUI_Spinner( engineparams_panel, "revs maxi:", &cardata.engine.params[1],0,(GLUI_Update_CB)setRevsLimiterLimits ))
+   (new GLUI_Spinner( engineparams_panel, "revs maxi:", &cardata.engine.revsMaxi,0,(GLUI_Update_CB)setRevsLimiterLimits ))
     ->set_float_limits( 5000, 20000 );
 
-   revsLimiterSpinner = new GLUI_Spinner( engineparams_panel, "revs limiter:", &cardata.engine.params[2], 0, (GLUI_Update_CB)CalcCVTQmax );
-    revsLimiterSpinner -> set_float_limits( cardata.engine.params[3], cardata.engine.params[1] );
+   revsLimiterSpinner = new GLUI_Spinner( engineparams_panel, "revs limiter:", &cardata.engine.revsLimiter, 0, (GLUI_Update_CB)CalcCVTQmax );
+    revsLimiterSpinner -> set_float_limits( cardata.engine.tickover, cardata.engine.revsMaxi );
 
-   (new GLUI_Spinner( engineparams_panel, "tickover:", &cardata.engine.params[3],0,(GLUI_Update_CB)setRevsLimiterLimits ))
+   (new GLUI_Spinner( engineparams_panel, "tickover:", &cardata.engine.tickover,0,(GLUI_Update_CB)setRevsLimiterLimits ))
     ->set_float_limits( 500, 20000 );
-   (new GLUI_Spinner( engineparams_panel, "fuel cons factor:", &cardata.engine.params[4] ))
+   (new GLUI_Spinner( engineparams_panel, "fuel cons factor:", &cardata.engine.fuelConsFactor ))
     ->set_float_limits( 1.1, 1.3 );
 
    new GLUI_Button( engineparams_panel, "Engine Advanced", 11, (GLUI_Update_CB)showglui );

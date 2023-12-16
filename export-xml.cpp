@@ -484,11 +484,11 @@ f << "	    <attnum name=\"capacity\" unit=\"" << cardata.engine.capacity_units[c
 f << "	    <attnum name=\"cylinders\" val=\"" << cardata.engine.cylinders << "\"/>" << endl;
 f << "	    <attstr name=\"shape\" val=\"" << cardata.engine.shape[cardata.engine.curr_shape] << "\"/>" << endl;
 f << "	    <attstr name=\"position\" val=\"" << cardata.engine.position[cardata.engine.curr_position] << "\"/>" << endl;
-f << "	    <attnum name=\"inertia\" min=\"0.1\" max=\"0.5\" unit=\"kg.m2\" val=\""<<cardata.engine.params[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"revs maxi\" unit=\"rpm\" min=\"5000\" max=\"20000\" val=\""<<cardata.engine.params[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"revs limiter\" unit=\"rpm\" min=\"3000\" max=\"20000\" val=\""<<cardata.engine.params[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"tickover\" unit=\"rpm\" val=\""<<cardata.engine.params[3]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"fuel cons factor\" min=\"1.1\" max=\"1.3\" val=\""<<cardata.engine.params[4]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" min=\"0.1\" max=\"0.5\" unit=\"kg.m2\" val=\""<<cardata.engine.inertia<<"\"/>	 " << endl;
+f << "	    <attnum name=\"revs maxi\" unit=\"rpm\" min=\"5000\" max=\"20000\" val=\""<<cardata.engine.revsMaxi<<"\"/>	 " << endl;
+f << "	    <attnum name=\"revs limiter\" unit=\"rpm\" min=\"3000\" max=\"20000\" val=\""<<cardata.engine.revsLimiter<<"\"/>	 " << endl;
+f << "	    <attnum name=\"tickover\" unit=\"rpm\" val=\""<<cardata.engine.tickover<<"\"/>	 " << endl;
+f << "	    <attnum name=\"fuel cons factor\" min=\"1.1\" max=\"1.3\" val=\""<<cardata.engine.fuelConsFactor<<"\"/>	 " << endl;
 f << "	    <attnum name=\"brake linear coefficient\" val=\"" << cardata.engine.brakeLinearCoefficient << "\"/>" << endl;
 f << "	    <attnum name=\"brake coefficient\" val=\"" << cardata.engine.brakeCoefficient << "\"/>" << endl;
 

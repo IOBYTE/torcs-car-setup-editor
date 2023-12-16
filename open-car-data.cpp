@@ -90,7 +90,11 @@ void opencardata( int j )
     f >> textdata; //#carname
     f >> cardata.carname;
     f >> textdata; //#engineparams
-    for (i=0; i<5; i++) {f >> cardata.engine.params[i];}
+    f >> cardata.engine.inertia;
+    f >> cardata.engine.revsMaxi;
+    f >> cardata.engine.revsLimiter;
+    f >> cardata.engine.tickover;
+    f >> cardata.engine.fuelConsFactor;
     f >> textdata; //#rpmValue or #engineCapacity
     if (textdata == "engineCapacity")
     {

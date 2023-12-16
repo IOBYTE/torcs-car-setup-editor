@@ -28,8 +28,6 @@ using namespace std;
 #include "cardata.h"
 
 extern CarData cardata;
-
-extern CarData cardata;
 extern float tqmax;
 extern float cvmax;
 extern float rpmattqmax;

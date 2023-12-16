@@ -27,6 +27,7 @@ using namespace std;
 #include "cardata.h"
 #include "portability.h"
 
+extern CarData cardata;
 extern int warningn;
 extern std::string trackname;
 extern std::string driverName;
@@ -49,7 +50,7 @@ switch (k)
     
 case 1:
     carnameDir = "../cars/";
-    carnameDir += carname;
+    carnameDir += cardata.carname;
     makedir (carnameDir.c_str());
     cout << "created the " << carnameDir << endl;
     savexml(1);
@@ -98,10 +99,10 @@ void warningMsg(int warningn)
         case 0: 
                 warningMessage1 += "Please check the ";
                 //warningMessage1 += fullCarName;
-                warningMessage1 += carname;
+                warningMessage1 += cardata.carname;
                 warningMessage1 += " or create it on the folder cars.\n";
                 warningMessage1 += "The folder torcs/cars/";
-                warningMessage1 += carname;
+                warningMessage1 += cardata.carname;
                 warningMessage1 += " doesn't exists.";
                 warningTextBox->set_text(warningMessage1.c_str());
                 
@@ -113,14 +114,14 @@ void warningMsg(int warningn)
                 warningMessage1 += "Please check if the carname is not correct.\n\n";
                 warningMessage1 += "Change the carname:\n";
                 warningTextBox->set_text(warningMessage1.c_str());
-                (new GLUI_EditText( glui9, "CarName", carname, 0, (GLUI_Update_CB)syncLiveAll ))->w=170;
+                (new GLUI_EditText( glui9, "CarName", cardata.carname, 0, (GLUI_Update_CB)syncLiveAll ))->w=170;
                 break;
         case 2: 
                 warningMessage1 += "The XML file hasn't been imported.\n";
                 warningMessage1 += "Please check if the carname is not correct.\n\n";
                 warningMessage1 += "Change the carname:\n";
                 warningTextBox->set_text(warningMessage1.c_str());
-                (new GLUI_EditText( glui9, "CarName", carname, 0, (GLUI_Update_CB)syncLiveAll ))->w=170;
+                (new GLUI_EditText( glui9, "CarName", cardata.carname, 0, (GLUI_Update_CB)syncLiveAll ))->w=170;
                 break;
         case 3:  
                 warningMessage1 += "The cardata file hasn't been imported.\n";
@@ -131,10 +132,10 @@ void warningMsg(int warningn)
         case 4: 
                 warningMessage1 += "Please check the ";
                 //warningMessage1 += fullCarName;
-                warningMessage1 += carname;
+                warningMessage1 += cardata.carname;
                 warningMessage1 += " or create it on the folder cars.\n";
                 warningMessage1 += "The folder torcs/cars/";
-                warningMessage1 += carname;
+                warningMessage1 += cardata.carname;
                 warningMessage1 += " doesn't exists.";
                 warningTextBox->set_text(warningMessage1.c_str());
                 new GLUI_Button( glui9, "Create the robot dir and Save the XML for all tracks", 2, (GLUI_Update_CB)createCarnameDir );
@@ -143,10 +144,10 @@ void warningMsg(int warningn)
         case 5: 
                 warningMessage1 += "Please check the ";
                 //warningMessage1 += fullCarName;
-                warningMessage1 += carname;
+                warningMessage1 += cardata.carname;
                 warningMessage1 += " or create it on the folder cars.\n";
                 warningMessage1 += "The folder torcs/cars/";
-                warningMessage1 += carname;
+                warningMessage1 += cardata.carname;
                 warningMessage1 += " doesn't exists.";
                 warningTextBox->set_text(warningMessage1.c_str());
                 new GLUI_Button( glui9, "Create the robot dir and Save the XML for selected track", 3, (GLUI_Update_CB)createCarnameDir );

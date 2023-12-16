@@ -33,6 +33,9 @@
 
 using namespace std;
 
+extern std::string text1;
+extern int   main_window;
+extern CarData cardata;
 
 extern GLUI_Listbox *list_engine_capacity_units;
 extern GLUI_Listbox *list_engine_shape;
@@ -71,9 +74,9 @@ string bufer;
         default:
            fichero4="";
            fichero4 += "../cars/";
-           fichero4 += carname;
+           fichero4 += cardata.carname;
            fichero4 += "/";
-           fichero4 += carname;
+           fichero4 += cardata.carname;
            fichero4 += ".xml";
     }
 
@@ -915,36 +918,36 @@ void importxml( int param )
 
     if (fileRead == true )
     {
-    getXmlParamName(fullCarName);
+    getXmlParamName(cardata.fullCarName);
 
-    getXmlValf (engineparams[0],"inertia","Engine");
-    getXmlValf (engineparams[1],"revs maxi","Engine");
-    getXmlValf (engineparams[2],"revs limiter","Engine");
-    getXmlValf (engineparams[3],"tickover","Engine");
-    getXmlValf (engineparams[4],"fuel cons factor","Engine");
+    getXmlValf (cardata.engineparams[0],"inertia","Engine");
+    getXmlValf (cardata.engineparams[1],"revs maxi","Engine");
+    getXmlValf (cardata.engineparams[2],"revs limiter","Engine");
+    getXmlValf (cardata.engineparams[3],"tickover","Engine");
+    getXmlValf (cardata.engineparams[4],"fuel cons factor","Engine");
 
-    getXmlValf (engineCapacity, "capacity","Engine");
+    getXmlValf (cardata.engineCapacity, "capacity","Engine");
     string engineCapacityUnits;
     getXmlUnits (engineCapacityUnits, "capacity","Engine");
     for (int i = 0; i < 3; i++)
     {
-        if (engineCapacityUnits == engine_capacity_units[i])
+        if (engineCapacityUnits == cardata.engine_capacity_units[i])
         {
-            curr_engine_capacity_units = i;
-            list_engine_capacity_units->set_int_val(curr_engine_capacity_units);
+            cardata.curr_engine_capacity_units = i;
+            list_engine_capacity_units->set_int_val(cardata.curr_engine_capacity_units);
 	    break;
         }
     }
 
-    getXmlVali (engineCylinders, "cylinders","Engine");
+    getXmlVali (cardata.engineCylinders, "cylinders","Engine");
     string engineShape;
     getXmlVal (engineShape, "shape","Engine");
     for (int i = 0; i < 4; i++)
     {
-        if (engineShape == engine_shape[i])
+        if (engineShape == cardata.engine_shape[i])
         {
-            curr_engine_shape = i;
-            list_engine_shape->set_int_val(curr_engine_shape);
+            cardata.curr_engine_shape = i;
+            list_engine_shape->set_int_val(cardata.curr_engine_shape);
 	    break;
         }
     }
@@ -953,388 +956,388 @@ void importxml( int param )
     getXmlVal (enginePosition, "position","Engine");
     for (int i = 0; i < 5; i++)
     {
-        if (enginePosition == engine_position[i])
+        if (enginePosition == cardata.engine_position[i])
         {
-            curr_engine_position = i;
-            list_engine_position->set_int_val(curr_engine_position);
+            cardata.curr_engine_position = i;
+            list_engine_position->set_int_val(cardata.curr_engine_position);
 	    break;
         }
     }
 
-    getXmlValf (brakeLinearCoefficient,"brake linear coefficient","Engine");
-    getXmlValf (brakeCoefficient,"brake coefficient","Engine");
+    getXmlValf (cardata.brakeLinearCoefficient,"brake linear coefficient","Engine");
+    getXmlValf (cardata.brakeCoefficient,"brake coefficient","Engine");
 
-    getXmlValf (rpmValue[0],"rpm","Engine","data points","1");
-    getXmlValf (rpmValue[1],"rpm","Engine","data points","2");
-    getXmlValf (rpmValue[2],"rpm","Engine","data points","3");
-    getXmlValf (rpmValue[3],"rpm","Engine","data points","4");
-    getXmlValf (rpmValue[4],"rpm","Engine","data points","5");
-    getXmlValf (rpmValue[5],"rpm","Engine","data points","6");
-    getXmlValf (rpmValue[6],"rpm","Engine","data points","7");
-    getXmlValf (rpmValue[7],"rpm","Engine","data points","8");
-    getXmlValf (rpmValue[8],"rpm","Engine","data points","9");
-    getXmlValf (rpmValue[9],"rpm","Engine","data points","10");
-    getXmlValf (rpmValue[10],"rpm","Engine","data points","11");
-    getXmlValf (rpmValue[11],"rpm","Engine","data points","12");
-    getXmlValf (rpmValue[12],"rpm","Engine","data points","13");
-    getXmlValf (rpmValue[13],"rpm","Engine","data points","14");
-    getXmlValf (rpmValue[14],"rpm","Engine","data points","15");
-    getXmlValf (rpmValue[15],"rpm","Engine","data points","16");
-    getXmlValf (rpmValue[16],"rpm","Engine","data points","17");
-    getXmlValf (rpmValue[17],"rpm","Engine","data points","18");
-    getXmlValf (rpmValue[18],"rpm","Engine","data points","19");
-    getXmlValf (rpmValue[19],"rpm","Engine","data points","20");
-    getXmlValf (rpmValue[20],"rpm","Engine","data points","21");
+    getXmlValf (cardata.rpmValue[0],"rpm","Engine","data points","1");
+    getXmlValf (cardata.rpmValue[1],"rpm","Engine","data points","2");
+    getXmlValf (cardata.rpmValue[2],"rpm","Engine","data points","3");
+    getXmlValf (cardata.rpmValue[3],"rpm","Engine","data points","4");
+    getXmlValf (cardata.rpmValue[4],"rpm","Engine","data points","5");
+    getXmlValf (cardata.rpmValue[5],"rpm","Engine","data points","6");
+    getXmlValf (cardata.rpmValue[6],"rpm","Engine","data points","7");
+    getXmlValf (cardata.rpmValue[7],"rpm","Engine","data points","8");
+    getXmlValf (cardata.rpmValue[8],"rpm","Engine","data points","9");
+    getXmlValf (cardata.rpmValue[9],"rpm","Engine","data points","10");
+    getXmlValf (cardata.rpmValue[10],"rpm","Engine","data points","11");
+    getXmlValf (cardata.rpmValue[11],"rpm","Engine","data points","12");
+    getXmlValf (cardata.rpmValue[12],"rpm","Engine","data points","13");
+    getXmlValf (cardata.rpmValue[13],"rpm","Engine","data points","14");
+    getXmlValf (cardata.rpmValue[14],"rpm","Engine","data points","15");
+    getXmlValf (cardata.rpmValue[15],"rpm","Engine","data points","16");
+    getXmlValf (cardata.rpmValue[16],"rpm","Engine","data points","17");
+    getXmlValf (cardata.rpmValue[17],"rpm","Engine","data points","18");
+    getXmlValf (cardata.rpmValue[18],"rpm","Engine","data points","19");
+    getXmlValf (cardata.rpmValue[19],"rpm","Engine","data points","20");
+    getXmlValf (cardata.rpmValue[20],"rpm","Engine","data points","21");
 
-    getXmlValf (tqValue[0],"Tq","Engine","data points","1");
-    getXmlValf (tqValue[1],"Tq","Engine","data points","2");
-    getXmlValf (tqValue[2],"Tq","Engine","data points","3");
-    getXmlValf (tqValue[3],"Tq","Engine","data points","4");
-    getXmlValf (tqValue[4],"Tq","Engine","data points","5");
-    getXmlValf (tqValue[5],"Tq","Engine","data points","6");
-    getXmlValf (tqValue[6],"Tq","Engine","data points","7");
-    getXmlValf (tqValue[7],"Tq","Engine","data points","8");
-    getXmlValf (tqValue[8],"Tq","Engine","data points","9");
-    getXmlValf (tqValue[9],"Tq","Engine","data points","10");
-    getXmlValf (tqValue[10],"Tq","Engine","data points","11");
-    getXmlValf (tqValue[11],"Tq","Engine","data points","12");
-    getXmlValf (tqValue[12],"Tq","Engine","data points","13");
-    getXmlValf (tqValue[13],"Tq","Engine","data points","14");
-    getXmlValf (tqValue[14],"Tq","Engine","data points","15");
-    getXmlValf (tqValue[15],"Tq","Engine","data points","16");
-    getXmlValf (tqValue[16],"Tq","Engine","data points","17");
-    getXmlValf (tqValue[17],"Tq","Engine","data points","18");
-    getXmlValf (tqValue[18],"Tq","Engine","data points","19");
-    getXmlValf (tqValue[19],"Tq","Engine","data points","20");
-    getXmlValf (tqValue[20],"Tq","Engine","data points","21");
+    getXmlValf (cardata.tqValue[0],"Tq","Engine","data points","1");
+    getXmlValf (cardata.tqValue[1],"Tq","Engine","data points","2");
+    getXmlValf (cardata.tqValue[2],"Tq","Engine","data points","3");
+    getXmlValf (cardata.tqValue[3],"Tq","Engine","data points","4");
+    getXmlValf (cardata.tqValue[4],"Tq","Engine","data points","5");
+    getXmlValf (cardata.tqValue[5],"Tq","Engine","data points","6");
+    getXmlValf (cardata.tqValue[6],"Tq","Engine","data points","7");
+    getXmlValf (cardata.tqValue[7],"Tq","Engine","data points","8");
+    getXmlValf (cardata.tqValue[8],"Tq","Engine","data points","9");
+    getXmlValf (cardata.tqValue[9],"Tq","Engine","data points","10");
+    getXmlValf (cardata.tqValue[10],"Tq","Engine","data points","11");
+    getXmlValf (cardata.tqValue[11],"Tq","Engine","data points","12");
+    getXmlValf (cardata.tqValue[12],"Tq","Engine","data points","13");
+    getXmlValf (cardata.tqValue[13],"Tq","Engine","data points","14");
+    getXmlValf (cardata.tqValue[14],"Tq","Engine","data points","15");
+    getXmlValf (cardata.tqValue[15],"Tq","Engine","data points","16");
+    getXmlValf (cardata.tqValue[16],"Tq","Engine","data points","17");
+    getXmlValf (cardata.tqValue[17],"Tq","Engine","data points","18");
+    getXmlValf (cardata.tqValue[18],"Tq","Engine","data points","19");
+    getXmlValf (cardata.tqValue[19],"Tq","Engine","data points","20");
+    getXmlValf (cardata.tqValue[20],"Tq","Engine","data points","21");
     CalcCV(); // after reading the tq we calculate the cv to update the values of cv
 
     std::string bufferValStr = "";
     getXmlVal (bufferValStr,"turbo","Engine","data points");
     if (bufferValStr == "true")
     {
-        turboS = 1;
+        cardata.turboS = 1;
         GLUI_Master.sync_live_all();
     }
     else
     {
-        turboS = 0;
+        cardata.turboS = 0;
         GLUI_Master.sync_live_all();
     }
-    getXmlValf (turbo[0],"turbo rpm","Engine","data points");
-    getXmlValf (turbo[1],"turbo factor","Engine","data points");
-    getXmlValf (turbo[2],"turbo lag","Engine","data points");
+    getXmlValf (cardata.turbo[0],"turbo rpm","Engine","data points");
+    getXmlValf (cardata.turbo[1],"turbo factor","Engine","data points");
+    getXmlValf (cardata.turbo[2],"turbo lag","Engine","data points");
 
-    getXmlValf (gearbox_shift_time,"shift time","Gearbox");
-    getXmlValf (gearboxratio[0],"ratio","Gearbox","gears","r");
-    getXmlValf (gearboxratio[1],"ratio","Gearbox","gears","1");
-    getXmlValf (gearboxratio[2],"ratio","Gearbox","gears","2");
-    getXmlValf (gearboxratio[3],"ratio","Gearbox","gears","3");
-    getXmlValf (gearboxratio[4],"ratio","Gearbox","gears","4");
-    getXmlValf (gearboxratio[5],"ratio","Gearbox","gears","5");
-    getXmlValf (gearboxratio[6],"ratio","Gearbox","gears","6");
-    getXmlValf (gearboxratio[7],"ratio","Gearbox","gears","7");
+    getXmlValf (cardata.gearbox_shift_time,"shift time","Gearbox");
+    getXmlValf (cardata.gearboxratio[0],"ratio","Gearbox","gears","r");
+    getXmlValf (cardata.gearboxratio[1],"ratio","Gearbox","gears","1");
+    getXmlValf (cardata.gearboxratio[2],"ratio","Gearbox","gears","2");
+    getXmlValf (cardata.gearboxratio[3],"ratio","Gearbox","gears","3");
+    getXmlValf (cardata.gearboxratio[4],"ratio","Gearbox","gears","4");
+    getXmlValf (cardata.gearboxratio[5],"ratio","Gearbox","gears","5");
+    getXmlValf (cardata.gearboxratio[6],"ratio","Gearbox","gears","6");
+    getXmlValf (cardata.gearboxratio[7],"ratio","Gearbox","gears","7");
 
-    getXmlNumberOfGears (numberOfGears,"ratio","Gearbox","gears","1");
-    getXmlNumberOfGears (numberOfGears,"ratio","Gearbox","gears","2");
-    getXmlNumberOfGears (numberOfGears,"ratio","Gearbox","gears","3");
-    getXmlNumberOfGears (numberOfGears,"ratio","Gearbox","gears","4");
-    getXmlNumberOfGears (numberOfGears,"ratio","Gearbox","gears","5");
-    getXmlNumberOfGears (numberOfGears,"ratio","Gearbox","gears","6");
-    getXmlNumberOfGears (numberOfGears,"ratio","Gearbox","gears","7");
+    getXmlNumberOfGears (cardata.numberOfGears,"ratio","Gearbox","gears","1");
+    getXmlNumberOfGears (cardata.numberOfGears,"ratio","Gearbox","gears","2");
+    getXmlNumberOfGears (cardata.numberOfGears,"ratio","Gearbox","gears","3");
+    getXmlNumberOfGears (cardata.numberOfGears,"ratio","Gearbox","gears","4");
+    getXmlNumberOfGears (cardata.numberOfGears,"ratio","Gearbox","gears","5");
+    getXmlNumberOfGears (cardata.numberOfGears,"ratio","Gearbox","gears","6");
+    getXmlNumberOfGears (cardata.numberOfGears,"ratio","Gearbox","gears","7");
     numberOfGearsDisable( );
 
 
 
-    getXmlValf (gearboxinertia[0],"inertia","Clutch");
-    getXmlValf (gearboxinertia[1],"inertia","Gearbox","gears","r");
-    getXmlValf (gearboxinertia[2],"inertia","Gearbox","gears","1");
-    getXmlValf (gearboxinertia[3],"inertia","Gearbox","gears","2");
-    getXmlValf (gearboxinertia[4],"inertia","Gearbox","gears","3");
-    getXmlValf (gearboxinertia[5],"inertia","Gearbox","gears","4");
-    getXmlValf (gearboxinertia[6],"inertia","Gearbox","gears","5");
-    getXmlValf (gearboxinertia[7],"inertia","Gearbox","gears","6");
-    getXmlValf (gearboxinertia[8],"inertia","Gearbox","gears","7");
+    getXmlValf (cardata.gearboxinertia[0],"inertia","Clutch");
+    getXmlValf (cardata.gearboxinertia[1],"inertia","Gearbox","gears","r");
+    getXmlValf (cardata.gearboxinertia[2],"inertia","Gearbox","gears","1");
+    getXmlValf (cardata.gearboxinertia[3],"inertia","Gearbox","gears","2");
+    getXmlValf (cardata.gearboxinertia[4],"inertia","Gearbox","gears","3");
+    getXmlValf (cardata.gearboxinertia[5],"inertia","Gearbox","gears","4");
+    getXmlValf (cardata.gearboxinertia[6],"inertia","Gearbox","gears","5");
+    getXmlValf (cardata.gearboxinertia[7],"inertia","Gearbox","gears","6");
+    getXmlValf (cardata.gearboxinertia[8],"inertia","Gearbox","gears","7");
 
-    getXmlValf (gearboxefficiency[0],"efficiency","Gearbox","gears","r");
-    getXmlValf (gearboxefficiency[1],"efficiency","Gearbox","gears","1");
-    getXmlValf (gearboxefficiency[2],"efficiency","Gearbox","gears","2");
-    getXmlValf (gearboxefficiency[3],"efficiency","Gearbox","gears","3");
-    getXmlValf (gearboxefficiency[4],"efficiency","Gearbox","gears","4");
-    getXmlValf (gearboxefficiency[5],"efficiency","Gearbox","gears","5");
-    getXmlValf (gearboxefficiency[6],"efficiency","Gearbox","gears","6");
-    getXmlValf (gearboxefficiency[7],"efficiency","Gearbox","gears","7");
+    getXmlValf (cardata.gearboxefficiency[0],"efficiency","Gearbox","gears","r");
+    getXmlValf (cardata.gearboxefficiency[1],"efficiency","Gearbox","gears","1");
+    getXmlValf (cardata.gearboxefficiency[2],"efficiency","Gearbox","gears","2");
+    getXmlValf (cardata.gearboxefficiency[3],"efficiency","Gearbox","gears","3");
+    getXmlValf (cardata.gearboxefficiency[4],"efficiency","Gearbox","gears","4");
+    getXmlValf (cardata.gearboxefficiency[5],"efficiency","Gearbox","gears","5");
+    getXmlValf (cardata.gearboxefficiency[6],"efficiency","Gearbox","gears","6");
+    getXmlValf (cardata.gearboxefficiency[7],"efficiency","Gearbox","gears","7");
 
-    getXmlValf (antirollbar1[0],"spring","Front Anti-Roll Bar");
-    getXmlValf (antirollbar1[1],"suspension course","Front Anti-Roll Bar");
-    getXmlValf (antirollbar1[2],"bellcrank","Front Anti-Roll Bar");
+    getXmlValf (cardata.antirollbar1[0],"spring","Front Anti-Roll Bar");
+    getXmlValf (cardata.antirollbar1[1],"suspension course","Front Anti-Roll Bar");
+    getXmlValf (cardata.antirollbar1[2],"bellcrank","Front Anti-Roll Bar");
 
-    getXmlValf (antirollbar2[0],"spring","Rear Anti-Roll Bar");
-    getXmlValf (antirollbar2[1],"suspension course","Rear Anti-Roll Bar");
-    getXmlValf (antirollbar2[2],"bellcrank","Rear Anti-Roll Bar");
+    getXmlValf (cardata.antirollbar2[0],"spring","Rear Anti-Roll Bar");
+    getXmlValf (cardata.antirollbar2[1],"suspension course","Rear Anti-Roll Bar");
+    getXmlValf (cardata.antirollbar2[2],"bellcrank","Rear Anti-Roll Bar");
 
-    getXmlValf (suspension1[0],"spring","Front Right Suspension");
-    getXmlValf (suspension1[1],"suspension course","Front Right Suspension");
-    getXmlValf (suspension1[2],"bellcrank","Front Right Suspension");
-    getXmlValf (suspension1[3],"packers","Front Right Suspension");
-    getXmlValf (suspension1[4],"slow bump","Front Right Suspension");
-    getXmlValf (suspension1[5],"slow rebound","Front Right Suspension");
-    getXmlValf (suspension1[6],"fast bump","Front Right Suspension");
-    getXmlValf (suspension1[7],"fast rebound","Front Right Suspension");
+    getXmlValf (cardata.suspension1[0],"spring","Front Right Suspension");
+    getXmlValf (cardata.suspension1[1],"suspension course","Front Right Suspension");
+    getXmlValf (cardata.suspension1[2],"bellcrank","Front Right Suspension");
+    getXmlValf (cardata.suspension1[3],"packers","Front Right Suspension");
+    getXmlValf (cardata.suspension1[4],"slow bump","Front Right Suspension");
+    getXmlValf (cardata.suspension1[5],"slow rebound","Front Right Suspension");
+    getXmlValf (cardata.suspension1[6],"fast bump","Front Right Suspension");
+    getXmlValf (cardata.suspension1[7],"fast rebound","Front Right Suspension");
 
-    getXmlValf (suspension2[0],"spring","Front Left Suspension");
-    getXmlValf (suspension2[1],"suspension course","Front Left Suspension");
-    getXmlValf (suspension2[2],"bellcrank","Front Left Suspension");
-    getXmlValf (suspension2[3],"packers","Front Left Suspension");
-    getXmlValf (suspension2[4],"slow bump","Front Left Suspension");
-    getXmlValf (suspension2[5],"slow rebound","Front Left Suspension");
-    getXmlValf (suspension2[6],"fast bump","Front Left Suspension");
-    getXmlValf (suspension2[7],"fast rebound","Front Left Suspension");
+    getXmlValf (cardata.suspension2[0],"spring","Front Left Suspension");
+    getXmlValf (cardata.suspension2[1],"suspension course","Front Left Suspension");
+    getXmlValf (cardata.suspension2[2],"bellcrank","Front Left Suspension");
+    getXmlValf (cardata.suspension2[3],"packers","Front Left Suspension");
+    getXmlValf (cardata.suspension2[4],"slow bump","Front Left Suspension");
+    getXmlValf (cardata.suspension2[5],"slow rebound","Front Left Suspension");
+    getXmlValf (cardata.suspension2[6],"fast bump","Front Left Suspension");
+    getXmlValf (cardata.suspension2[7],"fast rebound","Front Left Suspension");
 
-    getXmlValf (suspension3[0],"spring","Rear Right Suspension");
-    getXmlValf (suspension3[1],"suspension course","Rear Right Suspension");
-    getXmlValf (suspension3[2],"bellcrank","Rear Right Suspension");
-    getXmlValf (suspension3[3],"packers","Rear Right Suspension");
-    getXmlValf (suspension3[4],"slow bump","Rear Right Suspension");
-    getXmlValf (suspension3[5],"slow rebound","Rear Right Suspension");
-    getXmlValf (suspension3[6],"fast bump","Rear Right Suspension");
-    getXmlValf (suspension3[7],"fast rebound","Rear Right Suspension");
+    getXmlValf (cardata.suspension3[0],"spring","Rear Right Suspension");
+    getXmlValf (cardata.suspension3[1],"suspension course","Rear Right Suspension");
+    getXmlValf (cardata.suspension3[2],"bellcrank","Rear Right Suspension");
+    getXmlValf (cardata.suspension3[3],"packers","Rear Right Suspension");
+    getXmlValf (cardata.suspension3[4],"slow bump","Rear Right Suspension");
+    getXmlValf (cardata.suspension3[5],"slow rebound","Rear Right Suspension");
+    getXmlValf (cardata.suspension3[6],"fast bump","Rear Right Suspension");
+    getXmlValf (cardata.suspension3[7],"fast rebound","Rear Right Suspension");
 
-    getXmlValf (suspension4[0],"spring","Rear Left Suspension");
-    getXmlValf (suspension4[1],"suspension course","Rear Left Suspension");
-    getXmlValf (suspension4[2],"bellcrank","Rear Left Suspension");
-    getXmlValf (suspension4[3],"packers","Rear Left Suspension");
-    getXmlValf (suspension4[4],"slow bump","Rear Left Suspension");
-    getXmlValf (suspension4[5],"slow rebound","Rear Left Suspension");
-    getXmlValf (suspension4[6],"fast bump","Rear Left Suspension");
-    getXmlValf (suspension4[7],"fast rebound","Rear Left Suspension");
+    getXmlValf (cardata.suspension4[0],"spring","Rear Left Suspension");
+    getXmlValf (cardata.suspension4[1],"suspension course","Rear Left Suspension");
+    getXmlValf (cardata.suspension4[2],"bellcrank","Rear Left Suspension");
+    getXmlValf (cardata.suspension4[3],"packers","Rear Left Suspension");
+    getXmlValf (cardata.suspension4[4],"slow bump","Rear Left Suspension");
+    getXmlValf (cardata.suspension4[5],"slow rebound","Rear Left Suspension");
+    getXmlValf (cardata.suspension4[6],"fast bump","Rear Left Suspension");
+    getXmlValf (cardata.suspension4[7],"fast rebound","Rear Left Suspension");
 
-    getXmlValf (aerodynamics[0],"Cx","Aerodynamics");
-    getXmlValf (aerodynamics[1],"front area","Aerodynamics");
-    getXmlValf (aerodynamics[2],"front Clift","Aerodynamics");
-    getXmlValf (aerodynamics[3],"rear Clift","Aerodynamics");
+    getXmlValf (cardata.aerodynamics[0],"Cx","Aerodynamics");
+    getXmlValf (cardata.aerodynamics[1],"front area","Aerodynamics");
+    getXmlValf (cardata.aerodynamics[2],"front Clift","Aerodynamics");
+    getXmlValf (cardata.aerodynamics[3],"rear Clift","Aerodynamics");
 
-    getXmlValf (frontwing[0],"area","Front Wing");
-    getXmlValf (frontwing[1],"angle","Front Wing");
-    getXmlValf (frontwing[2],"xpos","Front Wing");
-    getXmlValf (frontwing[3],"zpos","Front Wing");
+    getXmlValf (cardata.frontwing[0],"area","Front Wing");
+    getXmlValf (cardata.frontwing[1],"angle","Front Wing");
+    getXmlValf (cardata.frontwing[2],"xpos","Front Wing");
+    getXmlValf (cardata.frontwing[3],"zpos","Front Wing");
 
-    getXmlValf (rearwing[0],"area","Rear Wing");
-    getXmlValf (rearwing[1],"angle","Rear Wing");
-    getXmlValf (rearwing[2],"xpos","Rear Wing");
-    getXmlValf (rearwing[3],"zpos","Rear Wing");
+    getXmlValf (cardata.rearwing[0],"area","Rear Wing");
+    getXmlValf (cardata.rearwing[1],"angle","Rear Wing");
+    getXmlValf (cardata.rearwing[2],"xpos","Rear Wing");
+    getXmlValf (cardata.rearwing[3],"zpos","Rear Wing");
 
-    getXmlValf (massdata[0],"front-rear weight repartition","Car");
-    getXmlValf (massdata[1],"front right-left weight repartition","Car");
-    getXmlValf (massdata[2],"rear right-left weight repartition","Car");
-    getXmlValf (massdata[3],"mass repartition coefficient","Car");
-    getXmlValf (massdata[4],"fuel tank","Car");
-    getXmlValf (massdata[5],"initial fuel","Car");
-    getXmlValf (massdata[6],"mass","Car");
-    getXmlValf (massdata[7],"GC height","Car");
+    getXmlValf (cardata.massdata[0],"front-rear weight repartition","Car");
+    getXmlValf (cardata.massdata[1],"front right-left weight repartition","Car");
+    getXmlValf (cardata.massdata[2],"rear right-left weight repartition","Car");
+    getXmlValf (cardata.massdata[3],"mass repartition coefficient","Car");
+    getXmlValf (cardata.massdata[4],"fuel tank","Car");
+    getXmlValf (cardata.massdata[5],"initial fuel","Car");
+    getXmlValf (cardata.massdata[6],"mass","Car");
+    getXmlValf (cardata.massdata[7],"GC height","Car");
 
-    getXmlValf (brakesystem[0],"front-rear brake repartition","Brake System");
-    getXmlValf (brakesystem[1],"max pressure","Brake System");
+    getXmlValf (cardata.brakesystem[0],"front-rear brake repartition","Brake System");
+    getXmlValf (cardata.brakesystem[1],"max pressure","Brake System");
 
-    getXmlValf (brake1[0],"disk diameter","Front Right Brake");
-    getXmlValf (brake1[1],"piston area","Front Right Brake");
-    getXmlValf (brake1[2],"mu","Front Right Brake");
-    getXmlValf (brake1[3],"inertia","Front Right Brake");
+    getXmlValf (cardata.brake1[0],"disk diameter","Front Right Brake");
+    getXmlValf (cardata.brake1[1],"piston area","Front Right Brake");
+    getXmlValf (cardata.brake1[2],"mu","Front Right Brake");
+    getXmlValf (cardata.brake1[3],"inertia","Front Right Brake");
 
-    getXmlValf (brake2[0],"disk diameter","Front Left Brake");
-    getXmlValf (brake2[1],"piston area","Front Left Brake");
-    getXmlValf (brake2[2],"mu","Front Left Brake");
-    getXmlValf (brake2[3],"inertia","Front Left Brake");
+    getXmlValf (cardata.brake2[0],"disk diameter","Front Left Brake");
+    getXmlValf (cardata.brake2[1],"piston area","Front Left Brake");
+    getXmlValf (cardata.brake2[2],"mu","Front Left Brake");
+    getXmlValf (cardata.brake2[3],"inertia","Front Left Brake");
 
-    getXmlValf (brake3[0],"disk diameter","Rear Right Brake");
-    getXmlValf (brake3[1],"piston area","Rear Right Brake");
-    getXmlValf (brake3[2],"mu","Rear Right Brake");
-    getXmlValf (brake3[3],"inertia","Rear Right Brake");
+    getXmlValf (cardata.brake3[0],"disk diameter","Rear Right Brake");
+    getXmlValf (cardata.brake3[1],"piston area","Rear Right Brake");
+    getXmlValf (cardata.brake3[2],"mu","Rear Right Brake");
+    getXmlValf (cardata.brake3[3],"inertia","Rear Right Brake");
 
-    getXmlValf (brake4[0],"disk diameter","Rear Left Brake");
-    getXmlValf (brake4[1],"piston area","Rear Left Brake");
-    getXmlValf (brake4[2],"mu","Rear Left Brake");
-    getXmlValf (brake4[3],"inertia","Rear Left Brake");
+    getXmlValf (cardata.brake4[0],"disk diameter","Rear Left Brake");
+    getXmlValf (cardata.brake4[1],"piston area","Rear Left Brake");
+    getXmlValf (cardata.brake4[2],"mu","Rear Left Brake");
+    getXmlValf (cardata.brake4[3],"inertia","Rear Left Brake");
 
-    getXmlValf (wheel1[0],"ypos","Front Right Wheel");
-    getXmlValf (wheel1[1],"rim diameter","Front Right Wheel");
-    getXmlValf (wheel1[2],"tire width","Front Right Wheel");
-    getXmlValf (wheel1[3],"tire height-width ratio","Front Right Wheel");
-    getXmlValf (wheel1[4],"inertia","Front Right Wheel");
-    getXmlValf (wheel1[5],"ride height","Front Right Wheel");
-    getXmlValf (wheel1[6],"toe","Front Right Wheel");
-    getXmlValf (wheel1[7],"camber","Front Right Wheel");
-    getXmlValf (wheel1[8],"stiffness","Front Right Wheel");
-    getXmlValf (wheel1[9],"dynamic friction","Front Right Wheel");
-    getXmlValf (wheel1[10],"rolling resistance","Front Right Wheel");
-    getXmlValf (wheel1[11],"mu","Front Right Wheel");
+    getXmlValf (cardata.wheel1[0],"ypos","Front Right Wheel");
+    getXmlValf (cardata.wheel1[1],"rim diameter","Front Right Wheel");
+    getXmlValf (cardata.wheel1[2],"tire width","Front Right Wheel");
+    getXmlValf (cardata.wheel1[3],"tire height-width ratio","Front Right Wheel");
+    getXmlValf (cardata.wheel1[4],"inertia","Front Right Wheel");
+    getXmlValf (cardata.wheel1[5],"ride height","Front Right Wheel");
+    getXmlValf (cardata.wheel1[6],"toe","Front Right Wheel");
+    getXmlValf (cardata.wheel1[7],"camber","Front Right Wheel");
+    getXmlValf (cardata.wheel1[8],"stiffness","Front Right Wheel");
+    getXmlValf (cardata.wheel1[9],"dynamic friction","Front Right Wheel");
+    getXmlValf (cardata.wheel1[10],"rolling resistance","Front Right Wheel");
+    getXmlValf (cardata.wheel1[11],"mu","Front Right Wheel");
 
-    getXmlValf (wheel2[0],"ypos","Front Left Wheel");
-    getXmlValf (wheel2[1],"rim diameter","Front Left Wheel");
-    getXmlValf (wheel2[2],"tire width","Front Left Wheel");
-    getXmlValf (wheel2[3],"tire height-width ratio","Front Left Wheel");
-    getXmlValf (wheel2[4],"inertia","Front Left Wheel");
-    getXmlValf (wheel2[5],"ride height","Front Left Wheel");
-    getXmlValf (wheel2[6],"toe","Front Left Wheel");
-    getXmlValf (wheel2[7],"camber","Front Left Wheel");
-    getXmlValf (wheel2[8],"stiffness","Front Left Wheel");
-    getXmlValf (wheel2[9],"dynamic friction","Front Left Wheel");
-    getXmlValf (wheel2[10],"rolling resistance","Front Left Wheel");
-    getXmlValf (wheel2[11],"mu","Front Left Wheel");
+    getXmlValf (cardata.wheel2[0],"ypos","Front Left Wheel");
+    getXmlValf (cardata.wheel2[1],"rim diameter","Front Left Wheel");
+    getXmlValf (cardata.wheel2[2],"tire width","Front Left Wheel");
+    getXmlValf (cardata.wheel2[3],"tire height-width ratio","Front Left Wheel");
+    getXmlValf (cardata.wheel2[4],"inertia","Front Left Wheel");
+    getXmlValf (cardata.wheel2[5],"ride height","Front Left Wheel");
+    getXmlValf (cardata.wheel2[6],"toe","Front Left Wheel");
+    getXmlValf (cardata.wheel2[7],"camber","Front Left Wheel");
+    getXmlValf (cardata.wheel2[8],"stiffness","Front Left Wheel");
+    getXmlValf (cardata.wheel2[9],"dynamic friction","Front Left Wheel");
+    getXmlValf (cardata.wheel2[10],"rolling resistance","Front Left Wheel");
+    getXmlValf (cardata.wheel2[11],"mu","Front Left Wheel");
 
-    getXmlValf (wheel3[0],"ypos","Rear Right Wheel");
-    getXmlValf (wheel3[1],"rim diameter","Rear Right Wheel");
-    getXmlValf (wheel3[2],"tire width","Rear Right Wheel");
-    getXmlValf (wheel3[3],"tire height-width ratio","Rear Right Wheel");
-    getXmlValf (wheel3[4],"inertia","Rear Right Wheel");
-    getXmlValf (wheel3[5],"ride height","Rear Right Wheel");
-    getXmlValf (wheel3[6],"toe","Rear Right Wheel");
-    getXmlValf (wheel3[7],"camber","Rear Right Wheel");
-    getXmlValf (wheel3[8],"stiffness","Rear Right Wheel");
-    getXmlValf (wheel3[9],"dynamic friction","Rear Right Wheel");
-    getXmlValf (wheel3[10],"rolling resistance","Rear Right Wheel");
-    getXmlValf (wheel3[11],"mu","Rear Right Wheel");
+    getXmlValf (cardata.wheel3[0],"ypos","Rear Right Wheel");
+    getXmlValf (cardata.wheel3[1],"rim diameter","Rear Right Wheel");
+    getXmlValf (cardata.wheel3[2],"tire width","Rear Right Wheel");
+    getXmlValf (cardata.wheel3[3],"tire height-width ratio","Rear Right Wheel");
+    getXmlValf (cardata.wheel3[4],"inertia","Rear Right Wheel");
+    getXmlValf (cardata.wheel3[5],"ride height","Rear Right Wheel");
+    getXmlValf (cardata.wheel3[6],"toe","Rear Right Wheel");
+    getXmlValf (cardata.wheel3[7],"camber","Rear Right Wheel");
+    getXmlValf (cardata.wheel3[8],"stiffness","Rear Right Wheel");
+    getXmlValf (cardata.wheel3[9],"dynamic friction","Rear Right Wheel");
+    getXmlValf (cardata.wheel3[10],"rolling resistance","Rear Right Wheel");
+    getXmlValf (cardata.wheel3[11],"mu","Rear Right Wheel");
 
-    getXmlValf (wheel4[0],"ypos","Rear Left Wheel");
-    getXmlValf (wheel4[1],"rim diameter","Rear Left Wheel");
-    getXmlValf (wheel4[2],"tire width","Rear Left Wheel");
-    getXmlValf (wheel4[3],"tire height-width ratio","Rear Left Wheel");
-    getXmlValf (wheel4[4],"inertia","Rear Left Wheel");
-    getXmlValf (wheel4[5],"ride height","Rear Left Wheel");
-    getXmlValf (wheel4[6],"toe","Rear Left Wheel");
-    getXmlValf (wheel4[7],"camber","Rear Left Wheel");
-    getXmlValf (wheel4[8],"stiffness","Rear Left Wheel");
-    getXmlValf (wheel4[9],"dynamic friction","Rear Left Wheel");
-    getXmlValf (wheel4[10],"rolling resistance","Rear Left Wheel");
-    getXmlValf (wheel4[11],"mu","Rear Left Wheel");
+    getXmlValf (cardata.wheel4[0],"ypos","Rear Left Wheel");
+    getXmlValf (cardata.wheel4[1],"rim diameter","Rear Left Wheel");
+    getXmlValf (cardata.wheel4[2],"tire width","Rear Left Wheel");
+    getXmlValf (cardata.wheel4[3],"tire height-width ratio","Rear Left Wheel");
+    getXmlValf (cardata.wheel4[4],"inertia","Rear Left Wheel");
+    getXmlValf (cardata.wheel4[5],"ride height","Rear Left Wheel");
+    getXmlValf (cardata.wheel4[6],"toe","Rear Left Wheel");
+    getXmlValf (cardata.wheel4[7],"camber","Rear Left Wheel");
+    getXmlValf (cardata.wheel4[8],"stiffness","Rear Left Wheel");
+    getXmlValf (cardata.wheel4[9],"dynamic friction","Rear Left Wheel");
+    getXmlValf (cardata.wheel4[10],"rolling resistance","Rear Left Wheel");
+    getXmlValf (cardata.wheel4[11],"mu","Rear Left Wheel");
 
-    getXmlValf (steer[0],"steer lock","Steer");
-    getXmlValf (steer[1],"max steer speed","Steer");
+    getXmlValf (cardata.steer[0],"steer lock","Steer");
+    getXmlValf (cardata.steer[1],"max steer speed","Steer");
 
     bufferValStr = "";
     getXmlVal (bufferValStr,"type","Drivetrain");
     int i;
     for (i = 0; i < 3; i++)
     {
-        if (bufferValStr == drivetrain_type[i])
+        if (bufferValStr == cardata.drivetrain_type[i])
         {
-            curr_drivetrain_type = i;
-            list_drivetrain_type->set_int_val(curr_drivetrain_type);
+            cardata.curr_drivetrain_type = i;
+            list_drivetrain_type->set_int_val(cardata.curr_drivetrain_type);
         }
     }
-    getXmlValf (drivetrain,"inertia","Drivetrain");
+    getXmlValf (cardata.drivetrain,"inertia","Drivetrain");
 
     //curr_frontdifferential_type
     bufferValStr = "";
     getXmlVal (bufferValStr,"type","Front Differential");
     for (i = 0; i < 5; i++)
     {
-        if (bufferValStr == differential_type[i])
+        if (bufferValStr == cardata.differential_type[i])
         {
-            curr_frontdifferential_type = i;
-            list_frontdifferential_type->set_int_val(curr_frontdifferential_type);
+            cardata.curr_frontdifferential_type = i;
+            list_frontdifferential_type->set_int_val(cardata.curr_frontdifferential_type);
         }
     }
-    getXmlValf (frontdifferential[0],"inertia","Front Differential");
-    getXmlValf (frontdifferential[1],"ratio","Front Differential");
-    getXmlValf (frontdifferential[2],"efficiency","Front Differential");
-    getXmlValf (frontdifferential[3],"min torque bias","Front Differential");
-    getXmlValf (frontdifferential[4],"max torque bias","Front Differential");
+    getXmlValf (cardata.frontdifferential[0],"inertia","Front Differential");
+    getXmlValf (cardata.frontdifferential[1],"ratio","Front Differential");
+    getXmlValf (cardata.frontdifferential[2],"efficiency","Front Differential");
+    getXmlValf (cardata.frontdifferential[3],"min torque bias","Front Differential");
+    getXmlValf (cardata.frontdifferential[4],"max torque bias","Front Differential");
 
     //curr_reardifferential_type
     bufferValStr = "";
     getXmlVal (bufferValStr,"type","Rear Differential");
     for (i = 0; i < 5; i++)
     {
-        if (bufferValStr == differential_type[i])
+        if (bufferValStr == cardata.differential_type[i])
         {
-            curr_reardifferential_type = i;
-            list_reardifferential_type->set_int_val(curr_reardifferential_type);
+            cardata.curr_reardifferential_type = i;
+            list_reardifferential_type->set_int_val(cardata.curr_reardifferential_type);
         }
     }
-    getXmlValf (reardifferential[0],"inertia","Rear Differential");
-    getXmlValf (reardifferential[1],"ratio","Rear Differential");
-    getXmlValf (reardifferential[2],"efficiency","Rear Differential");
-    getXmlValf (reardifferential[3],"min torque bias","Rear Differential");
-    getXmlValf (reardifferential[4],"max torque bias","Rear Differential");
+    getXmlValf (cardata.reardifferential[0],"inertia","Rear Differential");
+    getXmlValf (cardata.reardifferential[1],"ratio","Rear Differential");
+    getXmlValf (cardata.reardifferential[2],"efficiency","Rear Differential");
+    getXmlValf (cardata.reardifferential[3],"min torque bias","Rear Differential");
+    getXmlValf (cardata.reardifferential[4],"max torque bias","Rear Differential");
 
     //curr_centraldifferential_type
     bufferValStr = "";
     getXmlVal (bufferValStr,"type","Central Differential");
     for (i = 0; i < 5; i++)
     {
-        if (bufferValStr == differential_type[i])
+        if (bufferValStr == cardata.differential_type[i])
         {
-            curr_centraldifferential_type = i;
-            list_centraldifferential_type->set_int_val(curr_centraldifferential_type);
+            cardata.curr_centraldifferential_type = i;
+            list_centraldifferential_type->set_int_val(cardata.curr_centraldifferential_type);
         }
     }
-    getXmlValf (centraldifferential[0],"inertia","Central Differential");
-    getXmlValf (centraldifferential[1],"ratio","Central Differential");
-    getXmlValf (centraldifferential[2],"efficiency","Central Differential");
-    getXmlValf (centraldifferential[3],"min torque bias","Central Differential");
-    getXmlValf (centraldifferential[4],"max torque bias","Central Differential");
+    getXmlValf (cardata.centraldifferential[0],"inertia","Central Differential");
+    getXmlValf (cardata.centraldifferential[1],"ratio","Central Differential");
+    getXmlValf (cardata.centraldifferential[2],"efficiency","Central Differential");
+    getXmlValf (cardata.centraldifferential[3],"min torque bias","Central Differential");
+    getXmlValf (cardata.centraldifferential[4],"max torque bias","Central Differential");
 
-    getXmlValf (frontaxle[0],"xpos","Front Axle");
-    getXmlValf (frontaxle[1],"inertia","Front Axle");
-    getXmlValf (frontaxle[2],"roll center height","Front Axle");
+    getXmlValf (cardata.frontaxle[0],"xpos","Front Axle");
+    getXmlValf (cardata.frontaxle[1],"inertia","Front Axle");
+    getXmlValf (cardata.frontaxle[2],"roll center height","Front Axle");
 
-    getXmlValf (rearaxle[0],"xpos","Rear Axle");
-    getXmlValf (rearaxle[1],"inertia","Rear Axle");
-    getXmlValf (rearaxle[2],"roll center height","Rear Axle");
+    getXmlValf (cardata.rearaxle[0],"xpos","Rear Axle");
+    getXmlValf (cardata.rearaxle[1],"inertia","Rear Axle");
+    getXmlValf (cardata.rearaxle[2],"roll center height","Rear Axle");
 
-    getXmlVal (enginesample,"engine sample","Sound");
-    getXmlValf (rmpscale,"rpm scale","Sound");
+    getXmlVal (cardata.enginesample,"engine sample","Sound");
+    getXmlValf (cardata.rmpscale,"rpm scale","Sound");
 
-    getXmlVal (graphicenv,"env","Graphic Objects");
-    getXmlVal (wheelTexture,"wheel texture","Graphic Objects");
-    getXmlVal (shadowTexture,"shadow texture","Graphic Objects");
-    getXmlVal (tachometerTexture,"tachometer texture","Graphic Objects");
-    getXmlVal (speedometerTexture,"speedometer texture","Graphic Objects");
+    getXmlVal (cardata.graphicenv,"env","Graphic Objects");
+    getXmlVal (cardata.wheelTexture,"wheel texture","Graphic Objects");
+    getXmlVal (cardata.shadowTexture,"shadow texture","Graphic Objects");
+    getXmlVal (cardata.tachometerTexture,"tachometer texture","Graphic Objects");
+    getXmlVal (cardata.speedometerTexture,"speedometer texture","Graphic Objects");
 
-    getXmlVali (tachometerMinMax[0],"tachometer min value","Graphic Objects");
-    getXmlVali (tachometerMinMax[1],"tachometer max value","Graphic Objects");
+    getXmlVali (cardata.tachometerMinMax[0],"tachometer min value","Graphic Objects");
+    getXmlVali (cardata.tachometerMinMax[1],"tachometer max value","Graphic Objects");
 
-    getXmlVali (speedometerMinMax[0],"speedometer min value","Graphic Objects");
-    getXmlVali (speedometerMinMax[1],"speedometer max value","Graphic Objects");
+    getXmlVali (cardata.speedometerMinMax[0],"speedometer min value","Graphic Objects");
+    getXmlVali (cardata.speedometerMinMax[1],"speedometer max value","Graphic Objects");
 
-    getXmlVal (carRange1,"car","Ranges", "1");
-    getXmlVal (carRange2,"car","Ranges", "2");
-    getXmlVal (carRange3,"car","Ranges", "3");
-    getXmlVal (carRange4,"car","Ranges", "4");
-    getXmlVal (carRange5,"car","Ranges", "5");
+    getXmlVal (cardata.carRange1,"car","Ranges", "1");
+    getXmlVal (cardata.carRange2,"car","Ranges", "2");
+    getXmlVal (cardata.carRange3,"car","Ranges", "3");
+    getXmlVal (cardata.carRange4,"car","Ranges", "4");
+    getXmlVal (cardata.carRange5,"car","Ranges", "5");
 
-    getXmlVali (carRange1dataA,"threshold","Ranges", "1");
-    getXmlVali (carRange2dataA,"threshold","Ranges", "2");
-    getXmlVali (carRange3dataA,"threshold","Ranges", "3");
-    getXmlVali (carRange4dataA,"threshold","Ranges", "4");
-    getXmlVali (carRange5dataA,"threshold","Ranges", "5");
+    getXmlVali (cardata.carRange1dataA,"threshold","Ranges", "1");
+    getXmlVali (cardata.carRange2dataA,"threshold","Ranges", "2");
+    getXmlVali (cardata.carRange3dataA,"threshold","Ranges", "3");
+    getXmlVali (cardata.carRange4dataA,"threshold","Ranges", "4");
+    getXmlVali (cardata.carRange5dataA,"threshold","Ranges", "5");
 
     bufferValStr = "";
     std::string yesStr = "yes";
     getXmlVal (bufferValStr,"wheels","Ranges","1");
-    carRange1dataB = 0;
-    if (bufferValStr == yesStr) carRange1dataB = 1;
+    cardata.carRange1dataB = 0;
+    if (bufferValStr == yesStr) cardata.carRange1dataB = 1;
 
     bufferValStr = "";
-    carRange2dataB = 0;
+    cardata.carRange2dataB = 0;
     getXmlVal (bufferValStr,"wheels","Ranges","2");
-    if (bufferValStr == yesStr) carRange2dataB = 1;
+    if (bufferValStr == yesStr) cardata.carRange2dataB = 1;
 
     bufferValStr = "";
-    carRange3dataB = 0;
+    cardata.carRange3dataB = 0;
     getXmlVal (bufferValStr,"wheels","Ranges","3");
-    if (bufferValStr == yesStr) carRange3dataB = 1;
+    if (bufferValStr == yesStr) cardata.carRange3dataB = 1;
 
     bufferValStr = "";
-    carRange4dataB = 0;
+    cardata.carRange4dataB = 0;
     getXmlVal (bufferValStr,"wheels","Ranges","4");
-    if (bufferValStr == yesStr) carRange4dataB = 1;
+    if (bufferValStr == yesStr) cardata.carRange4dataB = 1;
 
     bufferValStr = "";
-    carRange5dataB = 0;
+    cardata.carRange5dataB = 0;
     getXmlVal (bufferValStr,"wheels","Ranges","5");
-    if (bufferValStr == yesStr) carRange5dataB = 1;
+    if (bufferValStr == yesStr) cardata.carRange5dataB = 1;
 
     GLUI_Master.sync_live_all();
 
@@ -1351,56 +1354,56 @@ void importxml( int param )
     cout << numberOfRanges <<  endl;
 
     if (numberOfRanges == 5) {
-    carRange5dataC = 1;
-    carRange4dataC = 1;
-    carRange3dataC = 1;
-    carRange2dataC = 1;
-    carRange1dataC = 1;
+    cardata.carRange5dataC = 1;
+    cardata.carRange4dataC = 1;
+    cardata.carRange3dataC = 1;
+    cardata.carRange2dataC = 1;
+    cardata.carRange1dataC = 1;
     }
     if (numberOfRanges == 4) {
-    carRange5dataC = 0;
-    carRange4dataC = 1;
-    carRange3dataC = 1;
-    carRange2dataC = 1;
-    carRange1dataC = 1;
+    cardata.carRange5dataC = 0;
+    cardata.carRange4dataC = 1;
+    cardata.carRange3dataC = 1;
+    cardata.carRange2dataC = 1;
+    cardata.carRange1dataC = 1;
     }
     if (numberOfRanges == 3) {
-    carRange5dataC = 0;
-    carRange4dataC = 0;
-    carRange3dataC = 1;
-    carRange2dataC = 1;
-    carRange1dataC = 1;
+    cardata.carRange5dataC = 0;
+    cardata.carRange4dataC = 0;
+    cardata.carRange3dataC = 1;
+    cardata.carRange2dataC = 1;
+    cardata.carRange1dataC = 1;
     }
     if (numberOfRanges == 2) {
-    carRange5dataC = 0;
-    carRange4dataC = 0;
-    carRange3dataC = 0;
-    carRange2dataC = 1;
-    carRange1dataC = 1;
+    cardata.carRange5dataC = 0;
+    cardata.carRange4dataC = 0;
+    cardata.carRange3dataC = 0;
+    cardata.carRange2dataC = 1;
+    cardata.carRange1dataC = 1;
     }
     if (numberOfRanges == 1) {
-    carRange5dataC = 0;
-    carRange4dataC = 0;
-    carRange3dataC = 0;
-    carRange2dataC = 0;
-    carRange1dataC = 1;
+    cardata.carRange5dataC = 0;
+    cardata.carRange4dataC = 0;
+    cardata.carRange3dataC = 0;
+    cardata.carRange2dataC = 0;
+    cardata.carRange1dataC = 1;
     }
     activateDeativateGraphicRanges ( 0 );
 
-    getXmlValf (bonnetPosition[0],"xpos","Bonnet");
-    getXmlValf (bonnetPosition[1],"ypos","Bonnet");
-    getXmlValf (bonnetPosition[2],"zpos","Bonnet");
+    getXmlValf (cardata.bonnetPosition[0],"xpos","Bonnet");
+    getXmlValf (cardata.bonnetPosition[1],"ypos","Bonnet");
+    getXmlValf (cardata.bonnetPosition[2],"zpos","Bonnet");
 
-    getXmlValf (driverPosition[0],"xpos","Driver");
-    getXmlValf (driverPosition[1],"ypos","Driver");
-    getXmlValf (driverPosition[2],"zpos","Driver");
+    getXmlValf (cardata.driverPosition[0],"xpos","Driver");
+    getXmlValf (cardata.driverPosition[1],"ypos","Driver");
+    getXmlValf (cardata.driverPosition[2],"zpos","Driver");
 
-    getXmlVal (carCategory,"category","Car");
-    getXmlValf (carBodyDimensions[0],"body length","Car");
-    getXmlValf (carBodyDimensions[1],"body width","Car");
-    getXmlValf (carBodyDimensions[2],"body height","Car");
-    getXmlValf (carOverallDimensions[0],"overall length","Car");
-    getXmlValf (carOverallDimensions[1],"overall width","Car");
+    getXmlVal (cardata.carCategory,"category","Car");
+    getXmlValf (cardata.carBodyDimensions[0],"body length","Car");
+    getXmlValf (cardata.carBodyDimensions[1],"body width","Car");
+    getXmlValf (cardata.carBodyDimensions[2],"body height","Car");
+    getXmlValf (cardata.carOverallDimensions[0],"overall length","Car");
+    getXmlValf (cardata.carOverallDimensions[1],"overall width","Car");
 
     vector<string> lightNumbers;
     lightNumbers.push_back("0");
@@ -1428,21 +1431,21 @@ void importxml( int param )
     getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
     if (bufferValStr == "head1")
         {
-        head1aS = 1;
-        getXmlValf (head1a[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (head1a[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (head1a[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (head1a[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.head1aS = 1;
+        getXmlValf (cardata.head1a[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.head1a[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.head1a[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.head1a[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         k++;
         getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
         }
     if (bufferValStr == "head1")
         {
-        head1bS = 1;
-        getXmlValf (head1b[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (head1b[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (head1b[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (head1b[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.head1bS = 1;
+        getXmlValf (cardata.head1b[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.head1b[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.head1b[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.head1b[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         break;
         }
     }
@@ -1454,21 +1457,21 @@ void importxml( int param )
     getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
     if (bufferValStr == "head2")
         {
-        head2aS = 1;
-        getXmlValf (head2a[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (head2a[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (head2a[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (head2a[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.head2aS = 1;
+        getXmlValf (cardata.head2a[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.head2a[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.head2a[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.head2a[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         k++;
         getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
         }
     if (bufferValStr == "head2")
         {
-        head2bS = 1;
-        getXmlValf (head2b[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (head2b[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (head2b[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (head2b[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.head2bS = 1;
+        getXmlValf (cardata.head2b[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.head2b[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.head2b[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.head2b[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         break;
         }
     }
@@ -1481,41 +1484,41 @@ void importxml( int param )
     getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
     if (bufferValStr == "rear")
         {
-        rearaS = 1;
-        getXmlValf (reara[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (reara[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (reara[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (reara[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.rearaS = 1;
+        getXmlValf (cardata.reara[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.reara[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.reara[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.reara[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         k++;
         getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
         }
     if (bufferValStr == "rear")
         {
-        rearbS = 1;
-        getXmlValf (rearb[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (rearb[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (rearb[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (rearb[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.rearbS = 1;
+        getXmlValf (cardata.rearb[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.rearb[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.rearb[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.rearb[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         k++;
         getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
         }
     if (bufferValStr == "rear")
         {
-        rearcS = 1;
-        getXmlValf (rearc[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (rearc[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (rearc[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (rearc[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.rearcS = 1;
+        getXmlValf (cardata.rearc[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.rearc[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.rearc[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.rearc[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         k++;
         getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
         }
     if (bufferValStr == "rear")
         {
-        reardS = 1;
-        getXmlValf (reard[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (reard[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (reard[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (reard[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.reardS = 1;
+        getXmlValf (cardata.reard[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.reard[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.reard[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.reard[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         break;
         }
     }
@@ -1527,44 +1530,44 @@ void importxml( int param )
     getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
     if (bufferValStr == "brake")
         {
-        brakeaS = 1;
-        getXmlValf (brakea[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brakea[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brakea[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brakea[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.brakeaS = 1;
+        getXmlValf (cardata.brakea[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brakea[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brakea[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brakea[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         cout << "read brake 1" << endl;
         k++;
         getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
         }
     if (bufferValStr == "brake")
         {
-        brakebS = 1;
-        getXmlValf (brakeb[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brakeb[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brakeb[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brakeb[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.brakebS = 1;
+        getXmlValf (cardata.brakeb[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brakeb[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brakeb[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brakeb[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         cout << "read brake 2" << endl;
         k++;
         getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
         }
     if (bufferValStr == "brake")
         {
-        brakecS = 3;
-        getXmlValf (brakec[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brakec[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brakec[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brakec[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.brakecS = 3;
+        getXmlValf (cardata.brakec[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brakec[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brakec[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brakec[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         cout << "read brake 3" << endl;
         k++;
         getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
         }
     if (bufferValStr == "brake")
         {
-        brakedS = 1;
-        getXmlValf (braked[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (braked[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (braked[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (braked[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.brakedS = 1;
+        getXmlValf (cardata.braked[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.braked[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.braked[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.braked[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         cout << "read brake 3" << endl;
         //k = lightNumbers.size(); //exit for the for
         break;
@@ -1579,39 +1582,39 @@ void importxml( int param )
     getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
     if (bufferValStr == "brake2")
         {
-        brake2aS = 1;
-        getXmlValf (brake2a[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brake2a[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brake2a[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brake2a[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.brake2aS = 1;
+        getXmlValf (cardata.brake2a[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brake2a[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brake2a[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brake2a[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         k++;
         getXmlVal (bufferValStr,"type","Graphic Objects","Light",lightNumbers.at(k));
         }
     if (bufferValStr == "brake2")
         {
-        brake2bS = 1;
-        getXmlValf (brake2b[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brake2b[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brake2b[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
-        getXmlValf (brake2b[3],"size","Graphic Objects","Light",lightNumbers.at(k));
+        cardata.brake2bS = 1;
+        getXmlValf (cardata.brake2b[0],"xpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brake2b[1],"ypos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brake2b[2],"zpos","Graphic Objects","Light",lightNumbers.at(k));
+        getXmlValf (cardata.brake2b[3],"size","Graphic Objects","Light",lightNumbers.at(k));
         break;
         }
     }
      /* FLAMES */
-     getXmlValf (flamePower,"power","Exhaust");
-     if (flamePower > 0.0)
+     getXmlValf (cardata.flamePower,"power","Exhaust");
+     if (cardata.flamePower > 0.0)
      {
-         flameS = 1;
+         cardata.flameS = 1;
      }
-     else  flameS = 0;
-     cout << "flameS= " << flameS << endl;
+     else  cardata.flameS = 0;
+     cout << "flameS= " << cardata.flameS << endl;
 
-     getXmlValf (flame1[0],"xpos","Exhaust","1");
-     getXmlValf (flame1[1],"ypos","Exhaust","1");
-     getXmlValf (flame1[2],"zpos","Exhaust","1");
-     getXmlValf (flame2[0],"xpos","Exhaust","2");
-     getXmlValf (flame2[1],"ypos","Exhaust","2");
-     getXmlValf (flame2[2],"zpos","Exhaust","2");
+     getXmlValf (cardata.flame1[0],"xpos","Exhaust","1");
+     getXmlValf (cardata.flame1[1],"ypos","Exhaust","1");
+     getXmlValf (cardata.flame1[2],"zpos","Exhaust","1");
+     getXmlValf (cardata.flame2[0],"xpos","Exhaust","2");
+     getXmlValf (cardata.flame2[1],"ypos","Exhaust","2");
+     getXmlValf (cardata.flame2[2],"zpos","Exhaust","2");
 
      gearboxRatioSpeed ( 1 ); /* calc the speed of each gear */
 

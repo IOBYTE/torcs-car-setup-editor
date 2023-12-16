@@ -20,11 +20,16 @@
 #include <GL/glut.h>
 #include <GL/glui.h>
 #include <vector>
+
 #include "cardata.h"
 #include "portability.h"
 
 using namespace std;
 
+extern std::string text1;
+extern int   main_window;
+
+extern CarData cardata;
 extern GLUI *glui9; /* window for warnings */
 extern int warningn;
 extern std::string trackname;
@@ -50,11 +55,11 @@ int getYear (void)
             yearInt = atoi (year.c_str());
             //cout << "year "<< yearInt << endl;
             return yearInt;
-}    
+}
 
 
 void savexml( int i )
-{                                                         
+{
 
     backupXmlFile();
 
@@ -64,9 +69,9 @@ void savexml( int i )
            /* the exported xml file es located in the directory torcs/cars */
            fichero[0]='\0';
            strcat(fichero,"../cars/");
-           strcat(fichero,carname.c_str());
+           strcat(fichero,cardata.carname.c_str());
            strcat(fichero,"/");
-           strcat(fichero,carname.c_str());
+           strcat(fichero,cardata.carname.c_str());
            strcat(fichero,".xml");
            break;
        case 2: /* save xml for all tracks for the selected driver*/
@@ -77,7 +82,7 @@ void savexml( int i )
            strcat(fichero,"../drivers/");
            strcat(fichero,driverName.c_str());
            strcat(fichero,"/");
-           strcat(fichero,carname.c_str());
+           strcat(fichero,cardata.carname.c_str());
            strcat(fichero,".xml");
            break;
            }
@@ -94,7 +99,7 @@ void savexml( int i )
            strcat(fichero,".xml");
            break;
            }
-               
+
        case 3: /* save xml for the selected track for the selected driver*/
            if ( driverName == "human" )
            {
@@ -105,7 +110,7 @@ void savexml( int i )
            strcat(fichero,"/");
            strcat(fichero,trackname.c_str());
            strcat(fichero,"/");
-           strcat(fichero,carname.c_str());
+           strcat(fichero,cardata.carname.c_str());
            strcat(fichero,".xml");
            break;
            }
@@ -122,17 +127,17 @@ void savexml( int i )
            strcat(fichero,".xml");
            break;
            }
-    } 
+    }
 
-    
+
     ofstream f;  //fichero de salida
-    
+
     f.open(fichero);  //apertura del fichero o creacción si no existe
     if(!f)
       {
-        cout << "The car " << carname << " doesn't exits." << endl;
+        cout << "The car " << cardata.carname << " doesn't exits." << endl;
         cout << "Please check the carname or create the folder " << fichero << endl;
-        
+
         switch ( i )
         {
         case 1:
@@ -144,19 +149,19 @@ void savexml( int i )
         case 3:
                 warningMsg(5);/* xml for the driver selected track */
                 break;
-        }        
-      }    
+        }
+      }
     else
     { //operacions in the file
- 
+
 f << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
 f <<  endl;
 f << "<!--" << endl;
-f << "	    file                 : "<<carname<<".xml"<< endl;
+f << "	    file                 : "<<cardata.carname<<".xml"<< endl;
 f << "	    created              : " << asctime(localtime(&tAct)); /*we don't need the endl */
-f << "	    copyright            : (C) "<< getYear() << " by " << autorName << endl;
-f << "	    email                : " << autorEmail << endl;
-f << "	    version              : $Id: "<<carname<<".xml $" << endl;
+f << "	    copyright            : (C) "<< getYear() << " by " << cardata.autorName << endl;
+f << "	    email                : " << cardata.autorEmail << endl;
+f << "	    version              : $Id: "<<cardata.carname<<".xml $" << endl;
 f << "	    created with " << text  << " version: "  << TCSE_version << " created by Vicente Marti"        << endl;
 f << "	-->	 " << endl;
 f << "		 " << endl;
@@ -167,79 +172,79 @@ f << "	<!--    (at your option) any later version.                              
 f << "		 " << endl;
 f << "	<!DOCTYPE params SYSTEM \"../../../../src/libs/tgf/params.dtd\">" << endl;
 f << "		 " << endl;
-f << "	<params name=\""<< fullCarName <<"\" type=\"template\">" << endl;
+f << "	<params name=\""<< cardata.fullCarName <<"\" type=\"template\">" << endl;
 f << "	  <section name=\"Driver\">	 " << endl;
 f << "	    <!-- Position of the driver -->	 " << endl;
-f << "	    <attnum name=\"xpos\" val=\""<< driverPosition[0] <<"\" unit=\"m\"/>" << endl;
-f << "	    <attnum name=\"ypos\" val=\""<< driverPosition[1] <<"\" unit=\"m\"/>" << endl;
-f << "	    <attnum name=\"zpos\" val=\""<< driverPosition[2] <<"\" unit=\"m\"/>" << endl;
+f << "	    <attnum name=\"xpos\" val=\""<< cardata.driverPosition[0] <<"\" unit=\"m\"/>" << endl;
+f << "	    <attnum name=\"ypos\" val=\""<< cardata.driverPosition[1] <<"\" unit=\"m\"/>" << endl;
+f << "	    <attnum name=\"zpos\" val=\""<< cardata.driverPosition[2] <<"\" unit=\"m\"/>" << endl;
 f << "	  </section>" << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Bonnet\">	 " << endl;
 f << "	    <!-- Position of the driver -->	 " << endl;
-f << "	    <attnum name=\"xpos\" val=\""<< bonnetPosition[0] <<"\" unit=\"m\"/>" << endl;
-f << "	    <attnum name=\"ypos\" val=\""<< bonnetPosition[1] <<"\" unit=\"m\"/>" << endl;
-f << "	    <attnum name=\"zpos\" val=\""<< bonnetPosition[2] <<"\" unit=\"m\"/>" << endl;
+f << "	    <attnum name=\"xpos\" val=\""<< cardata.bonnetPosition[0] <<"\" unit=\"m\"/>" << endl;
+f << "	    <attnum name=\"ypos\" val=\""<< cardata.bonnetPosition[1] <<"\" unit=\"m\"/>" << endl;
+f << "	    <attnum name=\"zpos\" val=\""<< cardata.bonnetPosition[2] <<"\" unit=\"m\"/>" << endl;
 f << "	  </section>" << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Sound\">	 " << endl;
-f << "	 <attstr name=\"engine sample\" val=\""<< enginesample <<"\"/>" << endl;
-f << "	 <attnum name=\"rpm scale\" val=\""<< rmpscale <<"\"/>" << endl;
+f << "	 <attstr name=\"engine sample\" val=\""<< cardata.enginesample <<"\"/>" << endl;
+f << "	 <attnum name=\"rpm scale\" val=\""<< cardata.rmpscale <<"\"/>" << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Graphic Objects\">" << endl;
-f << "	    <attstr name=\"env\" val=\""<< graphicenv <<"\"/>" << endl;
-f << "	    <attstr name=\"wheel texture\" val=\""<<wheelTexture<<"\"/>	 " << endl;
-f << "	    <attstr name=\"shadow texture\" val=\""<<shadowTexture<<"\"/>	 " << endl;
-f << "	    <attstr name=\"tachometer texture\" val=\""<<tachometerTexture<<"\"/>	 " << endl;
-f << "	    <attnum name=\"tachometer min value\" val=\""<<tachometerMinMax[0]<<"\" unit=\"rpm\"/>	 " << endl;
-f << "	    <attnum name=\"tachometer max value\" val=\""<<tachometerMinMax[1]<<"\" unit=\"rpm\"/>	 " << endl;
-f << "	    <attstr name=\"speedometer texture\" val=\""<<speedometerTexture<<"\"/>	 " << endl;
-f << "	    <attnum name=\"speedometer min value\" val=\""<<speedometerMinMax[0]<<"\" unit=\"km/h\"/>	 " << endl;
-f << "	    <attnum name=\"speedometer max value\" val=\""<<speedometerMinMax[1]<<"\" unit=\"km/h\"/>	 " << endl;
+f << "	    <attstr name=\"env\" val=\""<< cardata.graphicenv <<"\"/>" << endl;
+f << "	    <attstr name=\"wheel texture\" val=\""<<cardata.wheelTexture<<"\"/>	 " << endl;
+f << "	    <attstr name=\"shadow texture\" val=\""<<cardata.shadowTexture<<"\"/>	 " << endl;
+f << "	    <attstr name=\"tachometer texture\" val=\""<<cardata.tachometerTexture<<"\"/>	 " << endl;
+f << "	    <attnum name=\"tachometer min value\" val=\""<<cardata.tachometerMinMax[0]<<"\" unit=\"rpm\"/>	 " << endl;
+f << "	    <attnum name=\"tachometer max value\" val=\""<<cardata.tachometerMinMax[1]<<"\" unit=\"rpm\"/>	 " << endl;
+f << "	    <attstr name=\"speedometer texture\" val=\""<<cardata.speedometerTexture<<"\"/>	 " << endl;
+f << "	    <attnum name=\"speedometer min value\" val=\""<<cardata.speedometerMinMax[0]<<"\" unit=\"km/h\"/>	 " << endl;
+f << "	    <attnum name=\"speedometer max value\" val=\""<<cardata.speedometerMinMax[1]<<"\" unit=\"km/h\"/>	 " << endl;
 f << "		 " << endl;
 f << "		 " << endl;
 f << "	    <section name=\"Ranges\">	 " << endl;
 f << "	   <section name=\"1\">	 " << endl;
-f << "	    <attnum name=\"threshold\" val=\""<<carRange1dataA<<"\"/>	 " << endl;
-f << "	    <attstr name=\"car\" val=\""<<carRange1<<"\"/>	 " << endl;
+f << "	    <attnum name=\"threshold\" val=\""<<cardata.carRange1dataA<<"\"/>	 " << endl;
+f << "	    <attstr name=\"car\" val=\""<<cardata.carRange1<<"\"/>	 " << endl;
 std::string yes_no;
-yes_no =(carRange1dataB==1)?"yes":"no";
+yes_no =(cardata.carRange1dataB==1)?"yes":"no";
 f << "	    <attstr name=\"wheels\" val=\""<< yes_no <<"\"/>	 " << endl;
 f << "	   </section>	 " << endl;
-if (carRange2dataC == 1)
+if (cardata.carRange2dataC == 1)
 {
 f << "	   <section name=\"2\">	 " << endl;
-f << "	    <attnum name=\"threshold\" val=\""<<carRange2dataA<<"\"/>	 " << endl;
-f << "	    <attstr name=\"car\" val=\""<<carRange2<<"\"/>	 " << endl;
-yes_no =(carRange2dataB==1)?"yes":"no";
+f << "	    <attnum name=\"threshold\" val=\""<<cardata.carRange2dataA<<"\"/>	 " << endl;
+f << "	    <attstr name=\"car\" val=\""<<cardata.carRange2<<"\"/>	 " << endl;
+yes_no =(cardata.carRange2dataB==1)?"yes":"no";
 f << "	    <attstr name=\"wheels\" val=\""<< yes_no <<"\"/>	 " << endl;
 f << "	   </section>	 " << endl;
 }
-if (carRange3dataC == 1)
+if (cardata.carRange3dataC == 1)
 {
 f << "	   <section name=\"3\">	 " << endl;
-f << "	    <attnum name=\"threshold\" val=\""<<carRange3dataA<<"\"/>	 " << endl;
-f << "	    <attstr name=\"car\" val=\""<<carRange3<<"\"/>	 " << endl;
-yes_no =(carRange3dataB==1)?"yes":"no";
+f << "	    <attnum name=\"threshold\" val=\""<<cardata.carRange3dataA<<"\"/>	 " << endl;
+f << "	    <attstr name=\"car\" val=\""<<cardata.carRange3<<"\"/>	 " << endl;
+yes_no =(cardata.carRange3dataB==1)?"yes":"no";
 f << "	    <attstr name=\"wheels\" val=\""<< yes_no <<"\"/>	 " << endl;
 f << "	   </section>	 " << endl;
 }
-if (carRange4dataC == 1)
+if (cardata.carRange4dataC == 1)
 {
 f << "	   <section name=\"4\">	 " << endl;
-f << "	    <attnum name=\"threshold\" val=\""<<carRange4dataA<<"\"/>	 " << endl;
-f << "	    <attstr name=\"car\" val=\""<<carRange4<<"\"/>	 " << endl;
-yes_no =(carRange4dataB==1)?"yes":"no";
+f << "	    <attnum name=\"threshold\" val=\""<<cardata.carRange4dataA<<"\"/>	 " << endl;
+f << "	    <attstr name=\"car\" val=\""<<cardata.carRange4<<"\"/>	 " << endl;
+yes_no =(cardata.carRange4dataB==1)?"yes":"no";
 f << "	    <attstr name=\"wheels\" val=\""<< yes_no <<"\"/>	 " << endl;
 f << "	   </section>	 " << endl;
 }
-if (carRange5dataC == 1)
+if (cardata.carRange5dataC == 1)
 {
 f << "	   <section name=\"5\">	 " << endl;
-f << "	    <attnum name=\"threshold\" val=\""<<carRange5dataA<<"\"/>	 " << endl;
-f << "	    <attstr name=\"car\" val=\""<<carRange5<<"\"/>	 " << endl;
-yes_no =(carRange5dataB==1)?"yes":"no";
+f << "	    <attnum name=\"threshold\" val=\""<<cardata.carRange5dataA<<"\"/>	 " << endl;
+f << "	    <attstr name=\"car\" val=\""<<cardata.carRange5<<"\"/>	 " << endl;
+yes_no =(cardata.carRange5dataB==1)?"yes":"no";
 f << "	    <attstr name=\"wheels\" val=\""<< yes_no <<"\"/>	 " << endl;
 f << "	   </section>	 " << endl;
 }
@@ -248,158 +253,158 @@ f << "	  	 " << endl;
 f << "		 " << endl;
 f << "	    <section name=\"Light\">	 " << endl;
 int numberLight = 1;
-if (head1aS == 1)
+if (cardata.head1aS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"head1\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<head1a[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<head1a[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<head1a[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<head1a[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.head1a[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.head1a[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.head1a[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.head1a[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 }
-if (head1bS == 1)
+if (cardata.head1bS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"head1\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<head1b[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<head1b[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<head1b[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<head1b[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.head1b[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.head1b[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.head1b[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.head1b[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 }
-if (head2aS == 1)
+if (cardata.head2aS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"head2\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<head2a[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<head2a[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<head2a[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<head2a[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.head2a[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.head2a[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.head2a[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.head2a[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 }
-if (head2bS == 1)
+if (cardata.head2bS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"head2\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<head2b[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<head2b[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<head2b[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<head2b[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.head2b[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.head2b[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.head2b[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.head2b[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 }
-if (rearaS == 1)
+if (cardata.rearaS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"rear\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<reara[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<reara[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<reara[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<reara[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.reara[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.reara[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.reara[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.reara[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 }
-if (rearbS == 1)
+if (cardata.rearbS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"rear\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<rearb[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<rearb[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<rearb[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<rearb[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.rearb[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.rearb[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.rearb[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.rearb[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 }
-if (brakeaS == 1)
+if (cardata.brakeaS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"brake\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<brakea[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<brakea[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<brakea[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<brakea[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.brakea[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.brakea[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.brakea[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.brakea[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 }
-if (brakebS == 1)
+if (cardata.brakebS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"brake\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<brakeb[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<brakeb[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<brakeb[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<brakeb[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.brakeb[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.brakeb[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.brakeb[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.brakeb[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 }
-if (rearcS == 1)
+if (cardata.rearcS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"rear\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<rearc[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<rearc[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<rearc[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<rearc[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.rearc[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.rearc[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.rearc[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.rearc[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 }
-if (reardS == 1)
+if (cardata.reardS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"rear\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<reard[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<reard[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<reard[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<reard[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.reard[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.reard[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.reard[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.reard[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 }
-if (brakecS == 1)
+if (cardata.brakecS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"brake\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<brakec[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<brakec[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<brakec[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<brakec[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.brakec[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.brakec[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.brakec[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.brakec[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 }
-if (brakedS == 1)
+if (cardata.brakedS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"brake\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<braked[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<braked[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<braked[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<braked[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.braked[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.braked[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.braked[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.braked[3]<<"\"/>	 " << endl;
 f << "	      </section>      	 " << endl;
 }
-if (brake2aS == 1)
+if (cardata.brake2aS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"brake2\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<brake2a[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<brake2a[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<brake2a[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<brake2a[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.brake2a[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.brake2a[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.brake2a[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.brake2a[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 }
-if (brake2bS == 1)
+if (cardata.brake2bS == 1)
 {
 f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
 numberLight++;
 f << "	 <attstr name=\"type\" val=\"brake2\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<brake2b[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<brake2b[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<brake2b[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<brake2b[3]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"xpos\" val=\""<<cardata.brake2b[0]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"ypos\" val=\""<<cardata.brake2b[1]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"zpos\" val=\""<<cardata.brake2b[2]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"size\" val=\""<<cardata.brake2b[3]<<"\"/>	 " << endl;
 f << "	      </section>      	 " << endl;
 }
 f << "	    </section>	 " << endl;
@@ -408,196 +413,196 @@ f << "	    " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Car\">	 " << endl;
-f << "	    <attstr name=\"category\" val=\""<< carCategory <<"\"/>	 " << endl;
-f << "	    <attnum name=\"body length\" unit=\"m\" val=\""<< carBodyDimensions[0] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"body width\" unit=\"m\" val=\""<< carBodyDimensions[1] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"body height\" unit=\"m\" val=\""<< carBodyDimensions[2] <<"\"/>	 " << endl;
+f << "	    <attstr name=\"category\" val=\""<< cardata.carCategory <<"\"/>	 " << endl;
+f << "	    <attnum name=\"body length\" unit=\"m\" val=\""<< cardata.carBodyDimensions[0] <<"\"/>	 " << endl;
+f << "	    <attnum name=\"body width\" unit=\"m\" val=\""<< cardata.carBodyDimensions[1] <<"\"/>	 " << endl;
+f << "	    <attnum name=\"body height\" unit=\"m\" val=\""<< cardata.carBodyDimensions[2] <<"\"/>	 " << endl;
 f << "		 " << endl;
 f << "	    <!-- collision bounding box -->	 " << endl;
-f << "	    <attnum name=\"overall length\" unit=\"m\" val=\""<< carOverallDimensions[0] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"overall width\" unit=\"m\" val=\""<< carOverallDimensions[1] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"mass\" unit=\"kg\" val=\""<< massdata[6] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"GC height\" unit=\"m\" val=\""<< massdata[7] <<"\"/>	 " << endl;
+f << "	    <attnum name=\"overall length\" unit=\"m\" val=\""<< cardata.carOverallDimensions[0] <<"\"/>	 " << endl;
+f << "	    <attnum name=\"overall width\" unit=\"m\" val=\""<< cardata.carOverallDimensions[1] <<"\"/>	 " << endl;
+f << "	    <attnum name=\"mass\" unit=\"kg\" val=\""<< cardata.massdata[6] <<"\"/>	 " << endl;
+f << "	    <attnum name=\"GC height\" unit=\"m\" val=\""<< cardata.massdata[7] <<"\"/>	 " << endl;
 f << "		 " << endl;
 f << "	    <!-- weight bias -->	 " << endl;
-f << "	    <attnum name=\"front-rear weight repartition\" min=\"0.1\" max=\"0.9\" val=\""<< massdata[0] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"front right-left weight repartition\" min=\"0.4\" max=\"0.6\" val=\""<< massdata[1] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"rear right-left weight repartition\" min=\"0.4\" max=\"0.6\" val=\""<< massdata[2] <<"\"/>	 " << endl;
+f << "	    <attnum name=\"front-rear weight repartition\" min=\"0.1\" max=\"0.9\" val=\""<< cardata.massdata[0] <<"\"/>	 " << endl;
+f << "	    <attnum name=\"front right-left weight repartition\" min=\"0.4\" max=\"0.6\" val=\""<< cardata.massdata[1] <<"\"/>	 " << endl;
+f << "	    <attnum name=\"rear right-left weight repartition\" min=\"0.4\" max=\"0.6\" val=\""<< cardata.massdata[2] <<"\"/>	 " << endl;
 f << "		 " << endl;
 f << "	    <!-- used for inertia, smaller values indicate better mass centering -->	 " << endl;
-f << "	    <attnum name=\"mass repartition coefficient\" max=\"1.0\" min=\"0.4\" val=\""<< massdata[3] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"fuel tank\" unit=\"l\" val=\""<< massdata[4] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"initial fuel\" unit=\"l\" min=\"1.0\" max=\"100.0\" val=\""<< massdata[5] <<"\"/>	 " << endl;
+f << "	    <attnum name=\"mass repartition coefficient\" max=\"1.0\" min=\"0.4\" val=\""<< cardata.massdata[3] <<"\"/>	 " << endl;
+f << "	    <attnum name=\"fuel tank\" unit=\"l\" val=\""<< cardata.massdata[4] <<"\"/>	 " << endl;
+f << "	    <attnum name=\"initial fuel\" unit=\"l\" min=\"1.0\" max=\"100.0\" val=\""<< cardata.massdata[5] <<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
-if (flameS ==1)
+if (cardata.flameS ==1)
 {
 f << "	  <section name=\"Exhaust\">	 " << endl;
 f << "		 " << endl;
 f << "	    <!-- for flames -->	 " << endl;
-f << "	    <attnum name=\"power\" val=\""<<flamePower<<"\"/>	 " << endl;
+f << "	    <attnum name=\"power\" val=\""<<cardata.flamePower<<"\"/>	 " << endl;
 f << "	    <section name=\"1\">	 " << endl;
-f << "	      <attnum name=\"xpos\" val=\""<<flame1[0]<<"\"/>	 " << endl;
-f << "	      <attnum name=\"ypos\" val=\""<<flame1[1]<<"\"/>	 " << endl;
-f << "	      <attnum name=\"zpos\" val=\""<<flame1[2]<<"\"/>	 " << endl;
+f << "	      <attnum name=\"xpos\" val=\""<<cardata.flame1[0]<<"\"/>	 " << endl;
+f << "	      <attnum name=\"ypos\" val=\""<<cardata.flame1[1]<<"\"/>	 " << endl;
+f << "	      <attnum name=\"zpos\" val=\""<<cardata.flame1[2]<<"\"/>	 " << endl;
 f << "	    </section>	 " << endl;
 f << "		 " << endl;
 f << "	    <section name=\"2\">	 " << endl;
-f << "	      <attnum name=\"xpos\" val=\""<<flame2[0]<<"\"/>	 " << endl;
-f << "	      <attnum name=\"ypos\" val=\""<<flame2[1]<<"\"/>	 " << endl;
-f << "	      <attnum name=\"zpos\" val=\""<<flame2[2]<<"\"/>	 " << endl;
+f << "	      <attnum name=\"xpos\" val=\""<<cardata.flame2[0]<<"\"/>	 " << endl;
+f << "	      <attnum name=\"ypos\" val=\""<<cardata.flame2[1]<<"\"/>	 " << endl;
+f << "	      <attnum name=\"zpos\" val=\""<<cardata.flame2[2]<<"\"/>	 " << endl;
 f << "	    </section>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 }
 f << "		 " << endl;
 f << "	  <section name=\"Aerodynamics\">	 " << endl;
-f << "	    <attnum name=\"Cx\" val=\""<<aerodynamics[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"front area\" unit=\"m2\" val=\""<<aerodynamics[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"front Clift\" val=\""<<aerodynamics[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"rear Clift\" val=\""<<aerodynamics[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"Cx\" val=\""<<cardata.aerodynamics[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"front area\" unit=\"m2\" val=\""<<cardata.aerodynamics[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"front Clift\" val=\""<<cardata.aerodynamics[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"rear Clift\" val=\""<<cardata.aerodynamics[3]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Front Wing\">	 " << endl;
-f << "	    <attnum name=\"area\" unit=\"m2\" val=\""<<frontwing[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"angle\" unit=\"deg\" val=\""<<frontwing[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"xpos\" unit=\"m\" val=\""<<frontwing[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"zpos\" unit=\"m\" val=\""<<frontwing[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"area\" unit=\"m2\" val=\""<<cardata.frontwing[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"angle\" unit=\"deg\" val=\""<<cardata.frontwing[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"xpos\" unit=\"m\" val=\""<<cardata.frontwing[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"zpos\" unit=\"m\" val=\""<<cardata.frontwing[3]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Rear Wing\">	 " << endl;
-f << "	    <attnum name=\"area\" unit=\"m2\" val=\""<<rearwing[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"angle\" unit=\"deg\" val=\""<<rearwing[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"xpos\" unit=\"m\" val=\""<<rearwing[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"zpos\" unit=\"m\" val=\""<<rearwing[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"area\" unit=\"m2\" val=\""<<cardata.rearwing[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"angle\" unit=\"deg\" val=\""<<cardata.rearwing[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"xpos\" unit=\"m\" val=\""<<cardata.rearwing[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"zpos\" unit=\"m\" val=\""<<cardata.rearwing[3]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "		 " << endl;
 f << "	  <!-- Same engine for every one -->	 " << endl;
 f << "	  <section name=\"Engine\">	 " << endl;
-f << "	    <attnum name=\"capacity\" unit=\"" << engine_capacity_units[curr_engine_capacity_units] << "\" val=\"" << engineCapacity << "\"/>" << endl;
-f << "	    <attnum name=\"cylinders\" val=\"" << engineCylinders << "\"/>" << endl;
-f << "	    <attstr name=\"shape\" val=\"" << engine_shape[curr_engine_shape] << "\"/>" << endl;
-f << "	    <attstr name=\"position\" val=\"" << engine_position[curr_engine_position] << "\"/>" << endl;
-f << "	    <attnum name=\"inertia\" min=\"0.1\" max=\"0.5\" unit=\"kg.m2\" val=\""<<engineparams[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"revs maxi\" unit=\"rpm\" min=\"5000\" max=\"20000\" val=\""<<engineparams[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"revs limiter\" unit=\"rpm\" min=\"3000\" max=\"20000\" val=\""<<engineparams[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"tickover\" unit=\"rpm\" val=\""<<engineparams[3]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"fuel cons factor\" min=\"1.1\" max=\"1.3\" val=\""<<engineparams[4]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"brake linear coefficient\" val=\"" << brakeLinearCoefficient << "\"/>" << endl;
-f << "	    <attnum name=\"brake coefficient\" val=\"" << brakeCoefficient << "\"/>" << endl;
+f << "	    <attnum name=\"capacity\" unit=\"" << cardata.engine_capacity_units[cardata.curr_engine_capacity_units] << "\" val=\"" << cardata.engineCapacity << "\"/>" << endl;
+f << "	    <attnum name=\"cylinders\" val=\"" << cardata.engineCylinders << "\"/>" << endl;
+f << "	    <attstr name=\"shape\" val=\"" << cardata.engine_shape[cardata.curr_engine_shape] << "\"/>" << endl;
+f << "	    <attstr name=\"position\" val=\"" << cardata.engine_position[cardata.curr_engine_position] << "\"/>" << endl;
+f << "	    <attnum name=\"inertia\" min=\"0.1\" max=\"0.5\" unit=\"kg.m2\" val=\""<<cardata.engineparams[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"revs maxi\" unit=\"rpm\" min=\"5000\" max=\"20000\" val=\""<<cardata.engineparams[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"revs limiter\" unit=\"rpm\" min=\"3000\" max=\"20000\" val=\""<<cardata.engineparams[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"tickover\" unit=\"rpm\" val=\""<<cardata.engineparams[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"fuel cons factor\" min=\"1.1\" max=\"1.3\" val=\""<<cardata.engineparams[4]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"brake linear coefficient\" val=\"" << cardata.brakeLinearCoefficient << "\"/>" << endl;
+f << "	    <attnum name=\"brake coefficient\" val=\"" << cardata.brakeCoefficient << "\"/>" << endl;
 
 f << "	    <section name=\"data points\">	 " << endl;
-if (turboS == 1)
+if (cardata.turboS == 1)
 {
 f << "	      <attstr name=\"turbo\"  val=\"true\"/>	 " << endl;
-f << "	      <attnum name=\"turbo rpm\" unit=\"rpm\" val=\""<<turbo[0]<<"\"/>" << endl;
-f << "	      <attnum name=\"turbo factor\"  val=\""<<turbo[1]<<"\"/>" << endl; 
-f << "	      <attnum name=\"turbo lag\"  val=\""<<turbo[2]<<"\"/>" << endl;     
-}    
+f << "	      <attnum name=\"turbo rpm\" unit=\"rpm\" val=\""<<cardata.turbo[0]<<"\"/>" << endl;
+f << "	      <attnum name=\"turbo factor\"  val=\""<<cardata.turbo[1]<<"\"/>" << endl;
+f << "	      <attnum name=\"turbo lag\"  val=\""<<cardata.turbo[2]<<"\"/>" << endl;
+}
 f << "	      <section name=\"1\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[0]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"2000.0\" val=\""<<tqValue[0]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[0]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"2000.0\" val=\""<<cardata.tqValue[0]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"2\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[1]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"1473.0\" val=\""<<tqValue[1]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[1]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"1473.0\" val=\""<<cardata.tqValue[1]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"3\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[2]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"1355.0\" val=\""<<tqValue[2]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[2]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"1355.0\" val=\""<<cardata.tqValue[2]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"4\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[3]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"1275.0\" val=\""<<tqValue[3]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[3]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"1275.0\" val=\""<<cardata.tqValue[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"5\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[4]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"1145.0\" val=\""<<tqValue[4]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[4]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"1145.0\" val=\""<<cardata.tqValue[4]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"6\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[5]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"1000.0\" val=\""<<tqValue[5]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[5]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"1000.0\" val=\""<<cardata.tqValue[5]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"7\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[6]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"884.0\" val=\""<<tqValue[6]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[6]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"884.0\" val=\""<<cardata.tqValue[6]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"8\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[7]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"799.0\" val=\""<<tqValue[7]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[7]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"799.0\" val=\""<<cardata.tqValue[7]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"9\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[8]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"735.0\" val=\""<<tqValue[8]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[8]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"735.0\" val=\""<<cardata.tqValue[8]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"10\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[9]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"686.0\" val=\""<<tqValue[9]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[9]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"686.0\" val=\""<<cardata.tqValue[9]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"11\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[10]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"647.0\" val=\""<<tqValue[10]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[10]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"647.0\" val=\""<<cardata.tqValue[10]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"12\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[11]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"971.0\" val=\""<<tqValue[11]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[11]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"971.0\" val=\""<<cardata.tqValue[11]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"13\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[12]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"890.0\" val=\""<<tqValue[12]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[12]<<"\"/>	 " << endl;
+f << "	 <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"890.0\" val=\""<<cardata.tqValue[12]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"14\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[13]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"821.0\" val=\""<<tqValue[13]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[13]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"821.0\" val=\""<<cardata.tqValue[13]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"15\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[14]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"762.0\" val=\""<<tqValue[14]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[14]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"762.0\" val=\""<<cardata.tqValue[14]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"16\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[15]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"712.0\" val=\""<<tqValue[15]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[15]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"712.0\" val=\""<<cardata.tqValue[15]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"17\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[16]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"667.0\" val=\""<<tqValue[16]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[16]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"667.0\" val=\""<<cardata.tqValue[16]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"18\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[17]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"628.0\" val=\""<<tqValue[17]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[17]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"628.0\" val=\""<<cardata.tqValue[17]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"19\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[18]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"628.0\" val=\""<<tqValue[18]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[18]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"628.0\" val=\""<<cardata.tqValue[18]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"20\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[19]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"628.0\" val=\""<<tqValue[19]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[19]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"628.0\" val=\""<<cardata.tqValue[19]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 f << "	      <section name=\"21\">	 " << endl;
-f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<rpmValue[20]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"628.0\" val=\""<<tqValue[20]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"rpm\" unit=\"rpm\" val=\""<<cardata.rpmValue[20]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"Tq\" unit=\"N.m\" min=\"0.0\" max=\"628.0\" val=\""<<cardata.tqValue[20]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "	    </section>	 " << endl;
 f << "	  </section>	 " << endl;
@@ -605,79 +610,79 @@ f << "		 " << endl;
 f << "	  <section name=\"Clutch\">	 " << endl;
 f << "		 " << endl;
 f << "	    <!-- pressure plate -->	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<gearboxinertia[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.gearboxinertia[0]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Gearbox\">	 " << endl;
-f << "	    <attnum name=\"shift time\" val=\""<<gearbox_shift_time<<"\" unit=\"s\"/>	 " << endl;
+f << "	    <attnum name=\"shift time\" val=\""<<cardata.gearbox_shift_time<<"\" unit=\"s\"/>	 " << endl;
 f << "	    <section name=\"gears\">	 " << endl;
 f << "	      <section name=\"r\">	 " << endl;
-f << "	        <attnum name=\"ratio\" min=\"-3\" max=\"0\" val=\""<<gearboxratio[0]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"inertia\" val=\""<<gearboxinertia[1]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"efficiency\" val=\""<<gearboxefficiency[0]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"ratio\" min=\"-3\" max=\"0\" val=\""<<cardata.gearboxratio[0]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"inertia\" val=\""<<cardata.gearboxinertia[1]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"efficiency\" val=\""<<cardata.gearboxefficiency[0]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
-if ( numberOfGears >= 1)
+if ( cardata.numberOfGears >= 1)
 {
 f << "	      <section name=\"1\">	 " << endl;
-f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<gearboxratio[1]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"inertia\" val=\""<<gearboxinertia[2]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"efficiency\" val=\""<<gearboxefficiency[1]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<cardata.gearboxratio[1]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"inertia\" val=\""<<cardata.gearboxinertia[2]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"efficiency\" val=\""<<cardata.gearboxefficiency[1]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 }
-if ( numberOfGears >= 2)
+if ( cardata.numberOfGears >= 2)
 {
 f << "	      <section name=\"2\">	 " << endl;
-f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<gearboxratio[2]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"inertia\" val=\""<<gearboxinertia[3]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"efficiency\" val=\""<<gearboxefficiency[2]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<cardata.gearboxratio[2]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"inertia\" val=\""<<cardata.gearboxinertia[3]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"efficiency\" val=\""<<cardata.gearboxefficiency[2]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 }
-if ( numberOfGears >= 3)
+if ( cardata.numberOfGears >= 3)
 {
 f << "	      <section name=\"3\">	 " << endl;
-f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<gearboxratio[3]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"inertia\" val=\""<<gearboxinertia[4]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"efficiency\" val=\""<<gearboxefficiency[3]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<cardata.gearboxratio[3]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"inertia\" val=\""<<cardata.gearboxinertia[4]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"efficiency\" val=\""<<cardata.gearboxefficiency[3]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 }
-if ( numberOfGears >= 4)
+if ( cardata.numberOfGears >= 4)
 {
 f << "	      <section name=\"4\">	 " << endl;
-f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<gearboxratio[4]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"inertia\" val=\""<<gearboxinertia[5]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"efficiency\" val=\""<<gearboxefficiency[4]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<cardata.gearboxratio[4]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"inertia\" val=\""<<cardata.gearboxinertia[5]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"efficiency\" val=\""<<cardata.gearboxefficiency[4]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 }
-if ( numberOfGears >= 5)
+if ( cardata.numberOfGears >= 5)
 {
 f << "	      <section name=\"5\">	 " << endl;
-f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<gearboxratio[5]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"inertia\" val=\""<<gearboxinertia[6]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"efficiency\" val=\""<<gearboxefficiency[5]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<cardata.gearboxratio[5]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"inertia\" val=\""<<cardata.gearboxinertia[6]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"efficiency\" val=\""<<cardata.gearboxefficiency[5]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 }
-if ( numberOfGears >= 6)
+if ( cardata.numberOfGears >= 6)
 {
 f << "	      <section name=\"6\">	 " << endl;
-f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<gearboxratio[6]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"inertia\" val=\""<<gearboxinertia[7]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"efficiency\" val=\""<<gearboxefficiency[6]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<cardata.gearboxratio[6]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"inertia\" val=\""<<cardata.gearboxinertia[7]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"efficiency\" val=\""<<cardata.gearboxefficiency[6]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 }
-if ( numberOfGears >= 7)
+if ( cardata.numberOfGears >= 7)
 {
 f << "	   <section name=\"7\">	 " << endl;
-f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<gearboxratio[7]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"inertia\" val=\""<<gearboxinertia[8]<<"\"/>	 " << endl;
-f << "	        <attnum name=\"efficiency\" val=\""<<gearboxefficiency[7]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"ratio\" min=\"0\" max=\"5\" val=\""<<cardata.gearboxratio[7]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"inertia\" val=\""<<cardata.gearboxinertia[8]<<"\"/>	 " << endl;
+f << "	        <attnum name=\"efficiency\" val=\""<<cardata.gearboxefficiency[7]<<"\"/>	 " << endl;
 f << "	      </section>	 " << endl;
 f << "		 " << endl;
 }
@@ -686,231 +691,231 @@ f << "	 </section>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Steer\">	 " << endl;
-f << "	    <attnum name=\"steer lock\" unit=\"deg\" min=\"1\" max=\"45\" val=\""<<steer[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"max steer speed\" unit=\"deg/s\" min=\"1\" max=\"360\" val=\""<<steer[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"steer lock\" unit=\"deg\" min=\"1\" max=\"45\" val=\""<<cardata.steer[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"max steer speed\" unit=\"deg/s\" min=\"1\" max=\"360\" val=\""<<cardata.steer[1]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Drivetrain\">	 " << endl;
-f << "	    <attstr name=\"type\" val=\""<<drivetrain_type[curr_drivetrain_type]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<drivetrain<<"\"/>	 " << endl;
+f << "	    <attstr name=\"type\" val=\""<<cardata.drivetrain_type[cardata.curr_drivetrain_type]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.drivetrain<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Front Differential\">	 " << endl;
-f << "	    <attstr name=\"type\" in=\"SPOOL,FREE,LIMITED SLIP\" val=\""<<differential_type[curr_frontdifferential_type]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<frontdifferential[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"ratio\" min=\"0\" max=\"10\" val=\""<<frontdifferential[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"efficiency\" val=\""<<frontdifferential[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"min torque bias\" val=\""<<frontdifferential[3]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"max torque bias\" val=\""<<frontdifferential[4]<<"\"/>	 " << endl;
+f << "	    <attstr name=\"type\" in=\"SPOOL,FREE,LIMITED SLIP\" val=\""<<cardata.differential_type[cardata.curr_frontdifferential_type]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.frontdifferential[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"ratio\" min=\"0\" max=\"10\" val=\""<<cardata.frontdifferential[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"efficiency\" val=\""<<cardata.frontdifferential[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"min torque bias\" val=\""<<cardata.frontdifferential[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"max torque bias\" val=\""<<cardata.frontdifferential[4]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "	  <section name=\"Rear Differential\">	 " << endl;
-f << "	    <attstr name=\"type\" in=\"SPOOL,FREE,LIMITED SLIP\" val=\""<<differential_type[curr_reardifferential_type]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<reardifferential[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"ratio\" min=\"0\" max=\"10\" val=\""<<reardifferential[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"efficiency\" val=\""<<reardifferential[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"min torque bias\" val=\""<<reardifferential[3]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"max torque bias\" val=\""<<reardifferential[4]<<"\"/>	 " << endl;
+f << "	    <attstr name=\"type\" in=\"SPOOL,FREE,LIMITED SLIP\" val=\""<<cardata.differential_type[cardata.curr_reardifferential_type]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.reardifferential[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"ratio\" min=\"0\" max=\"10\" val=\""<<cardata.reardifferential[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"efficiency\" val=\""<<cardata.reardifferential[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"min torque bias\" val=\""<<cardata.reardifferential[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"max torque bias\" val=\""<<cardata.reardifferential[4]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Central Differential\">	 " << endl;
-f << "	    <attstr name=\"type\" in=\"SPOOL,FREE,LIMITED SLIP\" val=\""<<differential_type[curr_centraldifferential_type]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<centraldifferential[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"ratio\" min=\"0\" max=\"10\" val=\""<<centraldifferential[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"efficiency\" val=\""<<centraldifferential[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"min torque bias\" val=\""<<centraldifferential[3]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"max torque bias\" val=\""<<centraldifferential[4]<<"\"/>	 " << endl;
+f << "	    <attstr name=\"type\" in=\"SPOOL,FREE,LIMITED SLIP\" val=\""<<cardata.differential_type[cardata.curr_centraldifferential_type]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.centraldifferential[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"ratio\" min=\"0\" max=\"10\" val=\""<<cardata.centraldifferential[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"efficiency\" val=\""<<cardata.centraldifferential[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"min torque bias\" val=\""<<cardata.centraldifferential[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"max torque bias\" val=\""<<cardata.centraldifferential[4]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "	  <section name=\"Brake System\">	 " << endl;
-f << "	    <attnum name=\"front-rear brake repartition\" min=\"0.3\" max=\"0.7\" val=\""<<brakesystem[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"max pressure\" unit=\"kPa\" min=\"100\" max=\"150000\" val=\""<<brakesystem[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"front-rear brake repartition\" min=\"0.3\" max=\"0.7\" val=\""<<cardata.brakesystem[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"max pressure\" unit=\"kPa\" min=\"100\" max=\"150000\" val=\""<<cardata.brakesystem[1]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Front Axle\">	 " << endl;
-f << "	    <attnum name=\"xpos\" unit=\"m\" val=\""<<frontaxle[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<frontaxle[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"roll center height\" unit=\"m\" val=\""<<frontaxle[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"xpos\" unit=\"m\" val=\""<<cardata.frontaxle[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.frontaxle[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"roll center height\" unit=\"m\" val=\""<<cardata.frontaxle[2]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Rear Axle\">	 " << endl;
-f << "	    <attnum name=\"xpos\" unit=\"m\" val=\""<<rearaxle[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<rearaxle[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"roll center height\" unit=\"m\" val=\""<<rearaxle[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"xpos\" unit=\"m\" val=\""<<cardata.rearaxle[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.rearaxle[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"roll center height\" unit=\"m\" val=\""<<cardata.rearaxle[2]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Front Right Wheel\">	 " << endl;
-f << "	    <attnum name=\"ypos\" unit=\"m\" val=\""<<wheel1[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"rim diameter\" unit=\"in\" val=\""<<wheel1[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"tire width\" unit=\"mm\" val=\""<<wheel1[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"tire height-width ratio\" val=\""<<wheel1[3]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<wheel1[4]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"ypos\" unit=\"m\" val=\""<<cardata.wheel1[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"rim diameter\" unit=\"in\" val=\""<<cardata.wheel1[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"tire width\" unit=\"mm\" val=\""<<cardata.wheel1[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"tire height-width ratio\" val=\""<<cardata.wheel1[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.wheel1[4]<<"\"/>	 " << endl;
 f << "		 " << endl;
 f << "	    <!-- initial ride height -->	 " << endl;
-f << "	    <attnum name=\"ride height\" unit=\"mm\" min=\"100\" max=\"300\" val=\""<<wheel1[5]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"toe\" unit=\"deg\" min=\"-5\" max=\"5\" val=\""<<wheel1[6]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"camber\" min=\"-5\" max=\"0\" unit=\"deg\" val=\""<<wheel1[7]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"ride height\" unit=\"mm\" min=\"100\" max=\"300\" val=\""<<cardata.wheel1[5]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"toe\" unit=\"deg\" min=\"-5\" max=\"5\" val=\""<<cardata.wheel1[6]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"camber\" min=\"-5\" max=\"0\" unit=\"deg\" val=\""<<cardata.wheel1[7]<<"\"/>	 " << endl;
 f << "		 " << endl;
 f << "	    <!-- Adherence -->	 " << endl;
-f << "	    <attnum name=\"stiffness\" min=\"20.0\" max=\"50.0\" val=\""<<wheel1[8]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"dynamic friction\" unit=\"%\" min=\"80\" max=\"70\" val=\""<<wheel1[9]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"rolling resistance\" val=\""<<wheel1[10]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"mu\" min=\"0.05\" max=\"1.8\" val=\""<<wheel1[11]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"stiffness\" min=\"20.0\" max=\"50.0\" val=\""<<cardata.wheel1[8]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"dynamic friction\" unit=\"%\" min=\"80\" max=\"70\" val=\""<<cardata.wheel1[9]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"rolling resistance\" val=\""<<cardata.wheel1[10]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"mu\" min=\"0.05\" max=\"1.8\" val=\""<<cardata.wheel1[11]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Front Left Wheel\">	 " << endl;
-f << "	    <attnum name=\"ypos\" unit=\"m\" val=\""<<wheel2[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"rim diameter\" unit=\"in\" val=\""<<wheel2[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"tire width\" unit=\"mm\" val=\""<<wheel2[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"tire height-width ratio\" val=\""<<wheel2[3]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<wheel2[4]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"ypos\" unit=\"m\" val=\""<<cardata.wheel2[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"rim diameter\" unit=\"in\" val=\""<<cardata.wheel2[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"tire width\" unit=\"mm\" val=\""<<cardata.wheel2[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"tire height-width ratio\" val=\""<<cardata.wheel2[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.wheel2[4]<<"\"/>	 " << endl;
 f << "		 " << endl;
 f << "	    <!-- initial ride height -->	 " << endl;
-f << "	    <attnum name=\"ride height\" unit=\"mm\" min=\"100\" max=\"300\" val=\""<<wheel2[5]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"toe\" unit=\"deg\" min=\"-5\" max=\"5\" val=\""<<wheel2[6]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"camber\" min=\"-5\" max=\"0\" unit=\"deg\" val=\""<<wheel2[7]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"ride height\" unit=\"mm\" min=\"100\" max=\"300\" val=\""<<cardata.wheel2[5]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"toe\" unit=\"deg\" min=\"-5\" max=\"5\" val=\""<<cardata.wheel2[6]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"camber\" min=\"-5\" max=\"0\" unit=\"deg\" val=\""<<cardata.wheel2[7]<<"\"/>	 " << endl;
 f << "		 " << endl;
 f << "	    <!-- Adherence -->	 " << endl;
-f << "	    <attnum name=\"stiffness\" min=\"20.0\" max=\"50.0\" val=\""<<wheel2[8]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"dynamic friction\" unit=\"%\" min=\"80\" max=\"70\" val=\""<<wheel2[9]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"rolling resistance\" val=\""<<wheel2[10]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"mu\" min=\"0.05\" max=\"1.8\" val=\""<<wheel2[11]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"stiffness\" min=\"20.0\" max=\"50.0\" val=\""<<cardata.wheel2[8]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"dynamic friction\" unit=\"%\" min=\"80\" max=\"70\" val=\""<<cardata.wheel2[9]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"rolling resistance\" val=\""<<cardata.wheel2[10]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"mu\" min=\"0.05\" max=\"1.8\" val=\""<<cardata.wheel2[11]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Rear Right Wheel\">	 " << endl;
-f << "	    <attnum name=\"ypos\" unit=\"m\" val=\""<<wheel3[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"rim diameter\" unit=\"in\" val=\""<<wheel3[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"tire width\" unit=\"mm\" val=\""<<wheel3[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"tire height-width ratio\" val=\""<<wheel3[3]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<wheel3[4]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"ypos\" unit=\"m\" val=\""<<cardata.wheel3[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"rim diameter\" unit=\"in\" val=\""<<cardata.wheel3[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"tire width\" unit=\"mm\" val=\""<<cardata.wheel3[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"tire height-width ratio\" val=\""<<cardata.wheel3[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.wheel3[4]<<"\"/>	 " << endl;
 f << "		 " << endl;
 f << "	    <!-- initial ride height -->	 " << endl;
-f << "	    <attnum name=\"ride height\" unit=\"mm\" min=\"100\" max=\"300\" val=\""<<wheel3[5]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"toe\" unit=\"deg\" min=\"-5\" max=\"5\" val=\""<<wheel3[6]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"camber\" min=\"-5\" max=\"0\" unit=\"deg\" val=\""<<wheel3[7]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"ride height\" unit=\"mm\" min=\"100\" max=\"300\" val=\""<<cardata.wheel3[5]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"toe\" unit=\"deg\" min=\"-5\" max=\"5\" val=\""<<cardata.wheel3[6]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"camber\" min=\"-5\" max=\"0\" unit=\"deg\" val=\""<<cardata.wheel3[7]<<"\"/>	 " << endl;
 f << "		 " << endl;
 f << "	    <!-- Adherence -->	 " << endl;
-f << "	    <attnum name=\"stiffness\" min=\"20.0\" max=\"50.0\" val=\""<<wheel3[8]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"dynamic friction\" unit=\"%\" min=\"80\" max=\"70\" val=\""<<wheel3[9]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"rolling resistance\" val=\""<<wheel3[10]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"mu\" min=\"0.05\" max=\"1.8\" val=\""<<wheel3[11]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"stiffness\" min=\"20.0\" max=\"50.0\" val=\""<<cardata.wheel3[8]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"dynamic friction\" unit=\"%\" min=\"80\" max=\"70\" val=\""<<cardata.wheel3[9]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"rolling resistance\" val=\""<<cardata.wheel3[10]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"mu\" min=\"0.05\" max=\"1.8\" val=\""<<cardata.wheel3[11]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Rear Left Wheel\">	 " << endl;
-f << "	    <attnum name=\"ypos\" unit=\"m\" val=\""<<wheel4[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"rim diameter\" unit=\"in\" val=\""<<wheel4[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"tire width\" unit=\"mm\" val=\""<<wheel4[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"tire height-width ratio\" val=\""<<wheel4[3]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<wheel4[4]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"ypos\" unit=\"m\" val=\""<<cardata.wheel4[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"rim diameter\" unit=\"in\" val=\""<<cardata.wheel4[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"tire width\" unit=\"mm\" val=\""<<cardata.wheel4[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"tire height-width ratio\" val=\""<<cardata.wheel4[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.wheel4[4]<<"\"/>	 " << endl;
 f << "		 " << endl;
 f << "	    <!-- initial ride height -->	 " << endl;
-f << "	    <attnum name=\"ride height\" unit=\"mm\" min=\"100\" max=\"300\" val=\""<<wheel4[5]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"toe\" unit=\"deg\" min=\"-5\" max=\"5\" val=\""<<wheel4[6]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"camber\" min=\"-5\" max=\"0\" unit=\"deg\" val=\""<<wheel4[7]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"ride height\" unit=\"mm\" min=\"100\" max=\"300\" val=\""<<cardata.wheel4[5]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"toe\" unit=\"deg\" min=\"-5\" max=\"5\" val=\""<<cardata.wheel4[6]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"camber\" min=\"-5\" max=\"0\" unit=\"deg\" val=\""<<cardata.wheel4[7]<<"\"/>	 " << endl;
 f << "		 " << endl;
 f << "	    <!-- Adherence -->	 " << endl;
-f << "	    <attnum name=\"stiffness\" min=\"20.0\" max=\"50.0\" val=\""<<wheel4[8]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"dynamic friction\" unit=\"%\" min=\"80\" max=\"70\" val=\""<<wheel4[9]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"rolling resistance\" val=\""<<wheel4[10]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"mu\" min=\"0.05\" max=\"1.8\" val=\""<<wheel4[11]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"stiffness\" min=\"20.0\" max=\"50.0\" val=\""<<cardata.wheel4[8]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"dynamic friction\" unit=\"%\" min=\"80\" max=\"70\" val=\""<<cardata.wheel4[9]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"rolling resistance\" val=\""<<cardata.wheel4[10]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"mu\" min=\"0.05\" max=\"1.8\" val=\""<<cardata.wheel4[11]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Front Anti-Roll Bar\">	 " << endl;
-f << "	    <attnum name=\"spring\" unit=\"lbs/in\" min=\"0\" max=\"5000\" val=\""<<antirollbar1[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"suspension course\" unit=\"m\" min=\"0\" max=\"0.2\" val=\""<<antirollbar1[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"bellcrank\" min=\"1\" max=\"5\" val=\""<<antirollbar1[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"spring\" unit=\"lbs/in\" min=\"0\" max=\"5000\" val=\""<<cardata.antirollbar1[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"suspension course\" unit=\"m\" min=\"0\" max=\"0.2\" val=\""<<cardata.antirollbar1[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"bellcrank\" min=\"1\" max=\"5\" val=\""<<cardata.antirollbar1[2]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Rear Anti-Roll Bar\">	 " << endl;
-f << "	    <attnum name=\"spring\" unit=\"lbs/in\" min=\"0\" max=\"5000\" val=\""<<antirollbar2[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"suspension course\" unit=\"m\" min=\"0\" max=\"0.2\" val=\""<<antirollbar2[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"bellcrank\" min=\"1\" max=\"5\" val=\""<<antirollbar2[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"spring\" unit=\"lbs/in\" min=\"0\" max=\"5000\" val=\""<<cardata.antirollbar2[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"suspension course\" unit=\"m\" min=\"0\" max=\"0.2\" val=\""<<cardata.antirollbar2[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"bellcrank\" min=\"1\" max=\"5\" val=\""<<cardata.antirollbar2[2]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Front Right Suspension\">	 " << endl;
-f << "	    <attnum name=\"spring\" unit=\"lbs/in\" min=\"0\" max=\"10000\" val=\""<<suspension1[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"suspension course\" unit=\"m\" min=\"0\" max=\"0.2\" val=\""<<suspension1[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"bellcrank\" min=\"0.1\" max=\"5\" val=\""<<suspension1[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"packers\" unit=\"mm\" min=\"0\" max=\"10\" val=\""<<suspension1[3]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"slow bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension1[4]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"slow rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension1[5]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"fast bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension1[6]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"fast rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension1[7]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"spring\" unit=\"lbs/in\" min=\"0\" max=\"10000\" val=\""<<cardata.suspension1[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"suspension course\" unit=\"m\" min=\"0\" max=\"0.2\" val=\""<<cardata.suspension1[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"bellcrank\" min=\"0.1\" max=\"5\" val=\""<<cardata.suspension1[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"packers\" unit=\"mm\" min=\"0\" max=\"10\" val=\""<<cardata.suspension1[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"slow bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension1[4]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"slow rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension1[5]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"fast bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension1[6]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"fast rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension1[7]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Front Left Suspension\">	 " << endl;
-f << "	    <attnum name=\"spring\" unit=\"lbs/in\" min=\"0\" max=\"10000\" val=\""<<suspension2[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"suspension course\" unit=\"m\" min=\"0\" max=\"0.2\" val=\""<<suspension2[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"bellcrank\" min=\"0.1\" max=\"5\" val=\""<<suspension2[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"packers\" unit=\"mm\" min=\"0\" max=\"10\" val=\""<<suspension2[3]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"slow bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension2[4]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"slow rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension2[5]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"fast bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension2[6]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"fast rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension2[7]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"spring\" unit=\"lbs/in\" min=\"0\" max=\"10000\" val=\""<<cardata.suspension2[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"suspension course\" unit=\"m\" min=\"0\" max=\"0.2\" val=\""<<cardata.suspension2[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"bellcrank\" min=\"0.1\" max=\"5\" val=\""<<cardata.suspension2[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"packers\" unit=\"mm\" min=\"0\" max=\"10\" val=\""<<cardata.suspension2[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"slow bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension2[4]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"slow rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension2[5]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"fast bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension2[6]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"fast rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension2[7]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Rear Right Suspension\">	 " << endl;
-f << "	    <attnum name=\"spring\" unit=\"lbs/in\" min=\"0\" max=\"10000\" val=\""<<suspension3[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"suspension course\" unit=\"m\" min=\"0\" max=\"0.2\" val=\""<<suspension3[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"bellcrank\" min=\"0.1\" max=\"5\" val=\""<<suspension3[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"packers\" unit=\"mm\" min=\"0\" max=\"10\" val=\""<<suspension3[3]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"slow bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension3[4]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"slow rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension3[5]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"fast bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension3[6]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"fast rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension3[7]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"spring\" unit=\"lbs/in\" min=\"0\" max=\"10000\" val=\""<<cardata.suspension3[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"suspension course\" unit=\"m\" min=\"0\" max=\"0.2\" val=\""<<cardata.suspension3[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"bellcrank\" min=\"0.1\" max=\"5\" val=\""<<cardata.suspension3[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"packers\" unit=\"mm\" min=\"0\" max=\"10\" val=\""<<cardata.suspension3[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"slow bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension3[4]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"slow rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension3[5]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"fast bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension3[6]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"fast rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension3[7]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Rear Left Suspension\">	 " << endl;
-f << "	    <attnum name=\"spring\" unit=\"lbs/in\" min=\"0\" max=\"10000\" val=\""<<suspension4[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"suspension course\" unit=\"m\" min=\"0\" max=\"0.2\" val=\""<<suspension4[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"bellcrank\" min=\"0.1\" max=\"5\" val=\""<<suspension4[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"packers\" unit=\"mm\" min=\"0\" max=\"10\" val=\""<<suspension4[3]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"slow bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension4[4]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"slow rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension4[5]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"fast bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension4[6]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"fast rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<suspension4[7]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"spring\" unit=\"lbs/in\" min=\"0\" max=\"10000\" val=\""<<cardata.suspension4[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"suspension course\" unit=\"m\" min=\"0\" max=\"0.2\" val=\""<<cardata.suspension4[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"bellcrank\" min=\"0.1\" max=\"5\" val=\""<<cardata.suspension4[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"packers\" unit=\"mm\" min=\"0\" max=\"10\" val=\""<<cardata.suspension4[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"slow bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension4[4]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"slow rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension4[5]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"fast bump\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension4[6]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"fast rebound\" unit=\"lbs/in/s\" min=\"0\" max=\"1000\" val=\""<<cardata.suspension4[7]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Front Right Brake\">	 " << endl;
-f << "	    <attnum name=\"disk diameter\" unit=\"mm\" min=\"100\" max=\"380\" val=\""<<brake1[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"piston area\" unit=\"cm2\" val=\""<<brake1[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"mu\" val=\""<<brake1[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<brake1[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"disk diameter\" unit=\"mm\" min=\"100\" max=\"380\" val=\""<<cardata.brake1[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"piston area\" unit=\"cm2\" val=\""<<cardata.brake1[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"mu\" val=\""<<cardata.brake1[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.brake1[3]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Front Left Brake\">	 " << endl;
-f << "	    <attnum name=\"disk diameter\" unit=\"mm\" min=\"100\" max=\"380\" val=\""<<brake2[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"piston area\" unit=\"cm2\" val=\""<<brake2[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"mu\" val=\""<<brake2[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<brake2[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"disk diameter\" unit=\"mm\" min=\"100\" max=\"380\" val=\""<<cardata.brake2[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"piston area\" unit=\"cm2\" val=\""<<cardata.brake2[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"mu\" val=\""<<cardata.brake2[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.brake2[3]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Rear Right Brake\">	 " << endl;
-f << "	    <attnum name=\"disk diameter\" unit=\"mm\" min=\"100\" max=\"380\" val=\""<<brake3[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"piston area\" unit=\"cm2\" val=\""<<brake3[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"mu\" val=\""<<brake3[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<brake3[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"disk diameter\" unit=\"mm\" min=\"100\" max=\"380\" val=\""<<cardata.brake3[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"piston area\" unit=\"cm2\" val=\""<<cardata.brake3[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"mu\" val=\""<<cardata.brake3[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.brake3[3]<<"\"/>	 " << endl;
 f << "	  </section>	 " << endl;
 f << "		 " << endl;
 f << "	  <section name=\"Rear Left Brake\">	 " << endl;
-f << "	    <attnum name=\"disk diameter\" unit=\"mm\" min=\"100\" max=\"380\" val=\""<<brake4[0]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"piston area\" unit=\"cm2\" val=\""<<brake4[1]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"mu\" val=\""<<brake4[2]<<"\"/>	 " << endl;
-f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<brake4[3]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"disk diameter\" unit=\"mm\" min=\"100\" max=\"380\" val=\""<<cardata.brake4[0]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"piston area\" unit=\"cm2\" val=\""<<cardata.brake4[1]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"mu\" val=\""<<cardata.brake4[2]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"inertia\" unit=\"kg.m2\" val=\""<<cardata.brake4[3]<<"\"/>	 " << endl;
 f << "	  </section>" << endl;
 f << "	</params>" << endl;
 
 
 
     f.close();  //cierre del fichero
-    cout << "File expoted:" << carname << ".xml" << endl;
+    cout << "File expoted:" << cardata.carname << ".xml" << endl;
     cout << "on: " << fichero << endl;
-        
+
     text1 = "Exported:";
     text1 += fichero;
 
     glutSetWindow(main_window);
     glutPostRedisplay();
-    }    
-  //Impressió de resultats en el fitxer d'eixida. 
+    }
+  //Impressió de resultats en el fitxer d'eixida.
 }
 
 
@@ -926,9 +931,9 @@ char textdata2[150];
 
            fichero4[0]='\0';
            strcat(fichero4,"../cars/");
-           strcat(fichero4,carname.c_str());
+           strcat(fichero4,cardata.carname.c_str());
            strcat(fichero4,"/");
-           strcat(fichero4,carname.c_str());
+           strcat(fichero4,cardata.carname.c_str());
            strcat(fichero4,".xml");
 
 
@@ -938,7 +943,7 @@ char textdata2[150];
     if(!f)
         cout << "Error opening the file " << fichero4 << endl;
     else
-    {    
+    {
     /* read the data of the xml file */
     while (!f.eof()!=0)
         {
@@ -952,10 +957,10 @@ char textdata2[150];
     }
 
 /** SAVE THE BACKUP **/
-           
+
            fichero4[0]='\0';
            strcat(fichero4,"xml-backups/");
-           strcat(fichero4,carname.c_str());
+           strcat(fichero4,cardata.carname.c_str());
            makedir(fichero4);
            strcat(fichero4,"/");
 
@@ -963,40 +968,40 @@ char textdata2[150];
            tAct = time(NULL);
            timetorcs = asctime(localtime(&tAct));
            timetorcs = timetorcs.substr(0,timetorcs.size()-1);
-           
+
            int k;
            for (k=0; k <timetorcs.size(); k++)
            {
                if (timetorcs.at(k)==' ' || timetorcs.at(k)==':')
                timetorcs.at(k)='-';
-           }    
-       
-           strcat(fichero4,carname.c_str());
+           }
+
+           strcat(fichero4,cardata.carname.c_str());
            strcat(fichero4,"-");
            strcat(fichero4,timetorcs.c_str());
            strcat(fichero4,".xml");
-                   
+
 
     ofstream f2;  //fichero de salid
     f2.open(fichero4);  //apertura del fichero o creacción si no existe
     if(!f2)
         cout << "Error opening the file " << fichero4 << endl;
     else
-    {    
+    {
     /* WRITHE the data in the xml file */
     int k = 0;
     while ( k < xmlLine.size() )
         {
             f2 <<  xmlLine[k] << endl;
             k++;
-        }    
+        }
 
 
     cout << "Created backup: " << fichero4  << endl;
 
-    
+
     f2.close();
     }
 
-        
+
 }

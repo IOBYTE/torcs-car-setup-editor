@@ -33,6 +33,7 @@ float CVW = 735.49875;
 #define HPW 745.69872
 */
 
+extern CarData cardata;
 extern float tqmax;
 extern float cvmax;
 extern float cvmaxY;
@@ -53,10 +54,10 @@ int calcEnginePointsLesRL (void)
 {
     int i=0;
     int points = 21;
-    
+
     while (i < 21)
     {
-        if ( rpmValue[i] >= engineparams[2] )
+        if ( cardata.rpmValue[i] >= cardata.engineparams[2] )
             {
               points = i;
               return points;
@@ -64,18 +65,18 @@ int calcEnginePointsLesRL (void)
             }
         i++;
     }
-    return points;    
-}    
+    return points;
+}
 
 /* calculation of the number of points before the revs maxi */
 int calcEnginePointsLesRM (void)
 {
     int i=0;
     int points = 21;
-    
+
     while (i < 21)
     {
-        if ( rpmValue[i] >= engineparams[1] )
+        if ( cardata.rpmValue[i] >= cardata.engineparams[1] )
             {
               points = i;
               return points;
@@ -83,8 +84,8 @@ int calcEnginePointsLesRM (void)
             }
         i++;
     }
-    return points;    
-} 
+    return points;
+}
 
 /* interpolating tq and hp data*/
 float interpolationTQCV (float vectx[50], float vecty[50], float vectx0)
@@ -93,21 +94,21 @@ float interpolationTQCV (float vectx[50], float vecty[50], float vectx0)
     int i = 0;
     while (i < 20)
     {
-        if (vectx0 >= vectx[i] && vectx0 <= vectx[i+1]) 
+        if (vectx0 >= vectx[i] && vectx0 <= vectx[i+1])
         {
             vecty0 = vecty[i] + ( (vecty[i+1]-vecty[i]) / (vectx[i+1]-vectx[i]+0.000000001) ) * (vectx0-vectx[i]);
             break;
         }
-        if (vectx0 == vectx[i]) 
+        if (vectx0 == vectx[i])
         {
             vecty0 = vecty[i];
             break;
-        }        
+        }
         i++;
     }
-    
+
     return vecty0;
-} 
+}
 
 float interpolationTQCV (float vectx[50], float vecty[50], float vectx0, int imax)
 {
@@ -115,19 +116,19 @@ float interpolationTQCV (float vectx[50], float vecty[50], float vectx0, int ima
     int i = 0 ;
     while (i < imax)
     {
-        if (vectx0 >= vectx[i] && vectx0 <= vectx[i+1]) 
+        if (vectx0 >= vectx[i] && vectx0 <= vectx[i+1])
         {
             vecty0 = vecty[i] + ( (vecty[i+1]-vecty[i]) / (vectx[i+1]-vectx[i]+0.000000001) ) * (vectx0-vectx[i]);
             break;
         }
-        if (vectx0 == vectx[i]) 
+        if (vectx0 == vectx[i])
         {
             vecty0 = vecty[i];
             break;
-        }        
+        }
         i++;
     }
-    
+
     return vecty0;
 }
 
@@ -158,31 +159,31 @@ float CalcMaxEngine(float vector[TAM], float vector2[TAM],int init, int tamv, fl
           min = vector[i];
          }
      }
-     
+
      if (real==1)
      {
          int points = calcEnginePointsLesRL ();
-         
-         if (  revs > engineparams[2] )
-         {   
-             revs = engineparams[2];
-                     
+
+         if (  revs > cardata.engineparams[2] )
+         {
+             revs = cardata.engineparams[2];
+
                 int i = 0 ;
                 while (i < 20)
                 {
-                    if (engineparams[2] >= vector2[i] && engineparams[2] <= vector2[i+1]) 
+                    if (cardata.engineparams[2] >= vector2[i] && cardata.engineparams[2] <= vector2[i+1])
                     {
-                        max=vector[i]+((vector[i+1]-vector[i])/(vector2[i+1]-vector2[i]))*(engineparams[2]-vector2[i]);
+                        max=vector[i]+((vector[i+1]-vector[i])/(vector2[i+1]-vector2[i]))*(cardata.engineparams[2]-vector2[i]);
                         break;
                     }
-                           
+
                     i++;
                 }
-        
-         }    
+
+         }
      }
-    
-             
+
+
      return max;
 }
 /*---------------------------Max Engine---------------------------------*/
@@ -219,58 +220,58 @@ float CalcMax(float vector[TAM], int tamv)
      switch ( i )
      {
          case 0:  break;
-         case 1:  if (gearboxratio[i] < gearboxratio[i+1]) 
-                  gearboxratio[i] = gearboxratio[i+1]+0.001;
+         case 1:  if (cardata.gearboxratio[i] < cardata.gearboxratio[i+1])
+                  cardata.gearboxratio[i] = cardata.gearboxratio[i+1]+0.001;
                   break;
-         case 2:  if (gearboxratio[i] < gearboxratio[i+1]) 
-                  gearboxratio[i] = gearboxratio[i+1]+0.001;
-                  if (gearboxratio[i] > gearboxratio[i-1]) 
-                  gearboxratio[i] = gearboxratio[i-1]-0.001;
+         case 2:  if (cardata.gearboxratio[i] < cardata.gearboxratio[i+1])
+                  cardata.gearboxratio[i] = cardata.gearboxratio[i+1]+0.001;
+                  if (cardata.gearboxratio[i] > cardata.gearboxratio[i-1])
+                  cardata.gearboxratio[i] = cardata.gearboxratio[i-1]-0.001;
                   break;
-         case 3:  if (gearboxratio[i] < gearboxratio[i+1]) 
-                  gearboxratio[i] = gearboxratio[i+1]+0.001;
-                  if (gearboxratio[i] > gearboxratio[i-1]) 
-                  gearboxratio[i] = gearboxratio[i-1]-0.001;
+         case 3:  if (cardata.gearboxratio[i] < cardata.gearboxratio[i+1])
+                  cardata.gearboxratio[i] = cardata.gearboxratio[i+1]+0.001;
+                  if (cardata.gearboxratio[i] > cardata.gearboxratio[i-1])
+                  cardata.gearboxratio[i] = cardata.gearboxratio[i-1]-0.001;
                   break;
-         case 4:  if (gearboxratio[i] < gearboxratio[i+1]) 
-                  gearboxratio[i] = gearboxratio[i+1]+0.001;
-                  if (gearboxratio[i] > gearboxratio[i-1]) 
-                  gearboxratio[i] = gearboxratio[i-1]-0.001;
+         case 4:  if (cardata.gearboxratio[i] < cardata.gearboxratio[i+1])
+                  cardata.gearboxratio[i] = cardata.gearboxratio[i+1]+0.001;
+                  if (cardata.gearboxratio[i] > cardata.gearboxratio[i-1])
+                  cardata.gearboxratio[i] = cardata.gearboxratio[i-1]-0.001;
                   break;
-         case 5:  if (gearboxratio[i] < gearboxratio[i+1]) 
-                  gearboxratio[i] = gearboxratio[i+1]+0.001;
-                  if (gearboxratio[i] > gearboxratio[i-1]) 
-                  gearboxratio[i] = gearboxratio[i-1]-0.001;
+         case 5:  if (cardata.gearboxratio[i] < cardata.gearboxratio[i+1])
+                  cardata.gearboxratio[i] = cardata.gearboxratio[i+1]+0.001;
+                  if (cardata.gearboxratio[i] > cardata.gearboxratio[i-1])
+                  cardata.gearboxratio[i] = cardata.gearboxratio[i-1]-0.001;
                   break;
-         case 6:  if (gearboxratio[i] < gearboxratio[i+1]) 
-                  gearboxratio[i] = gearboxratio[i+1]+0.001;
-                  if (gearboxratio[i] > gearboxratio[i-1]) 
-                  gearboxratio[i] = gearboxratio[i-1]-0.001;
+         case 6:  if (cardata.gearboxratio[i] < cardata.gearboxratio[i+1])
+                  cardata.gearboxratio[i] = cardata.gearboxratio[i+1]+0.001;
+                  if (cardata.gearboxratio[i] > cardata.gearboxratio[i-1])
+                  cardata.gearboxratio[i] = cardata.gearboxratio[i-1]-0.001;
                   break;
-         case 7:  if (gearboxratio[i] > gearboxratio[i-1]) 
-                  gearboxratio[i] = gearboxratio[i-1]-0.001;
+         case 7:  if (cardata.gearboxratio[i] > cardata.gearboxratio[i-1])
+                  cardata.gearboxratio[i] = cardata.gearboxratio[i-1]-0.001;
                   break;
      }
-     
+
      gearboxRatioSpeed ( 1 );
-     GLUI_Master.sync_live_all();    
- } 
+     GLUI_Master.sync_live_all();
+ }
 
  /* rpm  */
 
  void CalcRPM( int i )
  {
   if (i == 0)
-    if (rpmValue[i] > rpmValue[i+1]) rpmValue[i] = rpmValue[i+1]-1;
+    if (cardata.rpmValue[i] > cardata.rpmValue[i+1]) cardata.rpmValue[i] = cardata.rpmValue[i+1]-1;
   if (i == 20)
-    if (rpmValue[i] < rpmValue[i-1]) rpmValue[i] = rpmValue[i-1]+1;
+    if (cardata.rpmValue[i] < cardata.rpmValue[i-1]) cardata.rpmValue[i] = cardata.rpmValue[i-1]+1;
   if ( i > 0 && i < 20 )
     {
-      if (rpmValue[i] > rpmValue[i+1]) rpmValue[i] = rpmValue[i+1]-1;
-      if (rpmValue[i] < rpmValue[i-1]) rpmValue[i] = rpmValue[i-1]+1;
-    }       
-    GLUI_Master.sync_live_all();    
- }    
+      if (cardata.rpmValue[i] > cardata.rpmValue[i+1]) cardata.rpmValue[i] = cardata.rpmValue[i+1]-1;
+      if (cardata.rpmValue[i] < cardata.rpmValue[i-1]) cardata.rpmValue[i] = cardata.rpmValue[i-1]+1;
+    }
+    GLUI_Master.sync_live_all();
+ }
 
 
 
@@ -279,36 +280,36 @@ float CalcMax(float vector[TAM], int tamv)
  void CalcCV(void)
  {
         int i;
-        cvValue[0] = 0.0;   
-                
+        cardata.cvValue[0] = 0.0;
+
         for (i=0; i < 20; i++)
         {
-            if (rpmValue[i] > rpmValue[i+1])
-            { 
-              rpmValue[i] = rpmValue[i+1]-1;
+            if (cardata.rpmValue[i] > cardata.rpmValue[i+1])
+            {
+              cardata.rpmValue[i] = cardata.rpmValue[i+1]-1;
             }
         }
         for (i=1; i < 21; i++)
         {
-            if (rpmValue[i] < rpmValue[i-1])
-            { 
-              rpmValue[i] = rpmValue[i-1]+1;
+            if (cardata.rpmValue[i] < cardata.rpmValue[i-1])
+            {
+              cardata.rpmValue[i] = cardata.rpmValue[i-1]+1;
             }
         }
 
         for (i=1; i < 21; i++)
         {
-            cvValue[i] = tqValue[i]*rpmValue[i]*2*3.141592654/(60*CVW);
+            cardata.cvValue[i] = cardata.tqValue[i]*cardata.rpmValue[i]*2*3.141592654/(60*CVW);
         }
-        
+
         /* calc the max values of cv and tq under the revs lim */
         int points = calcEnginePointsLesRL ();
-        
-        cvmaxY = CalcMaxEngine(cvValue,rpmValue,1,21,rpmatcvmaxY,0);
-        revsmax = CalcMax(rpmValue,21);
-        cvmax = CalcMaxEngine(cvValue,rpmValue,1,points,rpmatcvmax,1);
-        tqmax = CalcMaxEngine(tqValue,rpmValue,1,points,rpmattqmax,1);
-        
+
+        cvmaxY = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,21,rpmatcvmaxY,0);
+        revsmax = CalcMax(cardata.rpmValue,21);
+        cvmax = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,points,rpmatcvmax,1);
+        tqmax = CalcMaxEngine(cardata.tqValue,cardata.rpmValue,1,points,rpmattqmax,1);
+
         GLUI_Master.sync_live_all();
  }
 
@@ -317,32 +318,32 @@ void CalcCVTQmax ( void )
 
         /* calc the max values of cv and tq under the revs lim */
         int points = calcEnginePointsLesRL ();
-        
-        cvmaxY = CalcMaxEngine(cvValue,rpmValue,1,21,rpmatcvmaxY,0);
-        revsmax = CalcMax(rpmValue,21);
-        cvmax = CalcMaxEngine(cvValue,rpmValue,1,points,rpmatcvmax,1);
-        tqmax = CalcMaxEngine(tqValue,rpmValue,1,points,rpmattqmax,1);
-        
+
+        cvmaxY = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,21,rpmatcvmaxY,0);
+        revsmax = CalcMax(cardata.rpmValue,21);
+        cvmax = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,points,rpmatcvmax,1);
+        tqmax = CalcMaxEngine(cardata.tqValue,cardata.rpmValue,1,points,rpmattqmax,1);
+
         GLUI_Master.sync_live_all();
-    
-}    
+
+}
 
  void CalcTQ(void)
  {
-        tqValue[0]=0.0;
+        cardata.tqValue[0]=0.0;
         int i;
         for (i=1; i < 21; i++)
         {
-            tqValue[i] = cvValue[i] / (rpmValue[i]*2*3.141592654/(60*CVW));
+            cardata.tqValue[i] = cardata.cvValue[i] / (cardata.rpmValue[i]*2*3.141592654/(60*CVW));
         }
         /* calc the max values of cv and tq under the revs lim */
         int points = calcEnginePointsLesRL ();
-        
-        cvmaxY = CalcMaxEngine(cvValue,rpmValue,1,21,rpmatcvmaxY,0);
-        revsmax = CalcMax(rpmValue,21);
-        cvmax = CalcMaxEngine(cvValue,rpmValue,1,points,rpmatcvmax,1);
-        tqmax = CalcMaxEngine(tqValue,rpmValue,1,points,rpmattqmax,1);
-        
+
+        cvmaxY = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,21,rpmatcvmaxY,0);
+        revsmax = CalcMax(cardata.rpmValue,21);
+        cvmax = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,points,rpmatcvmax,1);
+        tqmax = CalcMaxEngine(cardata.tqValue,cardata.rpmValue,1,points,rpmattqmax,1);
+
         GLUI_Master.sync_live_all();
  }
 
@@ -358,34 +359,34 @@ void scaleAllEnginePoints ( int k )
   float rpmatcvmax;
   float tqmax;
   float rpmattqmax;
-  
+
   int points = calcEnginePointsLesRM ();
-  
+
 switch (k)
 {
 case 1: /* cv */
   /* calc the max of cv in all the range*/
-  cvmax = CalcMaxEngine(cvValue,rpmValue,1,points,rpmatcvmax,0);
+  cvmax = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,points,rpmatcvmax,0);
   //cout << "cvmax: " << cvmax << "at rpm:"<< rpmatcvmax <<endl;
   /* update all engine points */
   for (i=0;i<21;i++)
   {
-     cvValue[i]=cvValue[i]*cvmaxNew/cvmax;
+     cardata.cvValue[i]=cardata.cvValue[i]*cvmaxNew/cvmax;
   }
-  CalcTQ();    
-    
+  CalcTQ();
+
 break;
 
 case 2: /* tq */
   /* calc the max of tq in all the range*/
-  tqmax = CalcMaxEngine(tqValue,rpmValue,1,points,rpmattqmax,0);
+  tqmax = CalcMaxEngine(cardata.tqValue,cardata.rpmValue,1,points,rpmattqmax,0);
   /* update all engine points */
   for (i=0;i<21;i++)
   {
-     tqValue[i]=tqValue[i]*tqmaxNew/tqmax;
+     cardata.tqValue[i]=cardata.tqValue[i]*tqmaxNew/tqmax;
   }
   CalcCV();
-  
+
 break;
 
 case 3: /* tq */
@@ -393,10 +394,10 @@ case 3: /* tq */
   /* update all engine points */
   for (i=0;i<21;i++)
   {
-     tqValue[i]=tqctNew;
+     cardata.tqValue[i]=tqctNew;
   }
   CalcCV();
-  
+
 break;
 
 case 4: /* cv */
@@ -404,17 +405,17 @@ case 4: /* cv */
   /* update all engine points */
   for (i=0;i<21;i++)
   {
-     cvValue[i]=cvctNew;
+     cardata.cvValue[i]=cvctNew;
   }
   CalcTQ();
-  
+
 break;
 
-}    
+}
 
 GLUI_Master.sync_live_all();
 
-}    
+}
 
 
 /*  modifyShapeOfEnginePoints */
@@ -459,18 +460,18 @@ switch ( k )
 {
 case 1:
     /* calc the cv imax */
-    CalcMaxEngine2(cvValue,rpmValue,cvimax);
+    CalcMaxEngine2(cardata.cvValue,cardata.rpmValue,cvimax);
     if (cvimax>21) cvimax = 21;
     if (cvimax<0) cvimax = 0;
-    
-    cvValue[0]=0.0;
-    
+
+    cardata.cvValue[0]=0.0;
+
     factorCount = 0;
     for (i=cvimax+1;i<21;i++)
-    {        
-       cvValue[i]=cvValue[i]+factor;
-    }    
-    
+    {
+       cardata.cvValue[i]=cardata.cvValue[i]+factor;
+    }
+
     factorCount = 0;
     for (i=cvimax;i>0;i--)
     {
@@ -478,49 +479,49 @@ case 1:
           factor = -5.0*i;
        }
        else{
-          factor = -1.0*i;  
+          factor = -1.0*i;
        }
-            
-       newCVvalue=cvValue[i]+factor;
-       
-       cvValue[i] = newCVvalue;
-       
+
+       newCVvalue=cardata.cvValue[i]+factor;
+
+       cardata.cvValue[i] = newCVvalue;
+
        ++factorCount;
     }
-    
+
     CalcTQ();
 break;
 
 case 2:
     for (i=0;i<21;i++)
-    {        
+    {
        //cvValue[i]=10.0+15.1289*i+6.4029*pow(i,2)-0.2431*pow(i,3);
-       cvValue[i]=cvEngineShape[0]+cvEngineShape[1]*i+cvEngineShape[2]*pow((float)i,2)+cvEngineShape[3]*pow((float)i,3);
-       if (cvValue[i]<0.0) cvValue[i]=0.0;
-       rpmValue[i]=1000.0*i;
+       cardata.cvValue[i]=cvEngineShape[0]+cvEngineShape[1]*i+cvEngineShape[2]*pow((float)i,2)+cvEngineShape[3]*pow((float)i,3);
+       if (cardata.cvValue[i]<0.0) cardata.cvValue[i]=0.0;
+       cardata.rpmValue[i]=1000.0*i;
     }
-    
+
     scaleAllEnginePoints ( 1 );
-        
+
     CalcTQ();
 
 break;
 
 case 3: /* change the rpmengine points */
     for (i=0;i<21;i++)
-    {        
-       rpmValue[i]=engineparams[1]/20.0*i;
+    {
+       cardata.rpmValue[i]=cardata.engineparams[1]/20.0*i;
     }
 break;
 
 }
-   
+
 GLUI_Master.sync_live_all();
-    
-}    
+
+}
 
 extern GLUI_Spinner *revsLimiterSpinner;
 void setRevsLimiterLimits ( void )
 {
-    revsLimiterSpinner -> set_float_limits( engineparams[3], engineparams[1] );
-}    
+    revsLimiterSpinner -> set_float_limits( cardata.engineparams[3], cardata.engineparams[1] );
+}

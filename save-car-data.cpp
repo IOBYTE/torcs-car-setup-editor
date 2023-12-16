@@ -17,11 +17,15 @@
 #include <iostream>
 #include <fstream>
 #include <time.h>
+
 #include "cardata.h"
 #include "portability.h"
 
 using namespace std;
 
+extern std::string text1;
+extern int   main_window;
+extern CarData cardata;
 extern std::string trackname;
 extern float TCSE_version;
 
@@ -43,7 +47,7 @@ void printVal (std::string section, float vect[100], int imax)
     }
     f << endl;
     f.close();
-    }         
+    }
 }
 
 void printVi (std::string section, int vect[100], int imax)
@@ -61,7 +65,7 @@ void printVi (std::string section, int vect[100], int imax)
     f << vect[i] << " ";
     }
     f.close();
-    }         
+    }
 }
 
 void printVali (std::string section, int value)
@@ -76,8 +80,8 @@ void printVali (std::string section, int value)
     f << section << endl;
     f << value << endl;
     f.close();
-    }         
-} 
+    }
+}
 
 void printValf (std::string section, float value)
 {
@@ -91,8 +95,8 @@ void printValf (std::string section, float value)
     f << section << endl;
     f << value << endl;
     f.close();
-    }         
-} 
+    }
+}
 
 void printChar (std::string section, char vect[100])
 {
@@ -106,8 +110,8 @@ void printChar (std::string section, char vect[100])
     f << section << endl;
     f << vect << endl;
     f.close();
-    }         
-}         
+    }
+}
 
 
 
@@ -123,7 +127,7 @@ void printStr (std::string section, std::string mystring)
     f << section << endl;
     f << mystring << endl;
     f.close();
-    }         
+    }
 }
 
 
@@ -134,174 +138,174 @@ void savecardata( int i )
        case 1:
            fichero2[0]='\0';
            strcat(fichero2,"car-setups/");
-           strcat(fichero2,carname.c_str());
+           strcat(fichero2,cardata.carname.c_str());
            strcat(fichero2,"/");
            makedir(fichero2);
-           strcat(fichero2,carname.c_str());
+           strcat(fichero2,cardata.carname.c_str());
            strcat(fichero2,".txt");
            break;
        case 2:
            fichero2[0]='\0';
            strcat(fichero2,"car-setups/");
-           strcat(fichero2,carname.c_str());
+           strcat(fichero2,cardata.carname.c_str());
            strcat(fichero2,"/");
            makedir(fichero2);
-           strcat(fichero2,carname.c_str());
+           strcat(fichero2,cardata.carname.c_str());
            strcat(fichero2,"_");
            strcat(fichero2,trackname.c_str());
            strcat(fichero2,".txt");
            break;
-    }    
-    
+    }
+
     ofstream f;  //fichero de salid
 
     f.open(fichero2);  //apertura del fichero o creacción si no existe
     if(!f)
         cout << "Error obrint el fitxer" << endl;
     else
-    {          
+    {
     switch ( i )
     {
        case 1:
-            f << carname <<  " car-data-created-by-Torcs-Car-Setup-Editor" << endl;
+            f << cardata.carname <<  " car-data-created-by-Torcs-Car-Setup-Editor" << endl;
             break;
        case 2:
-            f << carname << " for track "<< trackname <<  " car-data-created-by-Torcs-Car-Setup-Editor" << endl;
+            f << cardata.carname << " for track "<< trackname <<  " car-data-created-by-Torcs-Car-Setup-Editor" << endl;
             break;
     }
     f.close();
     }
     printValf("#TorcsCarSetupEditorVersion",TCSE_version);
-    printStr("#carname",carname);  
-    printVal("#engineparams",engineparams,5);
-    printValf("engineCapacity", engineCapacity);
-    printStr("#engineCapacityUnits", engine_capacity_units[curr_engine_capacity_units]);
-    printVali("#engineCylinders", engineCylinders);
-    printStr("#engineShape", engine_shape[curr_engine_shape]);
-    printStr("#enginePosition", engine_position[curr_engine_position]);	 
-    printValf("brakeLinearCoefficient", brakeLinearCoefficient);
-    printValf("brakeCoefficient", brakeCoefficient);
-    printVal("#rpmValue",rpmValue,21);
-    printVal("#tqValue",tqValue,21);
-    printVali("#turboS",turboS);
-    printVal("#turbo",turbo,3);
-    printVali("#numberOfGears",numberOfGears);
-    printValf("#gearbox_shift_time",gearbox_shift_time);
-    printVal("#gearboxratio",gearboxratio,8);
-    printVal("#gearboxinertia",gearboxinertia,9);
-    printVal("#gearboxefficiency",gearboxefficiency,8); 
-    printVal("#antirollbar1",antirollbar1,3);
-    printVal("#antirollbar2",antirollbar2,3);
-    printVal("#suspension1",suspension1,8);
-    printVal("#suspension2",suspension2,8);
-    printVal("#suspension3",suspension3,8);
-    printVal("#suspension4",suspension4,8);
-    printVal("#aerodynamics",aerodynamics,4);
-    printVal("#frontwing",frontwing,4);
-    printVal("#rearwing",rearwing,4);
-    printVal("#massdata",massdata,8);
-    printVal("#brakesystem",brakesystem,2);
-    printVal("#brake1",brake1,4);
-    printVal("#brake2",brake2,4);
-    printVal("#brake3",brake3,4);
-    printVal("#brake4",brake4,4);
-    printVal("#wheel1",wheel1,12);
-    printVal("#wheel2",wheel2,12);
-    printVal("#wheel3",wheel3,12);
-    printVal("#wheel4",wheel4,12);
-    printVal("#steer",steer,2);
-    printVali("#curr_drivetrain_type",curr_drivetrain_type);
-    printValf("#drivetrain",drivetrain);
-    printVali("#curr_frontdifferential_type",curr_frontdifferential_type);
-    printVal("#frontifferential",frontdifferential,5);
-    printVali("#curr_reardifferential_type",curr_reardifferential_type);
-    printVal("#reardifferential",reardifferential,5);
-    printVali("#curr_centraldifferential_type",curr_centraldifferential_type);
-    printVal("#centraldifferential",centraldifferential,5);
-    printVal("#frontaxle",frontaxle,3);
-    printVal("#rearaxle",rearaxle,3);
-    printStr("#enginesample",enginesample);
-    printValf("#rmpscale",rmpscale);
-    printStr("#wheelTexture",wheelTexture);
-    printStr("#shadowTexture",shadowTexture);
-    printStr("#tachometerTexture",tachometerTexture);
-    printStr("#speedometerTexture",speedometerTexture);
-    printStr("#graphicenv",graphicenv);
-    printVi("#tachometerMinMax",tachometerMinMax,2);
-    printVi("#speedometerMinMax",speedometerMinMax,2);
-    printStr("#carRange1",carRange1);
-    printStr("#carRange2",carRange2);
-    printStr("#carRange3",carRange3);
-    printStr("#carRange4",carRange4);
-    printStr("#carRange5",carRange5);
-    
-    printVali("#carRange1data",carRange1dataA);
-    printVali("#carRange1data",carRange1dataB);
-    printVali("#carRange1data",carRange1dataC);
-        
-    printVali("#carRange2data",carRange2dataA);
-    printVali("#carRange2data",carRange2dataB);
-    printVali("#carRange2data",carRange2dataC);
-    
-    printVali("#carRange3data",carRange3dataA);
-    printVali("#carRange3data",carRange3dataB);
-    printVali("#carRange3data",carRange3dataC);
-    
-    printVali("#carRange4data",carRange4dataA);
-    printVali("#carRange4data",carRange4dataB);
-    printVali("#carRange4data",carRange4dataC);
-    
-    printVali("#carRange5data",carRange5dataA);
-    printVali("#carRange5data",carRange5dataB);
-    printVali("#carRange5data",carRange5dataC);
-    
-    printVal("#bonnetPosition",bonnetPosition,3);
-    printVal("#driverPosition",driverPosition,3);
-    printStr("#carCategory",carCategory);
-    printVal("#carBodyDimensions",carBodyDimensions,3);
-    printVal("#carOverallDimensions",carOverallDimensions,2);
+    printStr("#carname",cardata.carname);
+    printVal("#engineparams",cardata.engineparams,5);
+    printValf("engineCapacity", cardata.engineCapacity);
+    printStr("#engineCapacityUnits", cardata.engine_capacity_units[cardata.curr_engine_capacity_units]);
+    printVali("#engineCylinders", cardata.engineCylinders);
+    printStr("#engineShape", cardata.engine_shape[cardata.curr_engine_shape]);
+    printStr("#enginePosition", cardata.engine_position[cardata.curr_engine_position]);
+    printValf("brakeLinearCoefficient", cardata.brakeLinearCoefficient);
+    printValf("brakeCoefficient", cardata.brakeCoefficient);
+    printVal("#rpmValue",cardata.rpmValue,21);
+    printVal("#tqValue",cardata.tqValue,21);
+    printVali("#turboS",cardata.turboS);
+    printVal("#turbo",cardata.turbo,3);
+    printVali("#numberOfGears",cardata.numberOfGears);
+    printValf("#gearbox_shift_time",cardata.gearbox_shift_time);
+    printVal("#gearboxratio",cardata.gearboxratio,8);
+    printVal("#gearboxinertia",cardata.gearboxinertia,9);
+    printVal("#gearboxefficiency",cardata.gearboxefficiency,8);
+    printVal("#antirollbar1",cardata.antirollbar1,3);
+    printVal("#antirollbar2",cardata.antirollbar2,3);
+    printVal("#suspension1",cardata.suspension1,8);
+    printVal("#suspension2",cardata.suspension2,8);
+    printVal("#suspension3",cardata.suspension3,8);
+    printVal("#suspension4",cardata.suspension4,8);
+    printVal("#aerodynamics",cardata.aerodynamics,4);
+    printVal("#frontwing",cardata.frontwing,4);
+    printVal("#rearwing",cardata.rearwing,4);
+    printVal("#massdata",cardata.massdata,8);
+    printVal("#brakesystem",cardata.brakesystem,2);
+    printVal("#brake1",cardata.brake1,4);
+    printVal("#brake2",cardata.brake2,4);
+    printVal("#brake3",cardata.brake3,4);
+    printVal("#brake4",cardata.brake4,4);
+    printVal("#wheel1",cardata.wheel1,12);
+    printVal("#wheel2",cardata.wheel2,12);
+    printVal("#wheel3",cardata.wheel3,12);
+    printVal("#wheel4",cardata.wheel4,12);
+    printVal("#steer",cardata.steer,2);
+    printVali("#curr_drivetrain_type",cardata.curr_drivetrain_type);
+    printValf("#drivetrain",cardata.drivetrain);
+    printVali("#curr_frontdifferential_type",cardata.curr_frontdifferential_type);
+    printVal("#frontifferential",cardata.frontdifferential,5);
+    printVali("#curr_reardifferential_type",cardata.curr_reardifferential_type);
+    printVal("#reardifferential",cardata.reardifferential,5);
+    printVali("#curr_centraldifferential_type",cardata.curr_centraldifferential_type);
+    printVal("#centraldifferential",cardata.centraldifferential,5);
+    printVal("#frontaxle",cardata.frontaxle,3);
+    printVal("#rearaxle",cardata.rearaxle,3);
+    printStr("#enginesample",cardata.enginesample);
+    printValf("#rmpscale",cardata.rmpscale);
+    printStr("#wheelTexture",cardata.wheelTexture);
+    printStr("#shadowTexture",cardata.shadowTexture);
+    printStr("#tachometerTexture",cardata.tachometerTexture);
+    printStr("#speedometerTexture",cardata.speedometerTexture);
+    printStr("#graphicenv",cardata.graphicenv);
+    printVi("#tachometerMinMax",cardata.tachometerMinMax,2);
+    printVi("#speedometerMinMax",cardata.speedometerMinMax,2);
+    printStr("#carRange1",cardata.carRange1);
+    printStr("#carRange2",cardata.carRange2);
+    printStr("#carRange3",cardata.carRange3);
+    printStr("#carRange4",cardata.carRange4);
+    printStr("#carRange5",cardata.carRange5);
 
-    printVal("#head1a",head1a,4);
-    printVal("#head1b",head1b,4);
-    printVal("#head2a",head2a,4);
-    printVal("#head2b",head2b,4);
-    printVal("#reara",reara,4);
-    printVal("#rearb",rearb,4);
-    printVal("#brakea",brakea,4);
-    printVal("#brakeb",brakeb,4);
-    printVal("#rearc",rearc,4);
-    printVal("#reard",reard,4);
-    printVal("#brakec",brakec,4);
-    printVal("#braked",braked,4);
-    printVal("#brake2a",brake2a,4);
-    printVal("#brake2b",brake2b,4);
+    printVali("#carRange1data",cardata.carRange1dataA);
+    printVali("#carRange1data",cardata.carRange1dataB);
+    printVali("#carRange1data",cardata.carRange1dataC);
 
-    printVali("#head1aS",head1aS);
-    printVali("#head1bS",head1bS);
-    printVali("#head2aS",head2aS);
-    printVali("#head2bS",head2bS);
-    printVali("#rearaS",rearaS);
-    printVali("#rearbS",rearbS);
-    printVali("#brakeaS",brakeaS);
-    printVali("#brakebS",brakebS);
-    printVali("#rearcS",rearcS);
-    printVali("#reardS",reardS);
-    printVali("#brakecS",brakecS);
-    printVali("#brakedS",brakedS);
-    printVali("#brake2aS",brake2aS);
-    printVali("#brake2bS",brake2bS);
-    
-    printVali("#flameS",flameS);
-    printValf("#flamePower",flamePower);
-    printVal("#flame1",flame1,3);
-    printVal("#flame2",flame2,3);
+    printVali("#carRange2data",cardata.carRange2dataA);
+    printVali("#carRange2data",cardata.carRange2dataB);
+    printVali("#carRange2data",cardata.carRange2dataC);
+
+    printVali("#carRange3data",cardata.carRange3dataA);
+    printVali("#carRange3data",cardata.carRange3dataB);
+    printVali("#carRange3data",cardata.carRange3dataC);
+
+    printVali("#carRange4data",cardata.carRange4dataA);
+    printVali("#carRange4data",cardata.carRange4dataB);
+    printVali("#carRange4data",cardata.carRange4dataC);
+
+    printVali("#carRange5data",cardata.carRange5dataA);
+    printVali("#carRange5data",cardata.carRange5dataB);
+    printVali("#carRange5data",cardata.carRange5dataC);
+
+    printVal("#bonnetPosition",cardata.bonnetPosition,3);
+    printVal("#driverPosition",cardata.driverPosition,3);
+    printStr("#carCategory",cardata.carCategory);
+    printVal("#carBodyDimensions",cardata.carBodyDimensions,3);
+    printVal("#carOverallDimensions",cardata.carOverallDimensions,2);
+
+    printVal("#head1a",cardata.head1a,4);
+    printVal("#head1b",cardata.head1b,4);
+    printVal("#head2a",cardata.head2a,4);
+    printVal("#head2b",cardata.head2b,4);
+    printVal("#reara",cardata.reara,4);
+    printVal("#rearb",cardata.rearb,4);
+    printVal("#brakea",cardata.brakea,4);
+    printVal("#brakeb",cardata.brakeb,4);
+    printVal("#rearc",cardata.rearc,4);
+    printVal("#reard",cardata.reard,4);
+    printVal("#brakec",cardata.brakec,4);
+    printVal("#braked",cardata.braked,4);
+    printVal("#brake2a",cardata.brake2a,4);
+    printVal("#brake2b",cardata.brake2b,4);
+
+    printVali("#head1aS",cardata.head1aS);
+    printVali("#head1bS",cardata.head1bS);
+    printVali("#head2aS",cardata.head2aS);
+    printVali("#head2bS",cardata.head2bS);
+    printVali("#rearaS",cardata.rearaS);
+    printVali("#rearbS",cardata.rearbS);
+    printVali("#brakeaS",cardata.brakeaS);
+    printVali("#brakebS",cardata.brakebS);
+    printVali("#rearcS",cardata.rearcS);
+    printVali("#reardS",cardata.reardS);
+    printVali("#brakecS",cardata.brakecS);
+    printVali("#brakedS",cardata.brakedS);
+    printVali("#brake2aS",cardata.brake2aS);
+    printVali("#brake2bS",cardata.brake2bS);
+
+    printVali("#flameS",cardata.flameS);
+    printValf("#flamePower",cardata.flamePower);
+    printVal("#flame1",cardata.flame1,3);
+    printVal("#flame2",cardata.flame2,3);
 
 
     text1 =  "Saved: ";
     text1 += fichero2;
     glutSetWindow(main_window);
     glutPostRedisplay();
-    
-    cout << "File saved: " << carname << ".txt\n" << endl;
-     
-}    
+
+    cout << "File saved: " << cardata.carname << ".txt\n" << endl;
+
+}

@@ -19,12 +19,14 @@
 #include <string>
 #include <algorithm>
 #include <iterator>
+
 #include "cardata.h"
 
 using namespace std;
 
 int listDir (std::string dirPath, vector<string> &directori );
 
+extern CarData cardata;
 extern vector<string> tracksRoad;
 extern vector<string> tracksOval;
 extern vector<string> tracksDirt;
@@ -164,7 +166,7 @@ void loadCarsList(void)
 }
 void updateCarName ( void )
 {
-     carname = carsList[carsListVal];
+     cardata.carname = carsList[carsListVal];
      GLUI_Master.sync_live_all();
 }
 

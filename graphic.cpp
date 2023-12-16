@@ -25,6 +25,8 @@ using namespace std;
 
 #include "cardata.h"
 
+extern CarData cardata;
+
 extern int ac_acc_autogenerate;
 
 extern GLUI_EditText *carRangeEditText[5];
@@ -40,12 +42,12 @@ void create3dFilesNames ( int k )
     if (ac_acc_autogenerate == 1)
         fileType = ".acc";
     
-    graphicenv = carname+fileType;
-    carRange1= carname+fileType;
-    carRange2= carname+"-lod1"+fileType;
-    carRange3= carname+"-lod2"+fileType;
-    carRange4= carname+"-lod3"+fileType;
-    carRange5= carname+"-lod4"+fileType;
+    cardata.graphicenv = cardata.carname+fileType;
+    cardata.carRange1= cardata.carname+fileType;
+    cardata.carRange2= cardata.carname+"-lod1"+fileType;
+    cardata.carRange3= cardata.carname+"-lod2"+fileType;
+    cardata.carRange4= cardata.carname+"-lod3"+fileType;
+    cardata.carRange5= cardata.carname+"-lod4"+fileType;
     
     GLUI_Master.sync_live_all();
 }
@@ -56,49 +58,49 @@ void activateDeativateGraphicRanges ( int k )
 switch (k)
 {    
  case 1:
-    carRange1dataC = 1;
-    carRange2dataC = 0;
-    carRange3dataC = 0;
-    carRange4dataC = 0;
-    carRange5dataC = 0;
+    cardata.carRange1dataC = 1;
+    cardata.carRange2dataC = 0;
+    cardata.carRange3dataC = 0;
+    cardata.carRange4dataC = 0;
+    cardata.carRange5dataC = 0;
  break;
  
  case 2:
-    carRange1dataC = 1;
+    cardata.carRange1dataC = 1;
     //carRange2dataC = 1;
-    carRange3dataC = 0;
-    carRange4dataC = 0;
-    carRange5dataC = 0;
+    cardata.carRange3dataC = 0;
+    cardata.carRange4dataC = 0;
+    cardata.carRange5dataC = 0;
  break;
 
  case 3:
-    carRange1dataC = 1;
-    carRange2dataC = 1;
+    cardata.carRange1dataC = 1;
+    cardata.carRange2dataC = 1;
     //carRange3dataC = 1;
-    carRange4dataC = 0;
-    carRange5dataC = 0;
+    cardata.carRange4dataC = 0;
+    cardata.carRange5dataC = 0;
  break;
  
  case 4:
-    carRange1dataC = 1;
-    carRange2dataC = 1;
-    carRange3dataC = 1;
+    cardata.carRange1dataC = 1;
+    cardata.carRange2dataC = 1;
+    cardata.carRange3dataC = 1;
     //carRange4dataC = 1;
-    carRange5dataC = 0;
+    cardata.carRange5dataC = 0;
  break;
  
  case 5:
-    carRange1dataC = 1;
-    carRange2dataC = 1;
-    carRange3dataC = 1;
-    carRange4dataC = 1;
+    cardata.carRange1dataC = 1;
+    cardata.carRange2dataC = 1;
+    cardata.carRange3dataC = 1;
+    cardata.carRange4dataC = 1;
     //carRange5dataC = 1;
  break;    
     GLUI_Master.sync_live_all();
   
 }
     
-    if (carRange1dataC==0)
+    if (cardata.carRange1dataC==0)
     {
         carRangeEditText[0]->disable();
         carRangeSpinner[0]->disable();
@@ -112,7 +114,7 @@ switch (k)
     }
     
 
-    if (carRange2dataC==0)
+    if (cardata.carRange2dataC==0)
     {
         carRangeEditText[1]->disable();
         carRangeSpinner[1]->disable();
@@ -126,7 +128,7 @@ switch (k)
     } 
 
 
-    if (carRange3dataC==0)
+    if (cardata.carRange3dataC==0)
     {
         carRangeEditText[2]->disable();
         carRangeSpinner[2]->disable();
@@ -140,7 +142,7 @@ switch (k)
     } 
 
 
-    if (carRange4dataC==0)
+    if (cardata.carRange4dataC==0)
     {
         carRangeEditText[3]->disable();
         carRangeSpinner[3]->disable();
@@ -153,7 +155,7 @@ switch (k)
         carRangeCheckbox[3]->enable();
     } 
 
-    if (carRange5dataC==0)
+    if (cardata.carRange5dataC==0)
     {
         carRangeEditText[4]->disable();
         carRangeSpinner[4]->disable();

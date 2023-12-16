@@ -26,6 +26,7 @@
 
 using namespace std;
 
+extern CarData cardata;
 extern void CalcCV (void);
 extern GLUI_Listbox *loadEngine_List;
 extern int currentEngine;
@@ -57,16 +58,16 @@ void loadEngine( int k )
             {    
                 int i; 
                 f >> buffer; //#engineparams
-                for (i=0; i<5; i++) {f >> engineparams[i];}
+                for (i=0; i<5; i++) {f >> cardata.engineparams[i];}
                 f >> buffer; //#rpmValue
-                for (i=0; i<21; i++) {f >> rpmValue[i];}
+                for (i=0; i<21; i++) {f >> cardata.rpmValue[i];}
                 f >> buffer; //#tqValue
-                for (i=0; i<21; i++) {f >> tqValue[i];}
+                for (i=0; i<21; i++) {f >> cardata.tqValue[i];}
                 CalcCV(); // after reading the tq we calculate the cv to update the values of cv
                 f >> buffer; //#turboS
-                f >> turboS;
+                f >> cardata.turboS;
                 f >> buffer; //#turbo
-                for (i=0; i<3; i++) {f >> turbo[i];}
+                for (i=0; i<3; i++) {f >> cardata.turbo[i];}
                 GLUI_Master.sync_live_all();
                 cout << "Engine Loaded " << currentEngine << " - " << engineList.at(currentEngine)<< endl;
             }        

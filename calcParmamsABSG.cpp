@@ -27,6 +27,9 @@ using namespace std;
 
 #include "cardata.h"
 
+extern CarData cardata;
+
+extern CarData cardata;
 extern float tqmax;
 extern float cvmax;
 extern float rpmattqmax;
@@ -36,9 +39,9 @@ extern float revsmax;
 float calcAcceleration ( void )
 {
     float param = 0;
-    param = (cvmax*500)/(1200*massdata[6])*100;
-    param += (10/(frontwing[0]*frontwing[1]+2))*100;
-    param += (10/(rearwing[0]*rearwing[1]+2))*100;
+    param = (cvmax*500)/(1200*cardata.massdata[6])*100;
+    param += (10/(cardata.frontwing[0]*cardata.frontwing[1]+2))*100;
+    param += (10/(cardata.rearwing[0]*cardata.rearwing[1]+2))*100;
     param = param/10;
     if (param >100) param = 100;
     return param;
@@ -48,24 +51,24 @@ float calcSpeed ( void )
 {   
     
   float wRadius = 0.0;
-  float wRadius3 = (wheel3[1]*0.0254/2.0)+(wheel3[2]*wheel3[3]/1000.0);
-  float wRadius4 = (wheel4[1]*0.0254/2.0)+(wheel4[2]*wheel4[3]/1000.0);
+  float wRadius3 = (cardata.wheel3[1]*0.0254/2.0)+(cardata.wheel3[2]*cardata.wheel3[3]/1000.0);
+  float wRadius4 = (cardata.wheel4[1]*0.0254/2.0)+(cardata.wheel4[2]*cardata.wheel4[3]/1000.0);
   ( wRadius3 > wRadius4 ) ? (wRadius = wRadius3) : (wRadius = wRadius4);
   if ( wRadius <= 0.0 ) wRadius = 1.0;
   float finalRatio = 1.0;
   
-   if (curr_drivetrain_type == 0){
-   finalRatio = reardifferential[1]*gearboxratio[numberOfGears];
+   if (cardata.curr_drivetrain_type == 0){
+   finalRatio = cardata.reardifferential[1]*cardata.gearboxratio[cardata.numberOfGears];
    }
-   if (curr_drivetrain_type == 1){
-   finalRatio = frontdifferential[1]*gearboxratio[numberOfGears];
+   if (cardata.curr_drivetrain_type == 1){
+   finalRatio = cardata.frontdifferential[1]*cardata.gearboxratio[cardata.numberOfGears];
    }
-   if (curr_drivetrain_type == 2){
-   finalRatio = centraldifferential[1]*gearboxratio[numberOfGears];
+   if (cardata.curr_drivetrain_type == 2){
+   finalRatio = cardata.centraldifferential[1]*cardata.gearboxratio[cardata.numberOfGears];
    }
    if ( finalRatio <= 0.0 ) finalRatio = 1.0;
    
-   float maxSpeed = engineparams[2]*60*wRadius*2.0*3.1416*0.001/(finalRatio);
+   float maxSpeed = cardata.engineparams[2]*60*wRadius*2.0*3.1416*0.001/(finalRatio);
     
     float param = 0;
     param = maxSpeed/4; 
@@ -77,11 +80,11 @@ float calcGrip ( void )
 {
     float param = 0;
     // wheel1[11]--> mu, wheel1[9] --> dinamic friction
-    float mu = (wheel1[11]+wheel2[11]+wheel3[11]+wheel4[11])/4;
-    float dinamicFriction = (wheel1[9]+wheel2[9]+wheel3[9]+wheel4[9])/4;
+    float mu = (cardata.wheel1[11]+cardata.wheel2[11]+cardata.wheel3[11]+cardata.wheel4[11])/4;
+    float dinamicFriction = (cardata.wheel1[9]+cardata.wheel2[9]+cardata.wheel3[9]+cardata.wheel4[9])/4;
     param = mu*dinamicFriction/1.62;
-    param += (frontwing[0]*frontwing[1]/50)*100;
-    param += (rearwing[0]*rearwing[1]/50)*100;
+    param += (cardata.frontwing[0]*cardata.frontwing[1]/50)*100;
+    param += (cardata.rearwing[0]*cardata.rearwing[1]/50)*100;
     param = param/2;
     if (param >100) param = 100;
     return param; 
@@ -90,8 +93,8 @@ float calcGrip ( void )
 float calcBraking ( void )
 {
     float param = 0;
-    param = (brakesystem[0]/0.7)*100;
-    param += (brakesystem[1]/150000.0)*100;
+    param = (cardata.brakesystem[0]/0.7)*100;
+    param += (cardata.brakesystem[1]/150000.0)*100;
     param = param/2;
     if (param >100) param = 100;
     return param;

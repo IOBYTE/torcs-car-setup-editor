@@ -26,10 +26,14 @@
 #include <string>
 #include <algorithm>
 #include <iterator>
-#include "cardatadef.h"
+
+#include "cardata.h"
+
 #define TAM 100
 
 using namespace std;
+
+CarData cardata;
 
 float TCSE_version = 0.11;
 
@@ -147,8 +151,8 @@ int driverVal;
 std::string driverName = "human" ;
 std::string driverNameNumber = "1" ;
 vector<string> carsList;
-int carsListVal;        
-            
+int carsListVal;
+
 // Using a std::string as a live variable is safe.
 //std::string  carname = "formula-torcs";
 
@@ -160,8 +164,8 @@ std::string text3=""; // the max value of the cv
 std::string text4=""; // used in gear ratio diff graph
 std::string text5 = "Warning"; // used in glui9 for warnings
 
-// Using a char buffer as a live var is also possible, but it is dangerous 
-// because GLUI doesn't know how big your buffer is.  
+// Using a char buffer as a live var is also possible, but it is dangerous
+// because GLUI doesn't know how big your buffer is.
 // But still, it works as long as text doesn't happen to overflow.
 //char  text[200] = {"Hello World!"};
 
@@ -199,7 +203,7 @@ GLUI            *glui7; /* Suspension */
 GLUI            *glui8; /* Graphic and Sound */
 GLUI            *glui9; /* Warning Message */
 GLUI            *glui10; /* Save Car Setup Track */
-GLUI            *glui11; /* Engine */  
+GLUI            *glui11; /* Engine */
 GLUI            *glui12; /* Car dimensions */
 GLUI            *glui13; /* Car lights */
 GLUI            *glui14; /* Car name, full name */
@@ -215,7 +219,7 @@ void control_cb( int control )
     callback, and we'll also explicitly get the values of each control.
     Note that we really didn't have to explicitly get the values, since
     they are already all contained within the live variables:
-    'wireframe',  'segments',  'obj',  and 'text'  
+    'wireframe',  'segments',  'obj',  and 'text'
     ********************************************************************/
 
  // printf( "callback: %d\n", control );
@@ -223,7 +227,7 @@ void control_cb( int control )
   //printf( "              spinner: %d\n", spinner->get_int_val() );
   //printf( "          radio group: %d\n", radio->get_int_val() );
   //printf( "                 text: %s\n", edittext->get_text() );
-   cout << "The new CarName is: " << carname << endl; 
+   cout << "The new CarName is: " << cardata.carname << endl;
 }
 
 void saveAutorInfo(void)
@@ -234,8 +238,8 @@ void saveAutorInfo(void)
         cout << "The file autorInfo.txt is not correct" << endl;
     else
     {
-    f <<  autorName << endl;
-    f <<  autorEmail << endl;    
+    f <<  cardata.autorName << endl;
+    f <<  cardata.autorEmail << endl;
     }
     f.close();
 }
@@ -247,8 +251,8 @@ void loadAutorInfo(void)
         cout << "The file autorInfo.txt is not correct" << endl;
     else
     {
-    getline(f, autorName);
-    getline(f, autorEmail);    
+    getline(f, cardata.autorName);
+    getline(f, cardata.autorEmail);
     }
     f.close();
 }
@@ -259,16 +263,16 @@ void printFileName( void )
    cout << "file_name"  << endl;
    cout << file_name  << endl;
    cout << file_name.c_str()  << endl;
-   cout << fb->current_dir << endl; 
-}    
- 
+   cout << fb->current_dir << endl;
+}
+
 void myGlutIdle( void )
 {
-  /* According to the GLUT specification, the current window is 
+  /* According to the GLUT specification, the current window is
      undefined during an idle callback.  So we need to explicitly change
      it if necessary */
-  //if ( glutGetWindow() != main_window ) 
-  //  glutSetWindow(main_window);  
+  //if ( glutGetWindow() != main_window )
+  //  glutSetWindow(main_window);
 
 
   //glutPostRedisplay();
@@ -309,7 +313,7 @@ void myGlutKeyboard(unsigned char Key, int x, int y)
     wireframe = !wireframe;
     GLUI_Master.sync_live_all();
     break;*/
-  case 27: 
+  case 27:
   case 'q':
     exit(0);
     break;
@@ -347,7 +351,7 @@ void myGlutMotion(int x, int y )
   last_x = x;
   last_y = y;
 
-  glutPostRedisplay(); 
+  glutPostRedisplay();
 }
 
 /**************************************** myGlutReshape() *************/
@@ -363,8 +367,8 @@ void myGlutReshape( int x, int y )
 /*****************************Line Graph********************/
 
 
-        
-     
+
+
 
 
 /**********************SimetricalEdit********************/
@@ -378,25 +382,25 @@ void SimetricalEditL (int val)
             {
             for (i=0; i < 8; i++)
             {
-            suspension2[i] = suspension1[i];
-            suspension4[i] = suspension3[i];
+            cardata.suspension2[i] = cardata.suspension1[i];
+            cardata.suspension4[i] = cardata.suspension3[i];
             }
-            }    
-        break;  
-            
+            }
+        break;
+
         case 2:        /* Wheels */
             if (simetricaledityn2)
             {
-            wheel1[0] = -1 * wheel2[0];
-            wheel3[0] = -1 * wheel4[0];
+            cardata.wheel1[0] = -1 * cardata.wheel2[0];
+            cardata.wheel3[0] = -1 * cardata.wheel4[0];
             for (i=1; i < 12; i++)
             {
-            wheel1[i] = wheel2[i];
-            wheel3[i] = wheel4[i];
+            cardata.wheel1[i] = cardata.wheel2[i];
+            cardata.wheel3[i] = cardata.wheel4[i];
             }
-            wheel1[6] = -1 * wheel2[6];
-            wheel3[6] = -1 * wheel4[6];
-            }    
+            cardata.wheel1[6] = -1 * cardata.wheel2[6];
+            cardata.wheel3[6] = -1 * cardata.wheel4[6];
+            }
         break;
 
         case 3:        /* Brakes */
@@ -404,14 +408,14 @@ void SimetricalEditL (int val)
             {
             for (i=0; i < 4; i++)
             {
-            brake1[i] = brake2[i];
-            brake3[i] = brake4[i];
+            cardata.brake1[i] = cardata.brake2[i];
+            cardata.brake3[i] = cardata.brake4[i];
             }
-            }    
-        break;         
+            }
+        break;
         }
-        GLUI_Master.sync_live_all();      
-} 
+        GLUI_Master.sync_live_all();
+}
 
 void SimetricalEditR (int val)
 {
@@ -423,37 +427,37 @@ void SimetricalEditR (int val)
             {
             for (i=0; i < 8; i++)
             {
-            suspension1[i] = suspension2[i];
-            suspension3[i] = suspension4[i];
+            cardata.suspension1[i] = cardata.suspension2[i];
+            cardata.suspension3[i] = cardata.suspension4[i];
             }
-            }    
+            }
         break;
-            
+
         case 2:        /* Wheels */
         if (simetricaledityn2)
             {
-            wheel2[0] = -1 * wheel1[0];
-            wheel4[0] = -1 * wheel3[0];
+            cardata.wheel2[0] = -1 * cardata.wheel1[0];
+            cardata.wheel4[0] = -1 * cardata.wheel3[0];
             for (i=1; i < 12; i++)
             {
-            wheel2[i] = wheel1[i];
-            wheel4[i] = wheel3[i];
+            cardata.wheel2[i] = cardata.wheel1[i];
+            cardata.wheel4[i] = cardata.wheel3[i];
             }
-            wheel2[6] = -1 * wheel1[6];
-            wheel4[6] = -1 * wheel3[6];
-            }    
+            cardata.wheel2[6] = -1 * cardata.wheel1[6];
+            cardata.wheel4[6] = -1 * cardata.wheel3[6];
+            }
         break;
-            
+
         case 3:        /* Brakes */
             if (simetricaledityn3)
             {
             for (i=0; i < 4; i++)
             {
-            brake2[i] = brake1[i];
-            brake4[i] = brake3[i];
+            cardata.brake2[i] = cardata.brake1[i];
+            cardata.brake4[i] = cardata.brake3[i];
             }
-            }    
-        break; 
+            }
+        break;
     }
     GLUI_Master.sync_live_all();
 }
@@ -462,7 +466,7 @@ void SimetricalEditR (int val)
 /**********************SimetricalEdit********************/
 void syncLiveAll (void)
 {
-    GLUI_Master.sync_live_all();   
+    GLUI_Master.sync_live_all();
 }
 
 
@@ -498,7 +502,7 @@ break;
 
   glEnable( GL_LIGHTING );
 }
-   
+
 /* Engine Graph: torque and power vs rpm*/
 
 void lineGraph (void)
@@ -515,17 +519,17 @@ void lineGraph (void)
     std::string yaxis="Tq";
     std::string yraxis="CV";
 
-    /* draw the graph*/  
+    /* draw the graph*/
 
     float tqMaxGraphic = 100.0;
-    
-    if (tqmax < tqValue[0]){
-        tqMaxGraphic = 2*tqValue[0];
+
+    if (tqmax < cardata.tqValue[0]){
+        tqMaxGraphic = 2*cardata.tqValue[0];
     }
     else{
         tqMaxGraphic = 2*tqmax;
-    }       
-    
+    }
+
     int kMax = 21;
     float cvMaxGraph = 200.0;
     if (fullRpmScale){
@@ -535,18 +539,18 @@ void lineGraph (void)
     else{
        float rpmatcvmax;
        int points = calcEnginePointsLesRL ();
-       cvMaxGraph = CalcMaxEngine(cvValue,rpmValue,1,points,rpmatcvmax,1);
+       cvMaxGraph = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,points,rpmatcvmax,1);
        int i;
        for (i=0;i<21;i++)
        {
-           if (rpmValue[i]>engineparams[1]){
+           if (cardata.rpmValue[i]>cardata.engineparams[1]){
                kMax = i;
                break;
-           }      
-       }    
+           }
+       }
     }
-    
-    /* SMOOTH THE LINE */   
+
+    /* SMOOTH THE LINE */
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -554,51 +558,51 @@ void lineGraph (void)
 
 /* graph */
     glEnable (GL_LINE_STIPPLE);
-    glLineStipple (3, 0xDDDD);    
-            
+    glLineStipple (3, 0xDDDD);
+
     glBegin (GL_LINE_STRIP); // tq
     glColor3f (0.0, 0.0, 1.0);
         for (k = 0; k < kMax; k++)
-            //glVertex2f(x0 + k*4.5, y0 + tqValue [k]*(99-y0)/(1.5*cvmax));
-            glVertex2f(x0 + rpmValue[k]/rpmValue[kMax-1]*(100-2*x0), y0 + tqValue [k]*(97-y0)/tqMaxGraphic);
+            //glVertex2f(x0 + k*4.5, y0 + cardata.tqValue [k]*(99-y0)/(1.5*cvmax));
+            glVertex2f(x0 + cardata.rpmValue[k]/cardata.rpmValue[kMax-1]*(100-2*x0), y0 + cardata.tqValue [k]*(97-y0)/tqMaxGraphic);
     glEnd();
     glDisable (GL_LINE_STIPPLE);
 
     glBegin (GL_LINE_STRIP); // hp
     glColor3f (1.0, 0.0, 0.0);
         for (k = 0; k < kMax; k++)
-            //glVertex2f(x0 + k*4.5, y0 + cvValue[k]*(99-y0)/cvmax);
-            glVertex2f(x0 + rpmValue[k]/rpmValue[kMax-1]*(100-2*x0), y0 + cvValue[k]*(97-y0)/cvMaxGraph);
+            //glVertex2f(x0 + k*4.5, y0 + cardata.cvValue[k]*(99-y0)/cvmax);
+            glVertex2f(x0 + cardata.rpmValue[k]/cardata.rpmValue[kMax-1]*(100-2*x0), y0 + cardata.cvValue[k]*(97-y0)/cvMaxGraph);
     glEnd();
-    
+
     /* revs limiter */
     glEnable (GL_LINE_STIPPLE);
-    glLineStipple (3, 0xAAAA); 
+    glLineStipple (3, 0xAAAA);
     glBegin (GL_LINES);
-            glColor3f (0.2, 0.4, 0.2); 
-            glVertex2f(x0 + engineparams[2]/rpmValue[kMax-1]*(100-2*x0),y0);
-            glVertex2f(x0 + engineparams[2]/rpmValue[kMax-1]*(100-2*x0),(100-3));
+            glColor3f (0.2, 0.4, 0.2);
+            glVertex2f(x0 + cardata.engineparams[2]/cardata.rpmValue[kMax-1]*(100-2*x0),y0);
+            glVertex2f(x0 + cardata.engineparams[2]/cardata.rpmValue[kMax-1]*(100-2*x0),(100-3));
     glEnd();
     glDisable (GL_LINE_STIPPLE);
-    
 
- 
-       
-       
+
+
+
+
     /*----------x axis ------------*/
     /* rpm*/
     drawText ( xaxis, 10, 0.0, 0.4, 0.0, 49, y0-2);
 
     /*----------y axis ------------*/
-    /* tq */  
+    /* tq */
     drawText ( yaxis, 10, 0.0, 0.0, 1.0, 0.1, 87);
 
-    /* hp */    
+    /* hp */
     drawText ( yraxis, 10, 1.0, 0.0, 0.0, 94.5, 87);
 
  /* write the cv max value on the screen*/
 char cadena2[150];
-char cadena3[150];     
+char cadena3[150];
 sprintf(cadena2, "%6.1f", cvmax);
 sprintf(cadena3, "%6.1f", rpmatcvmax);
 strcat(cadena2, "CV at ");
@@ -608,7 +612,7 @@ text3 = cadena2;
 
       drawText ( text3, 10, 1.0, 0.0, 0.0, 8, 95);
 
- /* write the tq max value on the screen*/   
+ /* write the tq max value on the screen*/
 sprintf(cadena2, "%6.1f", tqmax);
 sprintf(cadena3, "%6.1f", rpmattqmax);
 strcat(cadena2, "N.m at ");
@@ -620,7 +624,7 @@ text2 = cadena2;
 
 /* axes of the graph */
     glBegin (GL_LINE_STRIP);
-            glColor3f (0.0, 0.0, 0.0); 
+            glColor3f (0.0, 0.0, 0.0);
             glVertex2f((100-x0),y0);
             glVertex2f(x0,y0);
             glVertex2f(x0,(100-3));
@@ -632,7 +636,7 @@ text2 = cadena2;
 /* rpm min (x axle) */
   std::string minRPM = "0";
   char bufferSTR[20];
-  sprintf(bufferSTR, "%6.0f", rpmValue[0]);
+  sprintf(bufferSTR, "%6.0f", cardata.rpmValue[0]);
   minRPM = bufferSTR;
 
  drawText ( minRPM, 10, 0.0, 0.4, 0.0, 3, y0-2);
@@ -641,12 +645,12 @@ text2 = cadena2;
   std::string maxRPM = "20000";
   bufferSTR[0] = '\0';
   if (fullRpmScale){
-    sprintf(bufferSTR, "%6.0f", rpmValue[20]);
+    sprintf(bufferSTR, "%6.0f", cardata.rpmValue[20]);
   }
   else {
-    sprintf(bufferSTR, "%6.0f", engineparams[1]);
-  }    
-  
+    sprintf(bufferSTR, "%6.0f", cardata.engineparams[1]);
+  }
+
   maxRPM = bufferSTR;
 drawText ( maxRPM, 10, 0.0, 0.4, 0.0, 93-x0, y0-2);
 
@@ -663,36 +667,36 @@ drawText ( maxRPM, 10, 0.0, 0.4, 0.0, 93-x0, y0-2);
   sprintf(bufferSTR, "%6.0f", tqMaxGraphic);
   maxTQ = bufferSTR;
  drawText ( maxTQ, 10, 0.0, 0.0, 1.0, 0, 98);
- 
+
     /* X graphic division */
 glDisable( GL_LIGHTING );
     int i;
     for (i=1;i<(kMax-1);i++)
     {
     glBegin (GL_LINES);
-            glColor3f (0.8, 0.8, 0.7); 
-            glVertex2f(x0 + i*1000/rpmValue[kMax-1]*(100-2*x0),y0);
-            glVertex2f(x0 + i*1000/rpmValue[kMax-1]*(100-2*x0),(100-3));
+            glColor3f (0.8, 0.8, 0.7);
+            glVertex2f(x0 + i*1000/cardata.rpmValue[kMax-1]*(100-2*x0),y0);
+            glVertex2f(x0 + i*1000/cardata.rpmValue[kMax-1]*(100-2*x0),(100-3));
     glEnd();
-    }    
-glEnable( GL_LIGHTING ); 
-   
+    }
+glEnable( GL_LIGHTING );
+
     /* Y graphic division */
 glDisable( GL_LIGHTING );
     for (i=1;i<11;i++)
     {
     glBegin (GL_LINES);
-            glColor3f (0.8, 0.8, 0.7); 
+            glColor3f (0.8, 0.8, 0.7);
             glVertex2f(x0,y0+i*(97.0-y0)/10.0);
             glVertex2f(100.0-x0,y0+i*(97.0-y0)/10.0);
     glEnd();
-    }    
-glEnable( GL_LIGHTING ); 
-    
-    
+    }
+glEnable( GL_LIGHTING );
+
+
 /* background of the graph */
  /*   glBegin (GL_QUADS);
-            glColor3f (0.72, 0.75, 0.82); 
+            glColor3f (0.72, 0.75, 0.82);
             glVertex2i((100-x0),y0);
             glVertex2i(x0,y0);
             glVertex2i(x0,(100-1));
@@ -700,7 +704,7 @@ glEnable( GL_LIGHTING );
     glEnd();*/
 
 
-    
+
 //}
 
 
@@ -710,7 +714,7 @@ glEnable( GL_LIGHTING );
   std::string agsb ="acceleration-grip-speed-braking";
   drawText ( agsb, 12, 1.0, 0.1, 0.1, 20.0, 67.5);
 
-/* ...................Acceleration........................... */    
+/* ...................Acceleration........................... */
 float x0a = 15;
 float y0a = 65.5;
 float hagsb = 1.2;
@@ -718,11 +722,11 @@ float acceleration; /* min 0, max 100*/
 
 /* calculation of the acceleration of the car from the car parameters */
 acceleration = calcAcceleration();
-    
-/*  graph */  
+
+/*  graph */
     glDisable( GL_LIGHTING );
     glBegin (GL_QUADS);
-            glColor3f (0.2, 0.2, 0.90); 
+            glColor3f (0.2, 0.2, 0.90);
             glVertex2f(x0a+8.1+acceleration/100*(100-2*x0a-9.1),y0a+0.4);
             glVertex2f(x0a+8.1,y0a+0.35);
             glVertex2f(x0a+8.1,y0a + hagsb-0.35);
@@ -735,7 +739,7 @@ acceleration = calcAcceleration();
 glDisable( GL_LIGHTING );
 /* background of the line graph */
     glBegin (GL_QUADS);
-            glColor3f (0.72, 0.75, 0.90); 
+            glColor3f (0.72, 0.75, 0.90);
             glVertex2f((100-x0a),y0a);
             glVertex2f(x0a+7.1,y0a);
             glVertex2f(x0a+7.1,y0a + hagsb);
@@ -743,7 +747,7 @@ glDisable( GL_LIGHTING );
     glEnd();
 
 
-/* ...................Speed........................... */    
+/* ...................Speed........................... */
 x0a = x0a;
 y0a = y0a-1.6;
 hagsb = 1.2;
@@ -751,10 +755,10 @@ float speed; /* min 0, max 100*/
 
 /* calculation of the acceleration of the car from the car parameters */
 speed = calcSpeed();
-    
+
 /*  graph */
     glBegin (GL_QUADS);
-            glColor3f (0.2, 0.2, 0.90); 
+            glColor3f (0.2, 0.2, 0.90);
             glVertex2f(x0a+8.1+speed/100*(100-2*x0a-9.1),y0a+0.4);
             glVertex2f(x0a+8.1,y0a+0.35);
             glVertex2f(x0a+8.1,y0a + hagsb-0.35);
@@ -765,14 +769,14 @@ speed = calcSpeed();
 glDisable( GL_LIGHTING );
 /* background of the line graph */
     glBegin (GL_QUADS);
-            glColor3f (0.72, 0.75, 0.90); 
+            glColor3f (0.72, 0.75, 0.90);
             glVertex2f((100-x0a),y0a);
             glVertex2f(x0a+7.1,y0a);
             glVertex2f(x0a+7.1,y0a + hagsb);
             glVertex2f((100-x0a),y0a + hagsb);
     glEnd();
 
-/* ...................grip........................... */    
+/* ...................grip........................... */
 x0a = x0a;
 y0a = y0a-1.6;
 hagsb = 1.2;
@@ -780,10 +784,10 @@ float grip; /* min 0, max 100*/
 
 /* calculation of the acceleration of the car from the car parameters */
 grip = calcGrip();
-    
+
 /*  graph */
     glBegin (GL_QUADS);
-            glColor3f (0.2, 0.2, 0.90); 
+            glColor3f (0.2, 0.2, 0.90);
             glVertex2f(x0a+8.1+grip/100*(100-2*x0a-9.1),y0a+0.4);
             glVertex2f(x0a+8.1,y0a+0.35);
             glVertex2f(x0a+8.1,y0a + hagsb-0.35);
@@ -794,14 +798,14 @@ grip = calcGrip();
 glDisable( GL_LIGHTING );
 /* background of the line graph */
     glBegin (GL_QUADS);
-            glColor3f (0.72, 0.75, 0.90); 
+            glColor3f (0.72, 0.75, 0.90);
             glVertex2f((100-x0a),y0a);
             glVertex2f(x0a+7.1,y0a);
             glVertex2f(x0a+7.1,y0a + hagsb);
             glVertex2f((100-x0a),y0a + hagsb);
     glEnd();
 
-/* ...................braking........................... */    
+/* ...................braking........................... */
 x0a = x0a;
 y0a = y0a-1.6;
 hagsb = 1.2;
@@ -809,10 +813,10 @@ float braking; /* min 0, max 100*/
 
 /* calculation of the acceleration of the car from the car parameters */
 braking = calcBraking();
-    
+
 /*  graph */
     glBegin (GL_QUADS);
-            glColor3f (0.2, 0.2, 0.90); 
+            glColor3f (0.2, 0.2, 0.90);
             glVertex2f(x0a+8.1+braking/100*(100-2*x0a-9.1),y0a+0.4);
             glVertex2f(x0a+8.1,y0a+0.35);
             glVertex2f(x0a+8.1,y0a + hagsb-0.35);
@@ -824,7 +828,7 @@ glDisable( GL_LIGHTING );
 
 /* background of the line graph */
     glBegin (GL_QUADS);
-            glColor3f (0.72, 0.75, 0.90); 
+            glColor3f (0.72, 0.75, 0.90);
             glVertex2f((100-x0a),y0a);
             glVertex2f(x0a+7.1,y0a);
             glVertex2f(x0a+7.1,y0a + hagsb);
@@ -839,12 +843,12 @@ glDisable( GL_LIGHTING );
     glColor3f (0.75, 0.0, 0.0);
     atext ="0123456789";
 
-        for (k = 1; k < (numberOfGears+1); k++)
+        for (k = 1; k < (cardata.numberOfGears+1); k++)
         {
-            glRectf(x0 + (k-1)*4.5, y0,1.5+ x0 + (k-1)*4.5, y0 + gearboxratio[k]*2);
+            glRectf(x0 + (k-1)*4.5, y0,1.5+ x0 + (k-1)*4.5, y0 + cardata.gearboxratio[k]*2);
             glRasterPos2f (x0 + (k-1)*4.5, y0-1.3);
             glutBitmapCharacter( GLUT_BITMAP_HELVETICA_10, atext[k] );
-        }    
+        }
 
   atext ="Gear Ratio";
   glRasterPos2f (x0+5, y0+9);
@@ -857,24 +861,24 @@ glDisable( GL_LIGHTING );
     glutBitmapCharacter( GLUT_BITMAP_HELVETICA_10, atext[i] );
 
 char cadena4[150];
-char cadena5[150]; 
+char cadena5[150];
 
-        for (k = 2; k < (numberOfGears+1) ; k++)
+        for (k = 2; k < (cardata.numberOfGears+1) ; k++)
         {
-           sprintf(cadena5, "%2.3f", gearboxratio[k]-gearboxratio[k-1]);
+           sprintf(cadena5, "%2.3f", cardata.gearboxratio[k]-cardata.gearboxratio[k-1]);
            sprintf(cadena4, "%i-%i", k-1, k);
            strcat(cadena4, ": ");
            strcat(cadena4, cadena5);
            text4 = cadena4;
-           
+
             glRasterPos2f (x0 + 50, y0 + 10.5-1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
                   glutBitmapCharacter( GLUT_BITMAP_HELVETICA_10, text4[i] );
-        }   
-   
+        }
+
 /* background of the gear ratio */
     glBegin (GL_LINE_STRIP);
-            glColor3f (0.0, 0.0, 0.2); 
+            glColor3f (0.0, 0.0, 0.2);
             glVertex2f((100-x0+2),y0-15.8);
             glVertex2f(x0-2,y0-15.8);
             glVertex2f(x0-2,y0+11.2);
@@ -882,16 +886,16 @@ char cadena5[150];
             glVertex2f((100-x0+2),y0-15.8);
     glEnd();
    /* glBegin (GL_QUADS);
-            glColor3f (0.65, 0.70, 0.89); 
+            glColor3f (0.65, 0.70, 0.89);
             glVertex2f((100-x0+2),y0-1.5);
             glVertex2f(x0-2,y0-1.5);
             glVertex2f(x0-2,y0+11.2);
             glVertex2f((100-x0+2),y0+11.2);
     glEnd();*/
 
-/* gear ratio calculations */    
+/* gear ratio calculations */
     glBegin (GL_QUADS);
-            glColor3f (0.05, 0.00, 0.89); 
+            glColor3f (0.05, 0.00, 0.89);
     glEnd();
   atext ="Gear";
   glRasterPos2f (x0 + 4.5, y0 -3.7);
@@ -918,23 +922,23 @@ char cadena5[150];
   for (unsigned int i=0; i<atext.length(); ++i)
     glutBitmapCharacter( GLUT_BITMAP_HELVETICA_10, atext[i] );
     glBegin (GL_QUADS);
-            glColor3f (0.05, 0.10, 0.60); 
+            glColor3f (0.05, 0.10, 0.60);
     glEnd();
- 
-  for (k = 1; k < (numberOfGears+1); k++)
+
+  for (k = 1; k < (cardata.numberOfGears+1); k++)
         {
            strcat(cadena4, "Gear");
            sprintf(cadena4, "%i", k);
-           text4 = cadena4;           
+           text4 = cadena4;
             glRasterPos2f (x0 + 5, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
                   glutBitmapCharacter( GLUT_BITMAP_HELVETICA_10, text4[i] );
-        }    
+        }
 
-  for (k = 1; k < (numberOfGears+1); k++)
+  for (k = 1; k < (cardata.numberOfGears+1); k++)
         {
-           sprintf(cadena4, "%2.3f", gearboxratio[k]);
-           text4 = cadena4;           
+           sprintf(cadena4, "%2.3f", cardata.gearboxratio[k]);
+           text4 = cadena4;
             glRasterPos2f (x0 + 5 + 7, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
                   glutBitmapCharacter( GLUT_BITMAP_HELVETICA_10, text4[i] );
@@ -942,54 +946,54 @@ char cadena5[150];
   float wRadius =  calcWheelRadius ( 1 );
 
   float finalRatio = 1.0;
-  
-  for (k = 1; k < (numberOfGears+1); k++)
+
+  for (k = 1; k < (cardata.numberOfGears+1); k++)
         {
-           if (curr_drivetrain_type == 0)
+           if (cardata.curr_drivetrain_type == 0)
            {
-           finalRatio = reardifferential[1]*gearboxratio[k];
+           finalRatio = cardata.reardifferential[1]*cardata.gearboxratio[k];
            }
-           if (curr_drivetrain_type == 1)
+           if (cardata.curr_drivetrain_type == 1)
            {
-           finalRatio = frontdifferential[1]*gearboxratio[k];
+           finalRatio = cardata.frontdifferential[1]*cardata.gearboxratio[k];
            }
-           if (curr_drivetrain_type == 2)
+           if (cardata.curr_drivetrain_type == 2)
            {
-           finalRatio = centraldifferential[1]*gearboxratio[k];
+           finalRatio = cardata.centraldifferential[1]*cardata.gearboxratio[k];
            }
-           if ( finalRatio <= 0.0 ) finalRatio = 1.0;           
-           sprintf(cadena4, "%2.1f", engineparams[2]*60*wRadius*2.0*3.1416*0.001/(finalRatio));
-           text4 = cadena4;           
+           if ( finalRatio <= 0.0 ) finalRatio = 1.0;
+           sprintf(cadena4, "%2.1f", cardata.engineparams[2]*60*wRadius*2.0*3.1416*0.001/(finalRatio));
+           text4 = cadena4;
             glRasterPos2f (x0 + 5 + 20, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
                   glutBitmapCharacter( GLUT_BITMAP_HELVETICA_10, text4[i] );
         }
-  for (k = 2; k < (numberOfGears+1); k++)
+  for (k = 2; k < (cardata.numberOfGears+1); k++)
         {
-           sprintf(cadena4, "%2.1f", engineparams[2]*gearboxratio[k]/gearboxratio[k-1]);
-           text4 = cadena4;           
+           sprintf(cadena4, "%2.1f", cardata.engineparams[2]*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]);
+           text4 = cadena4;
             glRasterPos2f (x0 + 5 + 32.5, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
                   glutBitmapCharacter( GLUT_BITMAP_HELVETICA_10, text4[i] );
-        }  
-  for (k = 2; k < (numberOfGears+1); k++)
+        }
+  for (k = 2; k < (cardata.numberOfGears+1); k++)
         {
-           sprintf(cadena4, "%2.1f", interpolationTQCV(rpmValue, tqValue, engineparams[2]*gearboxratio[k]/gearboxratio[k-1]));
-           text4 = cadena4;           
+           sprintf(cadena4, "%2.1f", interpolationTQCV(cardata.rpmValue, cardata.tqValue, cardata.engineparams[2]*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]));
+           text4 = cadena4;
             glRasterPos2f (x0 + 5 + 49, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
                   glutBitmapCharacter( GLUT_BITMAP_HELVETICA_10, text4[i] );
         }
-  for (k = 2; k < (numberOfGears+1); k++)
+  for (k = 2; k < (cardata.numberOfGears+1); k++)
         {
-           sprintf(cadena4, "%2.1f", interpolationTQCV(rpmValue, cvValue, engineparams[2]*gearboxratio[k]/gearboxratio[k-1]));
-           text4 = cadena4;           
+           sprintf(cadena4, "%2.1f", interpolationTQCV(cardata.rpmValue, cardata.cvValue, cardata.engineparams[2]*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]));
+           text4 = cadena4;
             glRasterPos2f (x0 + 5 + 62, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
                   glutBitmapCharacter( GLUT_BITMAP_HELVETICA_10, text4[i] );
-        }  
-                                
-}// end of the graphic function    
+        }
+
+}// end of the graphic function
 
 /***************************************** show-hide-glui-window() *****************/
  void showglui (int gluiname)
@@ -1017,14 +1021,14 @@ char cadena5[150];
    case 11:
       glui11->show();break;
    case 12:
-      glui12->show();break;    
+      glui12->show();break;
    case 13:
-      glui13->show();break;  
+      glui13->show();break;
    case 14:
       glui14->show();break;
    case 15:
-      glui15->show();break;  
-   }      
+      glui15->show();break;
+   }
  }
 
  void hideglui (int gluiname)
@@ -1052,33 +1056,33 @@ char cadena5[150];
    case 11:
       glui11->hide();break;
    case 12:
-      glui12->hide();break;  
+      glui12->hide();break;
    case 13:
       glui13->hide();break;
    case 14:
       glui14->hide();break;
    case 15:
       glui15->hide();break;
-    }      
+    }
  }
 
 /***************************************** myGlutDisplay() *****************/
 
 void myGlutDisplay( void )
 {
-  
+
   glClearColor( .9f, .9f, .9f, 1.0f );
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 /*
   glMatrixMode( GL_PROJECTION );
   glLoadIdentity();
-  
+
   glFrustum( -xy_aspect*.08, xy_aspect*.08, -.08, .08, .1, 15.0 );
 
   glMatrixMode( GL_MODELVIEW );
   glLoadIdentity();
-  
+
   glTranslatef( 0.0f, 0.0f, -1.6f );
   glRotatef( rotationY, 0.0, 1.0, 0.0 );
   glRotatef( rotationX, 1.0, 0.0, 0.0 );
@@ -1086,15 +1090,15 @@ void myGlutDisplay( void )
 
 
 
-  
+
   /*** Now we render object, using the variables 'obj', 'segments', and
-    'wireframe'.  These are _live_ variables, which are transparently 
+    'wireframe'.  These are _live_ variables, which are transparently
     updated by GLUI ***/
   /*
   if ( obj == 0 ) {
-    if ( wireframe )      
+    if ( wireframe )
       glutWireSphere( .6, segments, segments );
-    else                  
+    else
       glutSolidSphere( .6, segments, segments );
   }
   else if ( obj == 1 ) {
@@ -1110,9 +1114,9 @@ void myGlutDisplay( void )
       glutSolidTeapot( .5 );
   }
 */
-  
- 
-  
+
+
+
   /* TEXT INFO ON GLUT SCREEN */
   /*draw the tcse version*/
   char bufferStr[30];
@@ -1121,19 +1125,19 @@ void myGlutDisplay( void )
   text += " v";
   text += bufferStr;
   drawText ( text, 12, 0.8, 0.1, 0.1, 1.0, 31.0);
-  
+
   /* draw the info*/
   drawText ( text1, 10, 0.0, 0.0, 0.4, 1.0, 29.0);
 
-   /* Draw all the glut window */ 
+   /* Draw all the glut window */
   lineGraph ();
 
-  glutSwapBuffers(); 
+  glutSwapBuffers();
 }
 
-  
+
 /********************************************************************/
-  
+
 
 /**************************************** main() ********************/
 
@@ -1141,22 +1145,22 @@ int main(int argc, char* argv[])
 {
 int iargc = 1;
 
-while (iargc < argc) 
+while (iargc < argc)
 {
 
-	if (strncmp(argv[iargc], "-c", 2) == 0) 
+	if (strncmp(argv[iargc], "-c", 2) == 0)
     {
-       carname="";
-       carname= argv[iargc+1];
+       cardata.carname="";
+       cardata.carname= argv[iargc+1];
        GLUI_Master.sync_live_all();
    }
-iargc++;    
+iargc++;
 }
 
 /* Time */
 time_t tAct = time(NULL);
-cout << "Program Started at: " << asctime(localtime(&tAct)); 
-     
+cout << "Program Started at: " << asctime(localtime(&tAct));
+
 /* calculate the cv for the graph */
 CalcCV();
 
@@ -1170,22 +1174,22 @@ gearboxRatioSpeed(1);
 int i;
 for(i=0;i<6;i++){
     bestOptShiftPoint[i]= rpmatcvmax;
-    rpmAfterBestOptShiftPoint[i]=bestOptShiftPoint[i]*gearboxratio[i+2]/gearboxratio[i+1];
+    rpmAfterBestOptShiftPoint[i]=bestOptShiftPoint[i]*cardata.gearboxratio[i+2]/cardata.gearboxratio[i+1];
 }
 /* load autor info */
 loadAutorInfo();
 
   /****************************************/
   /*   Initialize GLUT and create window  */
-  /****************************************/  
+  /****************************************/
   glutInit(&argc, argv);
   glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH );
   glutInitWindowPosition( 724, 0 );
   glutInitWindowSize( 300, 700 );
- 
+
   main_window = glutCreateWindow( "Torcs Car Setup Editor" );
   glutDisplayFunc( myGlutDisplay );
-  glutReshapeFunc( myGlutReshape );  
+  glutReshapeFunc( myGlutReshape );
   glutKeyboardFunc( myGlutKeyboard );
   glutMotionFunc( myGlutMotion );
   glutMouseFunc( myGlutMouse );
@@ -1219,195 +1223,195 @@ loadAutorInfo();
   printf( "Torcs Car Setup Editor version %3.2f\n", TCSE_version);
   printf( "created by Vicente Marti\n");
   printf( "You can at start the progarm -c carname to set the carname.\n");
-  
-  
-  
+
+
+
   GLUI *glui = GLUI_Master.create_glui( "Torcs Car Setup Editor", 0, 0, 0 ); /* name, flags,
 								 x, and y */
 
-    (new GLUI_EditText( glui, "CarName", carname, 0, (GLUI_Update_CB)syncLiveAll ))->w=170;
-    (new GLUI_EditText( glui, "Category", carCategory, 0, (GLUI_Update_CB)syncLiveAll ))->w=170;								 
+    (new GLUI_EditText( glui, "CarName", cardata.carname, 0, (GLUI_Update_CB)syncLiveAll ))->w=170;
+    (new GLUI_EditText( glui, "Category", cardata.carCategory, 0, (GLUI_Update_CB)syncLiveAll ))->w=170;
     new GLUI_Button( glui, "Help", 2, (GLUI_Update_CB)showglui );
     cmd_line=new GLUI_CommandLine(glui,"C.Line:",NULL,0,(GLUI_Update_CB)cmd_line_cb);
     cmd_line->set_w( 170 );  /** Widen 'command line' control **/
-                                                                                          
-         
+
+
   GLUI_Panel *aerodynamics_panel = new GLUI_Panel( glui, "Aerodynamics" );
-   (new GLUI_Spinner( aerodynamics_panel, "Cx:", &aerodynamics[0] ))
+   (new GLUI_Spinner( aerodynamics_panel, "Cx:", &cardata.aerodynamics[0] ))
     ->set_float_limits( 0, 1 );
-    (new GLUI_Spinner( aerodynamics_panel, "Front Area(m2):", &aerodynamics[1] ))
+    (new GLUI_Spinner( aerodynamics_panel, "Front Area(m2):", &cardata.aerodynamics[1] ))
     ->set_float_limits( 0, 20 );
-    (new GLUI_Spinner( aerodynamics_panel, "Front Clift:", &aerodynamics[2] ))
+    (new GLUI_Spinner( aerodynamics_panel, "Front Clift:", &cardata.aerodynamics[2] ))
     ->set_float_limits( 0, 5 );
-    (new GLUI_Spinner( aerodynamics_panel, "Rear Clift:", &aerodynamics[3] ))
+    (new GLUI_Spinner( aerodynamics_panel, "Rear Clift:", &cardata.aerodynamics[3] ))
     ->set_float_limits( 0, 5 );
-    
+
   GLUI_Panel *frontwing_panel = new GLUI_Panel( glui, "Front Wing" );
-   (new GLUI_Spinner( frontwing_panel, "Area(m2):", &frontwing[0] ))
+   (new GLUI_Spinner( frontwing_panel, "Area(m2):", &cardata.frontwing[0] ))
     ->set_float_limits( 0, 10 );
-    (new GLUI_Spinner( frontwing_panel, "angle(deg):", &frontwing[1] ))
+    (new GLUI_Spinner( frontwing_panel, "angle(deg):", &cardata.frontwing[1] ))
     ->set_float_limits( 0, 180 );
-    (new GLUI_Spinner( frontwing_panel, "xpos(m):", &frontwing[2] ))
+    (new GLUI_Spinner( frontwing_panel, "xpos(m):", &cardata.frontwing[2] ))
     ->set_float_limits( -5, 5 );
-    (new GLUI_Spinner( frontwing_panel, "zpos(m):", &frontwing[3] ))
+    (new GLUI_Spinner( frontwing_panel, "zpos(m):", &cardata.frontwing[3] ))
     ->set_float_limits( 0, 5 );
-    
+
   GLUI_Panel *rearwing_panel = new GLUI_Panel( glui, "Rear Wing" );
-   (new GLUI_Spinner( rearwing_panel, "Area(m2):", &rearwing[0] ))
+   (new GLUI_Spinner( rearwing_panel, "Area(m2):", &cardata.rearwing[0] ))
     ->set_float_limits( 0, 10 );
-    (new GLUI_Spinner( rearwing_panel, "angle(deg):", &rearwing[1] ))
+    (new GLUI_Spinner( rearwing_panel, "angle(deg):", &cardata.rearwing[1] ))
     ->set_float_limits( 0, 180 );
-    (new GLUI_Spinner( rearwing_panel, "xpos(m):", &rearwing[2] ))
+    (new GLUI_Spinner( rearwing_panel, "xpos(m):", &cardata.rearwing[2] ))
     ->set_float_limits( -5, 5 );
-    (new GLUI_Spinner( rearwing_panel, "zpos(m):", &rearwing[3] ))
-    ->set_float_limits( 0, 5 );                            
-  
+    (new GLUI_Spinner( rearwing_panel, "zpos(m):", &cardata.rearwing[3] ))
+    ->set_float_limits( 0, 5 );
+
   GLUI_Panel *massdata_panel = new GLUI_Panel( glui, "Weight Repartition & Fuel" );
-   (new GLUI_Spinner( massdata_panel, "front-rear:", &massdata[0] ))
+   (new GLUI_Spinner( massdata_panel, "front-rear:", &cardata.massdata[0] ))
     ->set_float_limits( 0.1, 0.9 );
-   (new GLUI_Spinner( massdata_panel, "front right-left:", &massdata[1] ))
+   (new GLUI_Spinner( massdata_panel, "front right-left:", &cardata.massdata[1] ))
     ->set_float_limits( 0.4, 0.6 );
-   (new GLUI_Spinner( massdata_panel, "rear right-left:", &massdata[2] ))
+   (new GLUI_Spinner( massdata_panel, "rear right-left:", &cardata.massdata[2] ))
     ->set_float_limits( 0.4, 0.6 );
-   (new GLUI_Spinner( massdata_panel, "mass.rep.coef:", &massdata[3] ))
+   (new GLUI_Spinner( massdata_panel, "mass.rep.coef:", &cardata.massdata[3] ))
     ->set_float_limits( 0.4, 1.0 );
-   (new GLUI_Spinner( massdata_panel, "fuel tank(l):", &massdata[4] ))
+   (new GLUI_Spinner( massdata_panel, "fuel tank(l):", &cardata.massdata[4] ))
     ->set_float_limits( 0.0, 100.0 );
-   (new GLUI_Spinner( massdata_panel, "initial fuel(l):", &massdata[5] ))
+   (new GLUI_Spinner( massdata_panel, "initial fuel(l):", &cardata.massdata[5] ))
     ->set_float_limits( 1.0, 100.0 );
-   (new GLUI_Spinner( massdata_panel, "Mass (kg):", &massdata[6] ))
+   (new GLUI_Spinner( massdata_panel, "Mass (kg):", &cardata.massdata[6] ))
     ->set_float_limits( 1.0, 5000.0 );
-   (new GLUI_Spinner( massdata_panel, "GC height(m):", &massdata[7] ))
-    ->set_float_limits( 0.0, 100.0 );    
-  
-                                                        
+   (new GLUI_Spinner( massdata_panel, "GC height(m):", &cardata.massdata[7] ))
+    ->set_float_limits( 0.0, 100.0 );
 
 
-  new GLUI_Column( glui , false);  
+
+
+  new GLUI_Column( glui , false);
    /* Engine parameters */
    GLUI_Panel *engineparams_panel = new GLUI_Panel( glui, "Engine configuartion" );
-   (new GLUI_Spinner( engineparams_panel, "inertia(kg.m2):", &engineparams[0] ))
-    ->set_float_limits( 0.0, 0.5 );         
-   (new GLUI_Spinner( engineparams_panel, "revs maxi:", &engineparams[1],0,(GLUI_Update_CB)setRevsLimiterLimits ))
-    ->set_float_limits( 5000, 20000 );         
-   
-   revsLimiterSpinner = new GLUI_Spinner( engineparams_panel, "revs limiter:", &engineparams[2], 0, (GLUI_Update_CB)CalcCVTQmax );
-    revsLimiterSpinner -> set_float_limits( engineparams[3], engineparams[1] );         
-   
-   (new GLUI_Spinner( engineparams_panel, "tickover:", &engineparams[3],0,(GLUI_Update_CB)setRevsLimiterLimits ))
-    ->set_float_limits( 500, 20000 );         
-   (new GLUI_Spinner( engineparams_panel, "fuel cons factor:", &engineparams[4] ))
-    ->set_float_limits( 1.1, 1.3 );  
-   
+   (new GLUI_Spinner( engineparams_panel, "inertia(kg.m2):", &cardata.engineparams[0] ))
+    ->set_float_limits( 0.0, 0.5 );
+   (new GLUI_Spinner( engineparams_panel, "revs maxi:", &cardata.engineparams[1],0,(GLUI_Update_CB)setRevsLimiterLimits ))
+    ->set_float_limits( 5000, 20000 );
+
+   revsLimiterSpinner = new GLUI_Spinner( engineparams_panel, "revs limiter:", &cardata.engineparams[2], 0, (GLUI_Update_CB)CalcCVTQmax );
+    revsLimiterSpinner -> set_float_limits( cardata.engineparams[3], cardata.engineparams[1] );
+
+   (new GLUI_Spinner( engineparams_panel, "tickover:", &cardata.engineparams[3],0,(GLUI_Update_CB)setRevsLimiterLimits ))
+    ->set_float_limits( 500, 20000 );
+   (new GLUI_Spinner( engineparams_panel, "fuel cons factor:", &cardata.engineparams[4] ))
+    ->set_float_limits( 1.1, 1.3 );
+
    new GLUI_Button( engineparams_panel, "Engine Advanced", 11, (GLUI_Update_CB)showglui );
 
 
-  //new GLUI_Column( glui ); 
-      
-   /* Gearbox */       
-   
+  //new GLUI_Column( glui );
+
+   /* Gearbox */
+
     GLUI_Panel *gearboxratio_panel = new GLUI_Panel( glui, "Gearbox Ratio" );
-   r_gear[0] = new GLUI_Spinner( gearboxratio_panel, "rear", &gearboxratio[0], 0, (GLUI_Update_CB)gearMaxMin );
+   r_gear[0] = new GLUI_Spinner( gearboxratio_panel, "rear", &cardata.gearboxratio[0], 0, (GLUI_Update_CB)gearMaxMin );
    r_gear[0]->set_float_limits( -5.0, -0.001 );
-   r_gear[1] = new GLUI_Spinner( gearboxratio_panel, "1st", &gearboxratio[1], 1, (GLUI_Update_CB)gearMaxMin  );
+   r_gear[1] = new GLUI_Spinner( gearboxratio_panel, "1st", &cardata.gearboxratio[1], 1, (GLUI_Update_CB)gearMaxMin  );
    r_gear[1]->set_float_limits( 0.001, 5.0 );
-   r_gear[2] = new GLUI_Spinner( gearboxratio_panel, "2nd", &gearboxratio[2], 2, (GLUI_Update_CB)gearMaxMin  );
+   r_gear[2] = new GLUI_Spinner( gearboxratio_panel, "2nd", &cardata.gearboxratio[2], 2, (GLUI_Update_CB)gearMaxMin  );
    r_gear[2]->set_float_limits( 0.001, 5.0 );
-   r_gear[3] = new GLUI_Spinner( gearboxratio_panel, "3rd", &gearboxratio[3], 3, (GLUI_Update_CB)gearMaxMin  );
+   r_gear[3] = new GLUI_Spinner( gearboxratio_panel, "3rd", &cardata.gearboxratio[3], 3, (GLUI_Update_CB)gearMaxMin  );
    r_gear[3]->set_float_limits( 0.001, 5.0 );
-   r_gear[4] = new GLUI_Spinner( gearboxratio_panel, "4th", &gearboxratio[4], 4, (GLUI_Update_CB)gearMaxMin  );
+   r_gear[4] = new GLUI_Spinner( gearboxratio_panel, "4th", &cardata.gearboxratio[4], 4, (GLUI_Update_CB)gearMaxMin  );
    r_gear[4]->set_float_limits( 0.001, 5.0 );
-   r_gear[5] = new GLUI_Spinner( gearboxratio_panel, "5th", &gearboxratio[5], 5, (GLUI_Update_CB)gearMaxMin  );
+   r_gear[5] = new GLUI_Spinner( gearboxratio_panel, "5th", &cardata.gearboxratio[5], 5, (GLUI_Update_CB)gearMaxMin  );
    r_gear[5]->set_float_limits( 0.001, 5.0 );
-   r_gear[6] = new GLUI_Spinner( gearboxratio_panel, "6th", &gearboxratio[6], 6, (GLUI_Update_CB)gearMaxMin  );
+   r_gear[6] = new GLUI_Spinner( gearboxratio_panel, "6th", &cardata.gearboxratio[6], 6, (GLUI_Update_CB)gearMaxMin  );
    r_gear[6]->set_float_limits( 0.001, 5.0 );
-   r_gear[7] = new GLUI_Spinner( gearboxratio_panel, "7th", &gearboxratio[7], 7, (GLUI_Update_CB)gearMaxMin  );
+   r_gear[7] = new GLUI_Spinner( gearboxratio_panel, "7th", &cardata.gearboxratio[7], 7, (GLUI_Update_CB)gearMaxMin  );
    r_gear[7]->set_float_limits( 0.001, 5.0 );
-    
+
     new GLUI_Separator( gearboxratio_panel );
-    
-   (new GLUI_Spinner( gearboxratio_panel, "Shift Time(s)", &gearbox_shift_time))
-    ->set_float_limits( 0.0, 5.0 );    
+
+   (new GLUI_Spinner( gearboxratio_panel, "Shift Time(s)", &cardata.gearbox_shift_time))
+    ->set_float_limits( 0.0, 5.0 );
 
   new GLUI_Button( gearboxratio_panel, "Gear Advanced", 6, (GLUI_Update_CB)showglui );
 
- 
+
 
     GLUI_Panel *brakesystem_panel = new GLUI_Panel( glui, "Brake System" );
-   (new GLUI_Spinner( brakesystem_panel, "front-rear", &brakesystem[0], 0, (GLUI_Update_CB)syncLiveAll ))
+   (new GLUI_Spinner( brakesystem_panel, "front-rear", &cardata.brakesystem[0], 0, (GLUI_Update_CB)syncLiveAll ))
     ->set_float_limits( 0.3, 0.7 );
-     
+
     (new GLUI_Scrollbar( brakesystem_panel, "Red",
-    GLUI_SCROLL_HORIZONTAL,&brakesystem[0], 0, (GLUI_Update_CB)syncLiveAll))->set_float_limits(0.3,0.7);
-    
+    GLUI_SCROLL_HORIZONTAL,&cardata.brakesystem[0], 0, (GLUI_Update_CB)syncLiveAll))->set_float_limits(0.3,0.7);
+
      new GLUI_Separator( brakesystem_panel );
-      
-   GLUI_Spinner *MaxPress=new GLUI_Spinner( brakesystem_panel, "MaxP(kPa)", &brakesystem[1] );
+
+   GLUI_Spinner *MaxPress=new GLUI_Spinner( brakesystem_panel, "MaxP(kPa)", &cardata.brakesystem[1] );
    MaxPress -> set_float_limits( 100, 150000 );
    MaxPress -> w=350;
 
-  new GLUI_Button( glui, "Disk Brakes", 3, (GLUI_Update_CB)showglui ); 
+  new GLUI_Button( glui, "Disk Brakes", 3, (GLUI_Update_CB)showglui );
 
   new GLUI_Button( glui, "Wheels & Tires", 4, (GLUI_Update_CB)showglui );
-  
+
   new GLUI_Button( glui, "Steer, Diferential...", 5, (GLUI_Update_CB)showglui );
-  
+
   new GLUI_Button( glui, "Car dimensions&Driver pos", 12, (GLUI_Update_CB)showglui );
 
   new GLUI_Button( glui, "CarName&AutorInfo", 14, (GLUI_Update_CB)showglui );
-    
-  new GLUI_Button( glui, "Sound & Graphic", 8, (GLUI_Update_CB)showglui );  
-    
-  new GLUI_Column( glui , false);    
-    
-                 
-  
-  new GLUI_StaticText( glui, "Suspension" );                  
-  
- /* Suspension parameters */ 
-  
+
+  new GLUI_Button( glui, "Sound & Graphic", 8, (GLUI_Update_CB)showglui );
+
+  new GLUI_Column( glui , false);
+
+
+
+  new GLUI_StaticText( glui, "Suspension" );
+
+ /* Suspension parameters */
+
     GLUI_Panel *antirollbar = new GLUI_Panel( glui, "Anti-Roll Bar" );
-    GLUI_Spinner *fantirollbar = new GLUI_Spinner( antirollbar, "Front(lbs/in)", &antirollbar1[0] );
+    GLUI_Spinner *fantirollbar = new GLUI_Spinner( antirollbar, "Front(lbs/in)", &cardata.antirollbar1[0] );
     fantirollbar -> set_int_limits( 0, 10000 );
     fantirollbar -> user_speed = 0.05;
     fantirollbar -> increase_growth();
-    GLUI_Spinner *rantirollbar = new GLUI_Spinner( antirollbar, "Rear(lbs/in)", &antirollbar2[0] );
+    GLUI_Spinner *rantirollbar = new GLUI_Spinner( antirollbar, "Rear(lbs/in)", &cardata.antirollbar2[0] );
     rantirollbar -> set_int_limits( 0, 10000 );
     rantirollbar -> set_speed( 0.05 );
     rantirollbar -> reset_growth();
 
-  new GLUI_Button( glui, "Advanced Suspension", 7, (GLUI_Update_CB)showglui ); 
-    
+  new GLUI_Button( glui, "Advanced Suspension", 7, (GLUI_Update_CB)showglui );
+
  checkbox =
     new GLUI_Checkbox(glui, "Simetrical edit", &simetricaledityn1, 1, (GLUI_Update_CB)SimetricalEditL );
-    
-      
+
+
   GLUI_Panel *suspensionlf = new GLUI_Panel(glui, "Left Front Wheel");
-   (new GLUI_Spinner( suspensionlf, "Spring(lbs/in)", &suspension1[0], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspensionlf, "Spring(lbs/in)", &cardata.suspension1[0], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 10000 );
-   (new GLUI_Spinner( suspensionlf, "Susp.Course(m)", &suspension1[1], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspensionlf, "Susp.Course(m)", &cardata.suspension1[1], 1, (GLUI_Update_CB)SimetricalEditL ))
    ->set_float_limits( 0, 0.2 );
-    
+
   GLUI_Panel *suspensionrf = new GLUI_Panel(glui, "Right Front Wheel");
-   (new GLUI_Spinner( suspensionrf, "Spring(lbs/in)", &suspension2[0], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspensionrf, "Spring(lbs/in)", &cardata.suspension2[0], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 10000 );
-   (new GLUI_Spinner( suspensionrf, "Susp.Course(m)", &suspension2[1], 1, (GLUI_Update_CB)SimetricalEditR ))
-    ->set_float_limits( 0, 0.2 );           
- 
-  GLUI_Panel *suspensionlr = new GLUI_Panel(glui, "Left Rear Wheel");
-   (new GLUI_Spinner( suspensionlr, "Spring(lbs/in)", &suspension3[0], 1, (GLUI_Update_CB)SimetricalEditL  ))
-    ->set_float_limits( 0, 10000 );
-   (new GLUI_Spinner( suspensionlr, "Susp.Course(m)", &suspension3[1], 1, (GLUI_Update_CB)SimetricalEditL  ))
-    ->set_float_limits( 0, 0.2 );
-    
-  GLUI_Panel *suspensionrr = new GLUI_Panel(glui, "Right Rear Wheel");
-   (new GLUI_Spinner( suspensionrr, "Spring(lbs/in)", &suspension4[0], 1, (GLUI_Update_CB)SimetricalEditR  ))
-    ->set_float_limits( 0, 10000 );
-   (new GLUI_Spinner( suspensionrr, "Susp.Course(m)", &suspension4[1], 1, (GLUI_Update_CB)SimetricalEditR  ))
+   (new GLUI_Spinner( suspensionrf, "Susp.Course(m)", &cardata.suspension2[1], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 0.2 );
 
-    
-  
+  GLUI_Panel *suspensionlr = new GLUI_Panel(glui, "Left Rear Wheel");
+   (new GLUI_Spinner( suspensionlr, "Spring(lbs/in)", &cardata.suspension3[0], 1, (GLUI_Update_CB)SimetricalEditL  ))
+    ->set_float_limits( 0, 10000 );
+   (new GLUI_Spinner( suspensionlr, "Susp.Course(m)", &cardata.suspension3[1], 1, (GLUI_Update_CB)SimetricalEditL  ))
+    ->set_float_limits( 0, 0.2 );
+
+  GLUI_Panel *suspensionrr = new GLUI_Panel(glui, "Right Rear Wheel");
+   (new GLUI_Spinner( suspensionrr, "Spring(lbs/in)", &cardata.suspension4[0], 1, (GLUI_Update_CB)SimetricalEditR  ))
+    ->set_float_limits( 0, 10000 );
+   (new GLUI_Spinner( suspensionrr, "Susp.Course(m)", &cardata.suspension4[1], 1, (GLUI_Update_CB)SimetricalEditR  ))
+    ->set_float_limits( 0, 0.2 );
+
+
+
   new GLUI_Button( glui, "Open CarData", 1, (GLUI_Update_CB)opencardata ); /* button to
                               save the xml file calling the function open car data */
   new GLUI_Button( glui, "Save CarData", 1, (GLUI_Update_CB)savecardata ); /* button to
@@ -1417,35 +1421,35 @@ loadAutorInfo();
   new GLUI_Button( glui, "Save XML", 1, (GLUI_Update_CB)savexml ); /* button to
                               save the xml file calling the function savexml */
   new GLUI_StaticText( glui, "" );
-  
+
   new GLUI_Button( glui, "Advanced Save-Open", 10, (GLUI_Update_CB)showglui ); /* button to
                               save the xml file calling the function save car data */
   new GLUI_StaticText( glui, "" );
-  new GLUI_Button( glui, "View AC3D file", 0,(GLUI_Update_CB)mainAC3Dloader );  
+  new GLUI_Button( glui, "View AC3D file", 0,(GLUI_Update_CB)mainAC3Dloader );
   new GLUI_StaticText( glui, "" );
-  new GLUI_Button( glui, "Quit", 0,(GLUI_Update_CB)exit );/* EXIT */ 
+  new GLUI_Button( glui, "Quit", 0,(GLUI_Update_CB)exit );/* EXIT */
 
  /*examples */
   //checkbox = new GLUI_Checkbox( glui, "Wireframe", &wireframe, 1, control_cb );
  /* spinner  = new GLUI_Spinner( glui, "Segments:", &segments, 2, control_cb );
   spinner->set_int_limits( 3, 60 );
   edittext = new GLUI_EditText( glui, "Text:", text, 3, control_cb );
- 
 
-    
+
+
   GLUI_Panel *obj_panel = new GLUI_Panel( glui, "Object Type" );
   radio = new GLUI_RadioGroup( obj_panel,&obj,4,control_cb );
   new GLUI_RadioButton( radio, "Sphere" );
   new GLUI_RadioButton( radio, "Torus" );
   new GLUI_RadioButton( radio, "Teapot" );
-  */ 
-  /* Roll out */ 
+  */
+  /* Roll out */
   /*GLUI_Panel *obj_panel2 = new GLUI_Rollout(glui, "Properties", false );
 
-   (new GLUI_Spinner( obj_panel2, "Tq 0.00rpm:", &tqValue[0] ))
+   (new GLUI_Spinner( obj_panel2, "Tq 0.00rpm:", &cardata.tqValue[0] ))
     ->set_int_limits( 0, 1000 );
-    (new GLUI_Spinner( obj_panel2, "Tq 0.00rpm:", &tqValue[0] ))
-    ->set_int_limits( 0, 1000 );							 
+    (new GLUI_Spinner( obj_panel2, "Tq 0.00rpm:", &cardata.tqValue[0] ))
+    ->set_int_limits( 0, 1000 );
 */
   /* buttons */
  /* GLUI_Panel *obj_panel3 = new GLUI_Panel( glui, "Object Type" );
@@ -1457,234 +1461,234 @@ loadAutorInfo();
   /* chec box */
 /*  GLUI_Panel *obj_panel4 = new GLUI_Panel( glui, "Object Type" );
   radio = new GLUI_RadioGroup( obj_panel3,&obj,4,control_cb );
-  checkbox = 
+  checkbox =
     new GLUI_Checkbox(obj_panel4, "Wireframe", &wireframe, 1, control_cb );
     */
-  
+
     /* scroll bar */
     /*
-      GLUI_Panel *obj_panel5 = new GLUI_Panel( glui, "Object Type" );  
+      GLUI_Panel *obj_panel5 = new GLUI_Panel( glui, "Object Type" );
     GLUI_Scrollbar *sb;
   sb = new GLUI_Scrollbar( obj_panel5, "Red",GLUI_SCROLL_HORIZONTAL,
                            &wireframe,1,control_cb);
-                           
+
   sb->set_float_limits(0,1);
 
 */
 
      /* Window for the Brakes */
-                         
+
   glui3 = GLUI_Master.create_glui("Disk Brakes Setup", 0, 50, 0);/* name, flags,
 								 x, and y */
   glui3->hide();
 
-    
+
     /* Front Left Brake */
     GLUI_Panel *brake2_panel = new GLUI_Panel( glui3, "Front Left Brake" );
-   (new GLUI_Spinner( brake2_panel, "Disk Diameter(mm)", &brake2[0], 3, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( brake2_panel, "Disk Diameter(mm)", &cardata.brake2[0], 3, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 100, 380 );
-   (new GLUI_Spinner( brake2_panel, "Piston Area(cm2)", &brake2[1], 3, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( brake2_panel, "Piston Area(cm2)", &cardata.brake2[1], 3, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 10, 100 );
-   (new GLUI_Spinner( brake2_panel, "mu", &brake2[2], 3, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( brake2_panel, "mu", &cardata.brake2[2], 3, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( brake2_panel, "Inertia(Kg.m2)", &brake2[3], 3, (GLUI_Update_CB)SimetricalEditL ))
-    ->set_float_limits( 0, 5 );        
+   (new GLUI_Spinner( brake2_panel, "Inertia(Kg.m2)", &cardata.brake2[3], 3, (GLUI_Update_CB)SimetricalEditL ))
+    ->set_float_limits( 0, 5 );
 
     /* Rear Left Brake */
     GLUI_Panel *brake4_panel = new GLUI_Panel( glui3, "Rear Left Brake" );
-   (new GLUI_Spinner( brake4_panel, "Disk Diameter(mm)", &brake4[0], 3, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( brake4_panel, "Disk Diameter(mm)", &cardata.brake4[0], 3, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 100, 380 );
-   (new GLUI_Spinner( brake4_panel, "Piston Area(cm2)", &brake4[1], 3, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( brake4_panel, "Piston Area(cm2)", &cardata.brake4[1], 3, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 10, 100 );
-   (new GLUI_Spinner( brake4_panel, "mu", &brake4[2], 3, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( brake4_panel, "mu", &cardata.brake4[2], 3, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( brake4_panel, "Inertia(Kg.m2)", &brake4[3], 3, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( brake4_panel, "Inertia(Kg.m2)", &cardata.brake4[3], 3, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 5 );
 
   new GLUI_Checkbox(glui3, "Simetrical edit", &simetricaledityn3, 3, (GLUI_Update_CB)SimetricalEditL );
-  new GLUI_Column( glui3, false ); 
+  new GLUI_Column( glui3, false );
 
-  
+
    /* Front Right Brake */
    GLUI_Panel *brake1_panel = new GLUI_Panel( glui3, "Front Right Brake" );
-   (new GLUI_Spinner( brake1_panel, "Disk Diameter(mm)", &brake1[0], 3, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( brake1_panel, "Disk Diameter(mm)", &cardata.brake1[0], 3, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 100, 380 );
-   (new GLUI_Spinner( brake1_panel, "Piston Area(cm2)", &brake1[1], 3, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( brake1_panel, "Piston Area(cm2)", &cardata.brake1[1], 3, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 10, 100 );
-   (new GLUI_Spinner( brake1_panel, "mu", &brake1[2], 3, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( brake1_panel, "mu", &cardata.brake1[2], 3, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( brake1_panel, "Inertia(Kg.m2)", &brake1[3], 3, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( brake1_panel, "Inertia(Kg.m2)", &cardata.brake1[3], 3, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 5 );
-  
+
    /* Rear Right Brake */
    GLUI_Panel *brake3_panel = new GLUI_Panel( glui3, "Rear Right Brake" );
-   (new GLUI_Spinner( brake3_panel, "Disk Diameter(mm)", &brake3[0], 3, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( brake3_panel, "Disk Diameter(mm)", &cardata.brake3[0], 3, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 100, 380 );
-   (new GLUI_Spinner( brake3_panel, "Piston Area(cm2)", &brake3[1], 3, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( brake3_panel, "Piston Area(cm2)", &cardata.brake3[1], 3, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 10, 100 );
-   (new GLUI_Spinner( brake3_panel, "mu", &brake3[2], 3, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( brake3_panel, "mu", &cardata.brake3[2], 3, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( brake3_panel, "Inertia(Kg.m2)", &brake3[3], 3, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( brake3_panel, "Inertia(Kg.m2)", &cardata.brake3[3], 3, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 5 );
 
 
     new GLUI_Button( glui3, "Close Window", 3, (GLUI_Update_CB)hideglui );
 
 
-/* Window for Wheels and Tires*/                       
+/* Window for Wheels and Tires*/
   glui4 = GLUI_Master.create_glui("Wheels & Tires", 0, 0, 0);/* name, flags,
 								 x, and y */
   glui4->hide();
 
   GLUI_Panel *wheel2_panel = new GLUI_Panel(glui4, "Front Left Wheel");
-   (new GLUI_Spinner( wheel2_panel, "Ypos(m)", &wheel2[0], 2, (GLUI_Update_CB)SimetricalEditL  ))
+   (new GLUI_Spinner( wheel2_panel, "Ypos(m)", &cardata.wheel2[0], 2, (GLUI_Update_CB)SimetricalEditL  ))
     ->set_float_limits( -5, 5 );
-   (new GLUI_Spinner( wheel2_panel, "Rim diameter(in)", &wheel2[1], 2, (GLUI_Update_CB)SimetricalEditL  ))
+   (new GLUI_Spinner( wheel2_panel, "Rim diameter(in)", &cardata.wheel2[1], 2, (GLUI_Update_CB)SimetricalEditL  ))
     ->set_float_limits( 0, 30 );
-   (new GLUI_Spinner( wheel2_panel, "Tire Width(mm)", &wheel2[2], 2, (GLUI_Update_CB)SimetricalEditL  ))
+   (new GLUI_Spinner( wheel2_panel, "Tire Width(mm)", &cardata.wheel2[2], 2, (GLUI_Update_CB)SimetricalEditL  ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( wheel2_panel, "Tire height-width ratio", &wheel2[3], 2, (GLUI_Update_CB)SimetricalEditL  ))
+   (new GLUI_Spinner( wheel2_panel, "Tire height-width ratio", &cardata.wheel2[3], 2, (GLUI_Update_CB)SimetricalEditL  ))
     ->set_float_limits( 0, 5 );
-    (new GLUI_Spinner( wheel2_panel, "Wheel radius(m)", &wheelRadius[1] ))
+    (new GLUI_Spinner( wheel2_panel, "Wheel radius(m)", &cardata.wheelRadius[1] ))
     ->disable( );
-   (new GLUI_Spinner( wheel2_panel, "Inertia(kg.m2)", &wheel2[4], 2, (GLUI_Update_CB)SimetricalEditL  ))
+   (new GLUI_Spinner( wheel2_panel, "Inertia(kg.m2)", &cardata.wheel2[4], 2, (GLUI_Update_CB)SimetricalEditL  ))
     ->set_float_limits( 0, 5 );
-   (new GLUI_Spinner( wheel2_panel, "Initial Ride Height(mm)", &wheel2[5], 2, (GLUI_Update_CB)SimetricalEditL  ))
+   (new GLUI_Spinner( wheel2_panel, "Initial Ride Height(mm)", &cardata.wheel2[5], 2, (GLUI_Update_CB)SimetricalEditL  ))
     ->set_float_limits( 0, 300 );
-   (new GLUI_Spinner( wheel2_panel, "Toe(deg)", &wheel2[6], 2, (GLUI_Update_CB)SimetricalEditL  ))
+   (new GLUI_Spinner( wheel2_panel, "Toe(deg)", &cardata.wheel2[6], 2, (GLUI_Update_CB)SimetricalEditL  ))
     ->set_float_limits( -5, 5 );
-   (new GLUI_Spinner( wheel2_panel, "Camber(deg)", &wheel2[7], 2, (GLUI_Update_CB)SimetricalEditL  ))
+   (new GLUI_Spinner( wheel2_panel, "Camber(deg)", &cardata.wheel2[7], 2, (GLUI_Update_CB)SimetricalEditL  ))
     ->set_float_limits( -5, 0 );
-   (new GLUI_Spinner( wheel2_panel, "Stiffness", &wheel2[8], 2, (GLUI_Update_CB)SimetricalEditL  ))
+   (new GLUI_Spinner( wheel2_panel, "Stiffness", &cardata.wheel2[8], 2, (GLUI_Update_CB)SimetricalEditL  ))
     ->set_float_limits( 20, 50 );
-   (new GLUI_Spinner( wheel2_panel, "Dynamic Fricction(%)", &wheel2[9], 2, (GLUI_Update_CB)SimetricalEditL  ))
+   (new GLUI_Spinner( wheel2_panel, "Dynamic Fricction(%)", &cardata.wheel2[9], 2, (GLUI_Update_CB)SimetricalEditL  ))
     ->set_float_limits( 70, 90 );
-   (new GLUI_Spinner( wheel2_panel, "Rolling Resistance", &wheel2[10], 2, (GLUI_Update_CB)SimetricalEditL  ))
+   (new GLUI_Spinner( wheel2_panel, "Rolling Resistance", &cardata.wheel2[10], 2, (GLUI_Update_CB)SimetricalEditL  ))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( wheel2_panel, "Mu", &wheel2[11], 2, (GLUI_Update_CB)SimetricalEditL  ))
-    ->set_float_limits( 0.05, 1.8 ); 
-         
+   (new GLUI_Spinner( wheel2_panel, "Mu", &cardata.wheel2[11], 2, (GLUI_Update_CB)SimetricalEditL  ))
+    ->set_float_limits( 0.05, 1.8 );
+
 
 
   GLUI_Panel *wheel4_panel = new GLUI_Panel(glui4, "Rear Left Wheel");
-   (new GLUI_Spinner( wheel4_panel, "Ypos(m)", &wheel4[0], 2, (GLUI_Update_CB)SimetricalEditL   ))
+   (new GLUI_Spinner( wheel4_panel, "Ypos(m)", &cardata.wheel4[0], 2, (GLUI_Update_CB)SimetricalEditL   ))
     ->set_float_limits( -5, 5 );
-   (new GLUI_Spinner( wheel4_panel, "Rim diameter(in)", &wheel4[1], 2, (GLUI_Update_CB)SimetricalEditL   ))
+   (new GLUI_Spinner( wheel4_panel, "Rim diameter(in)", &cardata.wheel4[1], 2, (GLUI_Update_CB)SimetricalEditL   ))
     ->set_float_limits( 0, 30 );
-   (new GLUI_Spinner( wheel4_panel, "Tire Width(mm)", &wheel4[2], 2, (GLUI_Update_CB)SimetricalEditL   ))
+   (new GLUI_Spinner( wheel4_panel, "Tire Width(mm)", &cardata.wheel4[2], 2, (GLUI_Update_CB)SimetricalEditL   ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( wheel4_panel, "Tire height-width ratio", &wheel4[3], 2, (GLUI_Update_CB)SimetricalEditL   ))
+   (new GLUI_Spinner( wheel4_panel, "Tire height-width ratio", &cardata.wheel4[3], 2, (GLUI_Update_CB)SimetricalEditL   ))
     ->set_float_limits( 0, 5 );
-    (new GLUI_Spinner( wheel4_panel, "Wheel radius(m)", &wheelRadius[3] ))
+    (new GLUI_Spinner( wheel4_panel, "Wheel radius(m)", &cardata.wheelRadius[3] ))
     ->disable( );
-   (new GLUI_Spinner( wheel4_panel, "Inertia(kg.m2)", &wheel4[4], 2, (GLUI_Update_CB)SimetricalEditL   ))
+   (new GLUI_Spinner( wheel4_panel, "Inertia(kg.m2)", &cardata.wheel4[4], 2, (GLUI_Update_CB)SimetricalEditL   ))
     ->set_float_limits( 0, 5 );
-   (new GLUI_Spinner( wheel4_panel, "Initial Ride Height(mm)", &wheel4[5], 2, (GLUI_Update_CB)SimetricalEditL   ))
+   (new GLUI_Spinner( wheel4_panel, "Initial Ride Height(mm)", &cardata.wheel4[5], 2, (GLUI_Update_CB)SimetricalEditL   ))
     ->set_float_limits( 0, 300 );
-   (new GLUI_Spinner( wheel4_panel, "Toe(deg)", &wheel4[6], 2, (GLUI_Update_CB)SimetricalEditL   ))
+   (new GLUI_Spinner( wheel4_panel, "Toe(deg)", &cardata.wheel4[6], 2, (GLUI_Update_CB)SimetricalEditL   ))
     ->set_float_limits( -5, 5 );
-   (new GLUI_Spinner( wheel4_panel, "Camber(deg)", &wheel4[7], 2, (GLUI_Update_CB)SimetricalEditL   ))
+   (new GLUI_Spinner( wheel4_panel, "Camber(deg)", &cardata.wheel4[7], 2, (GLUI_Update_CB)SimetricalEditL   ))
     ->set_float_limits( -5, 0 );
-   (new GLUI_Spinner( wheel4_panel, "Stiffness", &wheel4[8], 2, (GLUI_Update_CB)SimetricalEditL   ))
+   (new GLUI_Spinner( wheel4_panel, "Stiffness", &cardata.wheel4[8], 2, (GLUI_Update_CB)SimetricalEditL   ))
     ->set_float_limits( 20, 50 );
-   (new GLUI_Spinner( wheel4_panel, "Dynamic Fricction(%)", &wheel4[9], 2, (GLUI_Update_CB)SimetricalEditL   ))
+   (new GLUI_Spinner( wheel4_panel, "Dynamic Fricction(%)", &cardata.wheel4[9], 2, (GLUI_Update_CB)SimetricalEditL   ))
     ->set_float_limits( 70, 90 );
-   (new GLUI_Spinner( wheel4_panel, "Rolling Resistance", &wheel4[10], 2, (GLUI_Update_CB)SimetricalEditL   ))
+   (new GLUI_Spinner( wheel4_panel, "Rolling Resistance", &cardata.wheel4[10], 2, (GLUI_Update_CB)SimetricalEditL   ))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( wheel4_panel, "Mu", &wheel4[11], 2, (GLUI_Update_CB)SimetricalEditL   ))
+   (new GLUI_Spinner( wheel4_panel, "Mu", &cardata.wheel4[11], 2, (GLUI_Update_CB)SimetricalEditL   ))
     ->set_float_limits( 0.05, 1.8 );
 
   new GLUI_Checkbox(glui4, "Simetrical edit", &simetricaledityn2, 2, (GLUI_Update_CB)SimetricalEditL );
 
-  new GLUI_Column( glui4, false ); 
-  
+  new GLUI_Column( glui4, false );
+
 
   GLUI_Panel *wheel1_panel = new GLUI_Panel(glui4, "Front Rigth Wheel");
-   (new GLUI_Spinner( wheel1_panel, "Ypos(m)", &wheel1[0], 2, (GLUI_Update_CB)SimetricalEditR    ))
+   (new GLUI_Spinner( wheel1_panel, "Ypos(m)", &cardata.wheel1[0], 2, (GLUI_Update_CB)SimetricalEditR    ))
     ->set_float_limits( -5, 5 );
-   (new GLUI_Spinner( wheel1_panel, "Rim diameter(in)", &wheel1[1], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel1_panel, "Rim diameter(in)", &cardata.wheel1[1], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 30 );
-   (new GLUI_Spinner( wheel1_panel, "Tire Width(mm)", &wheel1[2], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel1_panel, "Tire Width(mm)", &cardata.wheel1[2], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( wheel1_panel, "Tire height-width ratio", &wheel1[3], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel1_panel, "Tire height-width ratio", &cardata.wheel1[3], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 5 );
-    (new GLUI_Spinner( wheel1_panel, "Wheel radius(m)", &wheelRadius[0] ))
+    (new GLUI_Spinner( wheel1_panel, "Wheel radius(m)", &cardata.wheelRadius[0] ))
     ->disable( );
-   (new GLUI_Spinner( wheel1_panel, "Inertia(kg.m2)", &wheel1[4], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel1_panel, "Inertia(kg.m2)", &cardata.wheel1[4], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 5 );
-   (new GLUI_Spinner( wheel1_panel, "Initial Ride Height(mm)", &wheel1[5], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel1_panel, "Initial Ride Height(mm)", &cardata.wheel1[5], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 300 );
-   (new GLUI_Spinner( wheel1_panel, "Toe(deg)", &wheel1[6], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel1_panel, "Toe(deg)", &cardata.wheel1[6], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( -5, 5 );
-   (new GLUI_Spinner( wheel1_panel, "Camber(deg)", &wheel1[7], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel1_panel, "Camber(deg)", &cardata.wheel1[7], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( -5, 0 );
-   (new GLUI_Spinner( wheel1_panel, "Stiffness", &wheel1[8], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel1_panel, "Stiffness", &cardata.wheel1[8], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 20, 50 );
-   (new GLUI_Spinner( wheel1_panel, "Dynamic Fricction(%)", &wheel1[9], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel1_panel, "Dynamic Fricction(%)", &cardata.wheel1[9], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 70, 90 );
-   (new GLUI_Spinner( wheel1_panel, "Rolling Resistance", &wheel1[10], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel1_panel, "Rolling Resistance", &cardata.wheel1[10], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( wheel1_panel, "Mu", &wheel1[11], 2, (GLUI_Update_CB)SimetricalEditR ))
-    ->set_float_limits( 0.05, 1.8 ); 
+   (new GLUI_Spinner( wheel1_panel, "Mu", &cardata.wheel1[11], 2, (GLUI_Update_CB)SimetricalEditR ))
+    ->set_float_limits( 0.05, 1.8 );
 
   GLUI_Panel *wheel3_panel = new GLUI_Panel(glui4, "Rear Right Wheel");
-   (new GLUI_Spinner( wheel3_panel, "Ypos(m)", &wheel3[0], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel3_panel, "Ypos(m)", &cardata.wheel3[0], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( -5, 5 );
-   (new GLUI_Spinner( wheel3_panel, "Rim diameter(in)", &wheel3[1], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel3_panel, "Rim diameter(in)", &cardata.wheel3[1], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 30 );
-   (new GLUI_Spinner( wheel3_panel, "Tire Width(mm)", &wheel3[2], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel3_panel, "Tire Width(mm)", &cardata.wheel3[2], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( wheel3_panel, "Tire height-width ratio", &wheel3[3], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel3_panel, "Tire height-width ratio", &cardata.wheel3[3], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 5 );
-    (new GLUI_Spinner( wheel3_panel, "Wheel radius(m)", &wheelRadius[2] ))
+    (new GLUI_Spinner( wheel3_panel, "Wheel radius(m)", &cardata.wheelRadius[2] ))
     ->disable( );
-   (new GLUI_Spinner( wheel3_panel, "Inertia(kg.m2)", &wheel3[4], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel3_panel, "Inertia(kg.m2)", &cardata.wheel3[4], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 5 );
-   (new GLUI_Spinner( wheel3_panel, "Initial Ride Height(mm)", &wheel3[5], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel3_panel, "Initial Ride Height(mm)", &cardata.wheel3[5], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 300 );
-   (new GLUI_Spinner( wheel3_panel, "Toe(deg)", &wheel3[6], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel3_panel, "Toe(deg)", &cardata.wheel3[6], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( -5, 5 );
-   (new GLUI_Spinner( wheel3_panel, "Camber(deg)", &wheel3[7], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel3_panel, "Camber(deg)", &cardata.wheel3[7], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( -5, 0 );
-   (new GLUI_Spinner( wheel3_panel, "Stiffness", &wheel3[8], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel3_panel, "Stiffness", &cardata.wheel3[8], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 20, 50 );
-   (new GLUI_Spinner( wheel3_panel, "Dynamic Fricction(%)", &wheel3[9], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel3_panel, "Dynamic Fricction(%)", &cardata.wheel3[9], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 70, 90 );
-   (new GLUI_Spinner( wheel3_panel, "Rolling Resistance", &wheel3[10], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel3_panel, "Rolling Resistance", &cardata.wheel3[10], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( wheel3_panel, "Mu", &wheel3[11], 2, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( wheel3_panel, "Mu", &cardata.wheel3[11], 2, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0.05, 1.8 );
-        
+
   new GLUI_Button( glui4, "Close Window", 4, (GLUI_Update_CB)hideglui );
 
 
-/* Window for Wheels and Tires*/                       
+/* Window for Wheels and Tires*/
   glui5 = GLUI_Master.create_glui("Steer Drivetrain Differential and Axles", 0, 0, 0);/* name, flags,
 								 x, and y */
   glui5->hide();
 
   GLUI_Panel *steer_panel = new GLUI_Panel(glui5, "Steer");
-   (new GLUI_Spinner( steer_panel, "Steer Lock (deg)", &steer[0] ))
+   (new GLUI_Spinner( steer_panel, "Steer Lock (deg)", &cardata.steer[0] ))
     ->set_float_limits( 1, 45 );
-   (new GLUI_Spinner( steer_panel, "Max Steer Speed (deg/s)", &steer[1] ))
+   (new GLUI_Spinner( steer_panel, "Max Steer Speed (deg/s)", &cardata.steer[1] ))
     ->set_float_limits( 1, 360 );
 
   GLUI_Panel *frontaxle_panel = new GLUI_Panel(glui5, "Front Axle");
   frontaxle_panel->set_alignment( GLUI_ALIGN_RIGHT );
-   (new GLUI_Spinner( frontaxle_panel, "xpos (m)", &frontaxle[0] ))
+   (new GLUI_Spinner( frontaxle_panel, "xpos (m)", &cardata.frontaxle[0] ))
     ->set_float_limits( -3, 3 );
-   (new GLUI_Spinner( frontaxle_panel, "Inertia (kg.m2)", &frontaxle[1] ))
+   (new GLUI_Spinner( frontaxle_panel, "Inertia (kg.m2)", &cardata.frontaxle[1] ))
     ->set_float_limits( -3, 3 );
-   (new GLUI_Spinner( frontaxle_panel, "Roll Center Height (m)", &frontaxle[2] ))
+   (new GLUI_Spinner( frontaxle_panel, "Roll Center Height (m)", &cardata.frontaxle[2] ))
     ->set_float_limits( 0, 1 );
 
   GLUI_Panel *rearaxle_panel = new GLUI_Panel(glui5, "Rear Axle");
-  rearaxle_panel->set_alignment( GLUI_ALIGN_RIGHT );  
-   (new GLUI_Spinner( rearaxle_panel, "xpos (m)", &rearaxle[0] ))
+  rearaxle_panel->set_alignment( GLUI_ALIGN_RIGHT );
+   (new GLUI_Spinner( rearaxle_panel, "xpos (m)", &cardata.rearaxle[0] ))
     ->set_float_limits( -3, 3 );
-   (new GLUI_Spinner( rearaxle_panel, "Inertia (kg.m2)", &rearaxle[1] ))
+   (new GLUI_Spinner( rearaxle_panel, "Inertia (kg.m2)", &cardata.rearaxle[1] ))
     ->set_float_limits( -3, 3 );
-   (new GLUI_Spinner( rearaxle_panel, "Roll Center Height (m)", &rearaxle[2] ))
+   (new GLUI_Spinner( rearaxle_panel, "Roll Center Height (m)", &cardata.rearaxle[2] ))
     ->set_float_limits( 0, 1 );
 
   new GLUI_Column( glui5, false );
@@ -1692,142 +1696,142 @@ loadAutorInfo();
 //front differential
   GLUI_Panel *frontdifferential_panel = new GLUI_Panel(glui5, "Front Differential");
   frontdifferential_panel->set_alignment( GLUI_ALIGN_RIGHT );
-  list_frontdifferential_type = new GLUI_Listbox( frontdifferential_panel, "Type:", &curr_frontdifferential_type );
+  list_frontdifferential_type = new GLUI_Listbox( frontdifferential_panel, "Type:", &cardata.curr_frontdifferential_type );
   for( i=0; i<5; i++ )
-    list_frontdifferential_type->add_item( i, differential_type[i] );
-    list_frontdifferential_type->set_int_val(curr_frontdifferential_type);
-   (new GLUI_Spinner( frontdifferential_panel, "Inertia (kg.m2)", &frontdifferential[0] ))
+    list_frontdifferential_type->add_item( i, cardata.differential_type[i] );
+    list_frontdifferential_type->set_int_val(cardata.curr_frontdifferential_type);
+   (new GLUI_Spinner( frontdifferential_panel, "Inertia (kg.m2)", &cardata.frontdifferential[0] ))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( frontdifferential_panel, "Ratio", &frontdifferential[1] ))
+   (new GLUI_Spinner( frontdifferential_panel, "Ratio", &cardata.frontdifferential[1] ))
     ->set_float_limits( 0, 10 );
-   (new GLUI_Spinner( frontdifferential_panel, "Efficiency", &frontdifferential[2] ))
+   (new GLUI_Spinner( frontdifferential_panel, "Efficiency", &cardata.frontdifferential[2] ))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( frontdifferential_panel, "min torque bias", &frontdifferential[3] ))
-    ->set_float_limits( 0, 100 );    
-   (new GLUI_Spinner( frontdifferential_panel, "max torque bias", &frontdifferential[4] ))
-    ->set_float_limits( 0, 100 ); 
+   (new GLUI_Spinner( frontdifferential_panel, "min torque bias", &cardata.frontdifferential[3] ))
+    ->set_float_limits( 0, 100 );
+   (new GLUI_Spinner( frontdifferential_panel, "max torque bias", &cardata.frontdifferential[4] ))
+    ->set_float_limits( 0, 100 );
 
 //rear differential
   GLUI_Panel *reardifferential_panel = new GLUI_Panel(glui5, "Rear Differential");
   reardifferential_panel->set_alignment( GLUI_ALIGN_RIGHT );
-  list_reardifferential_type = new GLUI_Listbox( reardifferential_panel, "Type:", &curr_reardifferential_type );
+  list_reardifferential_type = new GLUI_Listbox( reardifferential_panel, "Type:", &cardata.curr_reardifferential_type );
   for( i=0; i<5; i++ )
-    list_reardifferential_type->add_item( i, differential_type[i] );
-    list_reardifferential_type->set_int_val(curr_reardifferential_type);
-   (new GLUI_Spinner( reardifferential_panel, "Inertia (kg.m2)", &reardifferential[0] ))
+    list_reardifferential_type->add_item( i, cardata.differential_type[i] );
+    list_reardifferential_type->set_int_val(cardata.curr_reardifferential_type);
+   (new GLUI_Spinner( reardifferential_panel, "Inertia (kg.m2)", &cardata.reardifferential[0] ))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( reardifferential_panel, "Ratio", &reardifferential[1] ))
+   (new GLUI_Spinner( reardifferential_panel, "Ratio", &cardata.reardifferential[1] ))
     ->set_float_limits( 0, 10 );
-   (new GLUI_Spinner( reardifferential_panel, "Efficiency", &reardifferential[2] ))
+   (new GLUI_Spinner( reardifferential_panel, "Efficiency", &cardata.reardifferential[2] ))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( reardifferential_panel, "min torque bias", &reardifferential[3] ))
-    ->set_float_limits( 0, 100 );    
-   (new GLUI_Spinner( reardifferential_panel, "max torque bias", &reardifferential[4] ))
-    ->set_float_limits( 0, 100 ); 
+   (new GLUI_Spinner( reardifferential_panel, "min torque bias", &cardata.reardifferential[3] ))
+    ->set_float_limits( 0, 100 );
+   (new GLUI_Spinner( reardifferential_panel, "max torque bias", &cardata.reardifferential[4] ))
+    ->set_float_limits( 0, 100 );
 
 //central differential
   GLUI_Panel *centraldifferential_panel = new GLUI_Panel(glui5, "Central Differential");
   centraldifferential_panel->set_alignment( GLUI_ALIGN_RIGHT );
-  list_centraldifferential_type = new GLUI_Listbox( centraldifferential_panel, "Type:", &curr_centraldifferential_type );
+  list_centraldifferential_type = new GLUI_Listbox( centraldifferential_panel, "Type:", &cardata.curr_centraldifferential_type );
   for( i=0; i<5; i++ )
-    list_centraldifferential_type->add_item( i, differential_type[i] );
-    list_centraldifferential_type->set_int_val(curr_centraldifferential_type);
+    list_centraldifferential_type->add_item( i, cardata.differential_type[i] );
+    list_centraldifferential_type->set_int_val(cardata.curr_centraldifferential_type);
 
-   (new GLUI_Spinner( centraldifferential_panel, "Inertia (kg.m2)", &centraldifferential[0] ))
+   (new GLUI_Spinner( centraldifferential_panel, "Inertia (kg.m2)", &cardata.centraldifferential[0] ))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( centraldifferential_panel, "Ratio", &centraldifferential[1] ))
+   (new GLUI_Spinner( centraldifferential_panel, "Ratio", &cardata.centraldifferential[1] ))
     ->set_float_limits( 0, 10 );
-   (new GLUI_Spinner( centraldifferential_panel, "Efficiency", &centraldifferential[2] ))
-    ->set_float_limits( 0, 1 );    
-   (new GLUI_Spinner( centraldifferential_panel, "min torque bias", &centraldifferential[3] ))
-    ->set_float_limits( 0, 100 );    
-   (new GLUI_Spinner( centraldifferential_panel, "max torque bias", &centraldifferential[4] ))
-    ->set_float_limits( 0, 100 );    
+   (new GLUI_Spinner( centraldifferential_panel, "Efficiency", &cardata.centraldifferential[2] ))
+    ->set_float_limits( 0, 1 );
+   (new GLUI_Spinner( centraldifferential_panel, "min torque bias", &cardata.centraldifferential[3] ))
+    ->set_float_limits( 0, 100 );
+   (new GLUI_Spinner( centraldifferential_panel, "max torque bias", &cardata.centraldifferential[4] ))
+    ->set_float_limits( 0, 100 );
 
-//Drevetrain 
+//Drevetrain
   GLUI_Panel *drivetrain_panel = new GLUI_Panel(glui5, "Drivetrain");
   drivetrain_panel->set_alignment( GLUI_ALIGN_RIGHT );
-  list_drivetrain_type = new GLUI_Listbox( drivetrain_panel, "Type:", &curr_drivetrain_type );
+  list_drivetrain_type = new GLUI_Listbox( drivetrain_panel, "Type:", &cardata.curr_drivetrain_type );
   for( i=0; i<3; i++ )
-    list_drivetrain_type->add_item( i, drivetrain_type[i] );
-    
-   (new GLUI_Spinner( drivetrain_panel, "Inertia (kg.m2)", &drivetrain ))
+    list_drivetrain_type->add_item( i, cardata.drivetrain_type[i] );
+
+   (new GLUI_Spinner( drivetrain_panel, "Inertia (kg.m2)", &cardata.drivetrain ))
     ->set_float_limits( 0, 1 );
 
-    
-  new GLUI_Button( glui5, "Close Window", 5, (GLUI_Update_CB)hideglui ); 
+
+  new GLUI_Button( glui5, "Close Window", 5, (GLUI_Update_CB)hideglui );
 
 
-/* Window for Wheels and Tires*/                       
+/* Window for Wheels and Tires*/
   glui6 = GLUI_Master.create_glui("Gear Box Inertia and Efficiency", 0, 0, 0);/* name, flags,
 								 x, and y */
-  glui6->hide(); 
+  glui6->hide();
 
    GLUI_Panel *glui6a = new GLUI_Panel( glui6, "", GLUI_PANEL_NONE );
-   (new GLUI_Spinner( glui6a, "Number Of Gears", &numberOfGears,  0, (GLUI_Update_CB)numberOfGearsDisable ))
+   (new GLUI_Spinner( glui6a, "Number Of Gears", &cardata.numberOfGears,  0, (GLUI_Update_CB)numberOfGearsDisable ))
     ->set_int_limits( 1, 7 );
-    
+
     new GLUI_Column( glui6a, false );
-    
+
     new GLUI_StaticText( glui6a, "Clutch Inertia (kg.m2)" );
-   (new GLUI_Spinner( glui6a, "PresPlate", &gearboxinertia[0] ))
+   (new GLUI_Spinner( glui6a, "PresPlate", &cardata.gearboxinertia[0] ))
     ->set_float_limits( 0.001, 0.500 );
 
     GLUI_Panel *glui6b = new GLUI_Panel( glui6, "" ,GLUI_PANEL_NONE );
     GLUI_Panel *gearboxinertia_panel = new GLUI_Panel( glui6b, "Inertia (kg.m2)" );
-   i_gear[0]=new GLUI_Spinner( gearboxinertia_panel, "rear:", &gearboxinertia[1] );
+   i_gear[0]=new GLUI_Spinner( gearboxinertia_panel, "rear:", &cardata.gearboxinertia[1] );
    i_gear[0]->set_float_limits( 0.001, 0.050 );
-   i_gear[1]=new GLUI_Spinner( gearboxinertia_panel, "1st", &gearboxinertia[2] );
+   i_gear[1]=new GLUI_Spinner( gearboxinertia_panel, "1st", &cardata.gearboxinertia[2] );
    i_gear[1]->set_float_limits( 0.001, 0.050 );
-   i_gear[2]=new GLUI_Spinner( gearboxinertia_panel, "2nd", &gearboxinertia[3] );
+   i_gear[2]=new GLUI_Spinner( gearboxinertia_panel, "2nd", &cardata.gearboxinertia[3] );
    i_gear[2]->set_float_limits( 0.001, 0.050 );
-   i_gear[3]=new GLUI_Spinner( gearboxinertia_panel, "3rd", &gearboxinertia[4] );
+   i_gear[3]=new GLUI_Spinner( gearboxinertia_panel, "3rd", &cardata.gearboxinertia[4] );
    i_gear[3]->set_float_limits( 0.001, 0.050 );
-   i_gear[4]=new GLUI_Spinner( gearboxinertia_panel, "4th", &gearboxinertia[5] );
+   i_gear[4]=new GLUI_Spinner( gearboxinertia_panel, "4th", &cardata.gearboxinertia[5] );
    i_gear[4]->set_float_limits( 0.001, 0.050 );
-   i_gear[5]=new GLUI_Spinner( gearboxinertia_panel, "5th", &gearboxinertia[6] );
+   i_gear[5]=new GLUI_Spinner( gearboxinertia_panel, "5th", &cardata.gearboxinertia[6] );
    i_gear[5]->set_float_limits( 0.001, 0.050 );
-   i_gear[6]=new GLUI_Spinner( gearboxinertia_panel, "6th", &gearboxinertia[7] );
+   i_gear[6]=new GLUI_Spinner( gearboxinertia_panel, "6th", &cardata.gearboxinertia[7] );
    i_gear[6]->set_float_limits( 0.001, 0.050 );
-   i_gear[7]=new GLUI_Spinner( gearboxinertia_panel, "7th", &gearboxinertia[8] );
+   i_gear[7]=new GLUI_Spinner( gearboxinertia_panel, "7th", &cardata.gearboxinertia[8] );
    i_gear[7]->set_float_limits( 0.001, 0.050 );
 
   new GLUI_StaticText( glui6b, "" );
 
   (new GLUI_Spinner( glui6b, "Inertia", &gearsAutoInertia))
     ->set_float_limits( 0.001, 0.050 );
-    
-  new GLUI_Button( glui6b, "Update Inertia", 2, (GLUI_Update_CB)gearsAutoinertiaEff );  
+
+  new GLUI_Button( glui6b, "Update Inertia", 2, (GLUI_Update_CB)gearsAutoinertiaEff );
 
   new GLUI_Column( glui6b, false );
-    
+
     GLUI_Panel *gearboxefficiency_panel = new GLUI_Panel( glui6b, "Efficiency" );
-   e_gear[0]=new GLUI_Spinner( gearboxefficiency_panel, "rear:", &gearboxefficiency[0] );
+   e_gear[0]=new GLUI_Spinner( gearboxefficiency_panel, "rear:", &cardata.gearboxefficiency[0] );
    e_gear[0]->set_float_limits( 0.00, 1 );
-   e_gear[1]=new GLUI_Spinner( gearboxefficiency_panel, "1st", &gearboxefficiency[1] );
+   e_gear[1]=new GLUI_Spinner( gearboxefficiency_panel, "1st", &cardata.gearboxefficiency[1] );
    e_gear[1]->set_float_limits( 0.00, 1 );
-   e_gear[2]=new GLUI_Spinner( gearboxefficiency_panel, "2nd", &gearboxefficiency[2] );
+   e_gear[2]=new GLUI_Spinner( gearboxefficiency_panel, "2nd", &cardata.gearboxefficiency[2] );
    e_gear[2]->set_float_limits( 0.00, 1 );
-   e_gear[3]=new GLUI_Spinner( gearboxefficiency_panel, "3rd", &gearboxefficiency[3] );
+   e_gear[3]=new GLUI_Spinner( gearboxefficiency_panel, "3rd", &cardata.gearboxefficiency[3] );
    e_gear[3]->set_float_limits( 0.00, 1 );
-   e_gear[4]=new GLUI_Spinner( gearboxefficiency_panel, "4th", &gearboxefficiency[4] );
+   e_gear[4]=new GLUI_Spinner( gearboxefficiency_panel, "4th", &cardata.gearboxefficiency[4] );
    e_gear[4]->set_float_limits( 0.00, 1 );
-   e_gear[5]=new GLUI_Spinner( gearboxefficiency_panel, "5th", &gearboxefficiency[5] );
+   e_gear[5]=new GLUI_Spinner( gearboxefficiency_panel, "5th", &cardata.gearboxefficiency[5] );
    e_gear[5]->set_float_limits( 0.00, 1 );
-   e_gear[6]=new GLUI_Spinner( gearboxefficiency_panel, "6th", &gearboxefficiency[6] );
+   e_gear[6]=new GLUI_Spinner( gearboxefficiency_panel, "6th", &cardata.gearboxefficiency[6] );
    e_gear[6]->set_float_limits( 0.00, 1 );
-   e_gear[7]=new GLUI_Spinner( gearboxefficiency_panel, "7th", &gearboxefficiency[7] );
-   e_gear[7]->set_float_limits( 0.00, 1 );    
+   e_gear[7]=new GLUI_Spinner( gearboxefficiency_panel, "7th", &cardata.gearboxefficiency[7] );
+   e_gear[7]->set_float_limits( 0.00, 1 );
 
   new GLUI_StaticText( glui6b, "" );
 
   (new GLUI_Spinner( glui6b, "Efficiency", &gearsAutoEff))
     ->set_float_limits( 0.0, 1.0 );
-    
-  new GLUI_Button( glui6b, "Update Eff", 1, (GLUI_Update_CB)gearsAutoinertiaEff );  
+
+  new GLUI_Button( glui6b, "Update Eff", 1, (GLUI_Update_CB)gearsAutoinertiaEff );
 
   new GLUI_Column( glui6b, false );
-    
+
     GLUI_Panel *gearbox_vel_panel = new GLUI_Panel( glui6b, "Speed (km/h)" );
     s_gear[0]=new GLUI_Spinner( gearbox_vel_panel, "rear:", &gearbox_speed[0], 0, (GLUI_Update_CB)gearboxRatioSpeed );
     s_gear[0]->set_float_limits( -3000, 0.0 );
@@ -1844,24 +1848,24 @@ loadAutorInfo();
     s_gear[6]=new GLUI_Spinner( gearbox_vel_panel, "6th", &gearbox_speed[6], 0, (GLUI_Update_CB)gearboxRatioSpeed );
     s_gear[6]->set_float_limits( 0.00, 3000 );
     s_gear[7]=new GLUI_Spinner( gearbox_vel_panel, "7th", &gearbox_speed[7], 0, (GLUI_Update_CB)gearboxRatioSpeed );
-    s_gear[7]->set_float_limits( 0.00, 3000 ); 
-  
+    s_gear[7]->set_float_limits( 0.00, 3000 );
+
 
   new GLUI_StaticText( glui6b, "" );
 
   (new GLUI_Spinner( glui6b, "% reduction gear", &gearRed100))
     ->set_float_limits( 0, 99 );
-    
-  new GLUI_Button( glui6b, "Auto Calculate Gears", 0, (GLUI_Update_CB)gearboxRatioCalcAll );   
+
+  new GLUI_Button( glui6b, "Auto Calculate Gears", 0, (GLUI_Update_CB)gearboxRatioCalcAll );
 
   new GLUI_Column( glui6b, false );
-    
+
     GLUI_Panel *gearbox_osp_panel = new GLUI_Panel( glui6b, "Optimal Shift Points (rpm)" );
     GLUI_Spinner *osp_gear[6];
     osp_gear[0]=new GLUI_Spinner( gearbox_osp_panel, "gear 1-2:", &bestOptShiftPoint[0] );
     osp_gear[0]->disable();
     osp_gear[1]=new GLUI_Spinner( gearbox_osp_panel, "gear 2-3:", &bestOptShiftPoint[1] );
-    osp_gear[1]->disable();   
+    osp_gear[1]->disable();
     osp_gear[2]=new GLUI_Spinner( gearbox_osp_panel, "gear 3-4:", &bestOptShiftPoint[2] );
     osp_gear[2]->disable();
     osp_gear[3]=new GLUI_Spinner( gearbox_osp_panel, "gear 4-5:", &bestOptShiftPoint[3] );
@@ -1876,7 +1880,7 @@ loadAutorInfo();
     rpmaosp_gear[0]=new GLUI_Spinner( gearbox_rpmaosp_panel, "gear 1-2:", &rpmAfterBestOptShiftPoint[0] );
     rpmaosp_gear[0]->disable();
     rpmaosp_gear[1]=new GLUI_Spinner( gearbox_rpmaosp_panel, "gear 2-3:", &rpmAfterBestOptShiftPoint[1] );
-    rpmaosp_gear[1]->disable();   
+    rpmaosp_gear[1]->disable();
     rpmaosp_gear[2]=new GLUI_Spinner( gearbox_rpmaosp_panel, "gear 3-4:", &rpmAfterBestOptShiftPoint[2] );
     rpmaosp_gear[2]->disable();
     rpmaosp_gear[3]=new GLUI_Spinner( gearbox_rpmaosp_panel, "gear 4-5:", &rpmAfterBestOptShiftPoint[3] );
@@ -1885,208 +1889,208 @@ loadAutorInfo();
     rpmaosp_gear[4]->disable();
     rpmaosp_gear[5]=new GLUI_Spinner( gearbox_rpmaosp_panel, "gear 6-7:", &rpmAfterBestOptShiftPoint[5] );
     rpmaosp_gear[5]->disable();
-    
-  new GLUI_Button( glui6b, "Calc Opt Shift Points", 0, (GLUI_Update_CB)optimalShiftPoint );         
 
-  new GLUI_Button( glui6, "Close Window", 6, (GLUI_Update_CB)hideglui ); 
+  new GLUI_Button( glui6b, "Calc Opt Shift Points", 0, (GLUI_Update_CB)optimalShiftPoint );
 
-/* Window for Suspension*/                       
+  new GLUI_Button( glui6, "Close Window", 6, (GLUI_Update_CB)hideglui );
+
+/* Window for Suspension*/
   glui7 = GLUI_Master.create_glui("Suspension", 0, 0, 0);/* name, flags,
 								 x, and y */
-  glui7->hide(); 
+  glui7->hide();
 
-      
+
   GLUI_Panel *suspension1_panel = new GLUI_Panel(glui7, "Left Front Wheel");
-   (new GLUI_Spinner( suspension1_panel, "Spring(lbs/in)", &suspension1[0], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension1_panel, "Spring(lbs/in)", &cardata.suspension1[0], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 10000 );
-   (new GLUI_Spinner( suspension1_panel, "Suspension Course(m)", &suspension1[1], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension1_panel, "Suspension Course(m)", &cardata.suspension1[1], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 1.0 );
-   (new GLUI_Spinner( suspension1_panel, "Bellcrank", &suspension1[2], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension1_panel, "Bellcrank", &cardata.suspension1[2], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 5 );
-   (new GLUI_Spinner( suspension1_panel, "Packers(mm)", &suspension1[3], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension1_panel, "Packers(mm)", &cardata.suspension1[3], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 10 );
-   (new GLUI_Spinner( suspension1_panel, "Slow Bump(lbs/in/s)", &suspension1[4], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension1_panel, "Slow Bump(lbs/in/s)", &cardata.suspension1[4], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( suspension1_panel, "Slow Rebound(lbs/in/s)", &suspension1[5], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension1_panel, "Slow Rebound(lbs/in/s)", &cardata.suspension1[5], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( suspension1_panel, "Fast Bump(lbs/in/s)", &suspension1[6], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension1_panel, "Fast Bump(lbs/in/s)", &cardata.suspension1[6], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( suspension1_panel, "Fast Rebound(lbs/in/s)", &suspension1[7], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension1_panel, "Fast Rebound(lbs/in/s)", &cardata.suspension1[7], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 1000 );
-    
 
- 
+
+
   GLUI_Panel *suspension3_panel = new GLUI_Panel(glui7, "Left Rear Wheel");
-   (new GLUI_Spinner( suspension3_panel, "Spring(lbs/in)", &suspension3[0], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension3_panel, "Spring(lbs/in)", &cardata.suspension3[0], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 10000 );
-   (new GLUI_Spinner( suspension3_panel, "Suspension Course(m)", &suspension3[1], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension3_panel, "Suspension Course(m)", &cardata.suspension3[1], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 1.0 );
-   (new GLUI_Spinner( suspension3_panel, "Bellcrank", &suspension3[2], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension3_panel, "Bellcrank", &cardata.suspension3[2], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 5 );
-   (new GLUI_Spinner( suspension3_panel, "Packers(mm)", &suspension3[3], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension3_panel, "Packers(mm)", &cardata.suspension3[3], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0., 10 );
-   (new GLUI_Spinner( suspension3_panel, "Slow Bump(lbs/in/s)", &suspension3[4], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension3_panel, "Slow Bump(lbs/in/s)", &cardata.suspension3[4], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( suspension3_panel, "Slow Rebound(lbs/in/s)", &suspension3[5], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension3_panel, "Slow Rebound(lbs/in/s)", &cardata.suspension3[5], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( suspension3_panel, "Fast Bump(lbs/in/s)", &suspension3[6], 1, (GLUI_Update_CB)SimetricalEditL ))
+   (new GLUI_Spinner( suspension3_panel, "Fast Bump(lbs/in/s)", &cardata.suspension3[6], 1, (GLUI_Update_CB)SimetricalEditL ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( suspension3_panel, "Fast Rebound(lbs/in/s)", &suspension3[7], 1, (GLUI_Update_CB)SimetricalEditL ))
-    ->set_float_limits( 0, 1000 );           
+   (new GLUI_Spinner( suspension3_panel, "Fast Rebound(lbs/in/s)", &cardata.suspension3[7], 1, (GLUI_Update_CB)SimetricalEditL ))
+    ->set_float_limits( 0, 1000 );
 
 
     GLUI_Panel *antirollbar_1 = new GLUI_Panel( glui7, "Front Anti-Roll Bar" );
-   (new GLUI_Spinner( antirollbar_1, "Front(lbs/in)", &antirollbar1[0]))
+   (new GLUI_Spinner( antirollbar_1, "Front(lbs/in)", &cardata.antirollbar1[0]))
     -> set_int_limits( 0, 10000 );
-   (new GLUI_Spinner( antirollbar_1, "Suspension Course(m)", &antirollbar1[1]))
+   (new GLUI_Spinner( antirollbar_1, "Suspension Course(m)", &cardata.antirollbar1[1]))
     ->set_float_limits( 0, 1.0 );
-   (new GLUI_Spinner( antirollbar_1, "Bellcrank", &antirollbar1[2] ))
+   (new GLUI_Spinner( antirollbar_1, "Bellcrank", &cardata.antirollbar1[2] ))
     ->set_float_limits( 0, 5 );
 
 new GLUI_Checkbox(glui7, "Simetrical edit", &simetricaledityn1, 1, (GLUI_Update_CB)SimetricalEditL );
-    
+
   new GLUI_Column( glui7, false );
 
   GLUI_Panel *suspension2_panel = new GLUI_Panel(glui7, "Right Front Wheel");
-   (new GLUI_Spinner( suspension2_panel, "Spring(lbs/in)", &suspension2[0], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension2_panel, "Spring(lbs/in)", &cardata.suspension2[0], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 10000 );
-   (new GLUI_Spinner( suspension2_panel, "Suspension Course(m)", &suspension2[1], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension2_panel, "Suspension Course(m)", &cardata.suspension2[1], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1.0 );
-   (new GLUI_Spinner( suspension2_panel, "Bellcrank", &suspension2[2], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension2_panel, "Bellcrank", &cardata.suspension2[2], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0.1, 5 );
-   (new GLUI_Spinner( suspension2_panel, "Packers(mm)", &suspension2[3], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension2_panel, "Packers(mm)", &cardata.suspension2[3], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 10 );
-   (new GLUI_Spinner( suspension2_panel, "Slow Bump(lbs/in/s)", &suspension2[4], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension2_panel, "Slow Bump(lbs/in/s)", &cardata.suspension2[4], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( suspension2_panel, "Slow Rebound(lbs/in/s)", &suspension2[5], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension2_panel, "Slow Rebound(lbs/in/s)", &cardata.suspension2[5], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( suspension2_panel, "Fast Bump(lbs/in/s)", &suspension2[6], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension2_panel, "Fast Bump(lbs/in/s)", &cardata.suspension2[6], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( suspension2_panel, "Fast Rebound(lbs/in/s)", &suspension2[7], 1, (GLUI_Update_CB)SimetricalEditR ))
-    ->set_float_limits( 0, 1000 ); 
+   (new GLUI_Spinner( suspension2_panel, "Fast Rebound(lbs/in/s)", &cardata.suspension2[7], 1, (GLUI_Update_CB)SimetricalEditR ))
+    ->set_float_limits( 0, 1000 );
 
-    
+
   GLUI_Panel *suspension4_panel = new GLUI_Panel(glui7, "Right Rear Wheel");
-   (new GLUI_Spinner( suspension4_panel, "Spring(lbs/in)", &suspension4[0], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension4_panel, "Spring(lbs/in)", &cardata.suspension4[0], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 10000 );
-   (new GLUI_Spinner( suspension4_panel, "Suspension Course(m)", &suspension4[1], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension4_panel, "Suspension Course(m)", &cardata.suspension4[1], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1.0 );
-   (new GLUI_Spinner( suspension4_panel, "Bellcrank", &suspension4[2], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension4_panel, "Bellcrank", &cardata.suspension4[2], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0.1, 5 );
-   (new GLUI_Spinner( suspension4_panel, "Packers(mm)", &suspension4[3], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension4_panel, "Packers(mm)", &cardata.suspension4[3], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 10 );
-   (new GLUI_Spinner( suspension4_panel, "Slow Bump(lbs/in/s)", &suspension4[4], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension4_panel, "Slow Bump(lbs/in/s)", &cardata.suspension4[4], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( suspension4_panel, "Slow Rebound(lbs/in/s)", &suspension4[5], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension4_panel, "Slow Rebound(lbs/in/s)", &cardata.suspension4[5], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( suspension4_panel, "Fast Bump(lbs/in/s)", &suspension4[6], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension4_panel, "Fast Bump(lbs/in/s)", &cardata.suspension4[6], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1000 );
-   (new GLUI_Spinner( suspension4_panel, "Fast Rebound(lbs/in/s)", &suspension4[7], 1, (GLUI_Update_CB)SimetricalEditR ))
+   (new GLUI_Spinner( suspension4_panel, "Fast Rebound(lbs/in/s)", &cardata.suspension4[7], 1, (GLUI_Update_CB)SimetricalEditR ))
     ->set_float_limits( 0, 1000 );
 
     GLUI_Panel *antirollbar_2 = new GLUI_Panel( glui7, "Rear Anti-Roll Bar" );
-   (new GLUI_Spinner( antirollbar_2, "Front(lbs/in)", &antirollbar2[0]))
+   (new GLUI_Spinner( antirollbar_2, "Front(lbs/in)", &cardata.antirollbar2[0]))
     -> set_int_limits( 0, 10000 );
-   (new GLUI_Spinner( antirollbar_2, "Suspension Course(m)", &antirollbar2[1]))
+   (new GLUI_Spinner( antirollbar_2, "Suspension Course(m)", &cardata.antirollbar2[1]))
     ->set_float_limits( 0, 1.0 );
-   (new GLUI_Spinner( antirollbar_2, "Bellcrank", &antirollbar2[2] ))
+   (new GLUI_Spinner( antirollbar_2, "Bellcrank", &cardata.antirollbar2[2] ))
     ->set_float_limits( 0, 5 );
 
 
-  new GLUI_Button( glui7, "Close Window", 7, (GLUI_Update_CB)hideglui ); 
+  new GLUI_Button( glui7, "Close Window", 7, (GLUI_Update_CB)hideglui );
 
-/* Window for Sound and Graphic*/                       
+/* Window for Sound and Graphic*/
   glui8 = GLUI_Master.create_glui("Sound and Graphics", 0, 0, 0);/* name, flags,
 								 x, and y */
-  glui8->hide(); 
+  glui8->hide();
 
-      
+
   GLUI_Panel *sound_panel = new GLUI_Panel(glui8, "Sound");
-   (new GLUI_EditText( sound_panel, "Engine Sample(.wav)", enginesample))->w=220;	   
-   (new GLUI_Spinner( sound_panel, "RPM Scale", &rmpscale ))
+   (new GLUI_EditText( sound_panel, "Engine Sample(.wav)", cardata.enginesample))->w=220;
+   (new GLUI_Spinner( sound_panel, "RPM Scale", &cardata.rmpscale ))
     ->set_float_limits( 0, 1 );
 
   GLUI_Panel *graphic_panel = new GLUI_Panel(glui8, "Graphic Objects");
-   (new GLUI_EditText( graphic_panel, "ENV", graphicenv))->w=220;
-   (new GLUI_EditText( graphic_panel, "Wheel texture", wheelTexture))->w=220;
-   (new GLUI_EditText( graphic_panel, "Shadow texture", shadowTexture))->w=220;
-   (new GLUI_EditText( graphic_panel, "Tachometer texture", tachometerTexture))->w=220;
-   (new GLUI_Spinner( graphic_panel, "Tachometer min value (rpm)", &tachometerMinMax[0]))
+   (new GLUI_EditText( graphic_panel, "ENV", cardata.graphicenv))->w=220;
+   (new GLUI_EditText( graphic_panel, "Wheel texture", cardata.wheelTexture))->w=220;
+   (new GLUI_EditText( graphic_panel, "Shadow texture", cardata.shadowTexture))->w=220;
+   (new GLUI_EditText( graphic_panel, "Tachometer texture", cardata.tachometerTexture))->w=220;
+   (new GLUI_Spinner( graphic_panel, "Tachometer min value (rpm)", &cardata.tachometerMinMax[0]))
    ->set_int_limits( 0, 20000 );
-   (new GLUI_Spinner( graphic_panel, "Tachometer max value (rpm)", &tachometerMinMax[1]))
-   ->set_int_limits( 0, 20000 );      
-   (new GLUI_EditText( graphic_panel, "Speedometer texture", speedometerTexture))->w=220;
-   (new GLUI_Spinner( graphic_panel, "Speedometer min value (km/h)", &speedometerMinMax[0]))
+   (new GLUI_Spinner( graphic_panel, "Tachometer max value (rpm)", &cardata.tachometerMinMax[1]))
+   ->set_int_limits( 0, 20000 );
+   (new GLUI_EditText( graphic_panel, "Speedometer texture", cardata.speedometerTexture))->w=220;
+   (new GLUI_Spinner( graphic_panel, "Speedometer min value (km/h)", &cardata.speedometerMinMax[0]))
    ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( graphic_panel, "Speedometer max value (km/h)", &speedometerMinMax[1]))
+   (new GLUI_Spinner( graphic_panel, "Speedometer max value (km/h)", &cardata.speedometerMinMax[1]))
    ->set_int_limits( 0, 1000 );
 
-  new GLUI_StaticText( graphic_panel, "" );   
-  
-  new GLUI_Button( graphic_panel, "Car Lights & Flames", 13, (GLUI_Update_CB)showglui ); 
+  new GLUI_StaticText( graphic_panel, "" );
 
-  
+  new GLUI_Button( graphic_panel, "Car Lights & Flames", 13, (GLUI_Update_CB)showglui );
+
+
   GLUI_Panel *ac_acc_type_panel = new GLUI_Panel( glui8, ".ac or .acc" );
   GLUI_RadioGroup *radio = new GLUI_RadioGroup(ac_acc_type_panel,&ac_acc_autogenerate);
   new GLUI_RadioButton( radio, ".ac" );
   new GLUI_RadioButton( radio, ".acc" );
-  new GLUI_Button( glui8, "Autogenerate 3D Names", 0, (GLUI_Update_CB)create3dFilesNames ); 
+  new GLUI_Button( glui8, "Autogenerate 3D Names", 0, (GLUI_Update_CB)create3dFilesNames );
 
   new GLUI_Column( glui8, false );
 
   GLUI_Panel *ranges_panel = new GLUI_Panel(glui8, "Ranges");
    new GLUI_StaticText( ranges_panel, "Car Range 1" );
-   //new GLUI_Checkbox(ranges_panel, "Car Range 1", &carRange1dataC, 1, (GLUI_Update_CB)activateDeativateGraphicRanges); 
-   carRangeEditText[0]=new GLUI_EditText( ranges_panel, "File name", carRange1);
+   //new GLUI_Checkbox(ranges_panel, "Car Range 1", &carRange1dataC, 1, (GLUI_Update_CB)activateDeativateGraphicRanges);
+   carRangeEditText[0]=new GLUI_EditText( ranges_panel, "File name", cardata.carRange1);
    carRangeEditText[0]->w=250;
-   carRangeSpinner[0]=new GLUI_Spinner( ranges_panel, "Threshold", &carRange1dataA);
+   carRangeSpinner[0]=new GLUI_Spinner( ranges_panel, "Threshold", &cardata.carRange1dataA);
    carRangeSpinner[0]->set_int_limits( 0, 40 );
-   carRangeCheckbox[0]=new GLUI_Checkbox(ranges_panel, "Wheels", &carRange1dataB);
-   
+   carRangeCheckbox[0]=new GLUI_Checkbox(ranges_panel, "Wheels", &cardata.carRange1dataB);
+
    new GLUI_Separator( ranges_panel );
-   
-   new GLUI_Checkbox(ranges_panel, "Car Range 2", &carRange2dataC, 2, (GLUI_Update_CB)activateDeativateGraphicRanges); 
-   carRangeEditText[1]=new GLUI_EditText( ranges_panel, "File name", carRange2);
+
+   new GLUI_Checkbox(ranges_panel, "Car Range 2", &cardata.carRange2dataC, 2, (GLUI_Update_CB)activateDeativateGraphicRanges);
+   carRangeEditText[1]=new GLUI_EditText( ranges_panel, "File name", cardata.carRange2);
    carRangeEditText[1]->w=250;
-   carRangeSpinner[1]=new GLUI_Spinner( ranges_panel, "Threshold", &carRange2dataA);
+   carRangeSpinner[1]=new GLUI_Spinner( ranges_panel, "Threshold", &cardata.carRange2dataA);
    carRangeSpinner[1]->set_int_limits( 0, 40 );
-   carRangeCheckbox[1]=new GLUI_Checkbox(ranges_panel, "Wheels", &carRange2dataB);
-   
+   carRangeCheckbox[1]=new GLUI_Checkbox(ranges_panel, "Wheels", &cardata.carRange2dataB);
+
    new GLUI_Separator( ranges_panel );
-   
-   new GLUI_Checkbox(ranges_panel, "Car Range 3", &carRange3dataC, 3, (GLUI_Update_CB)activateDeativateGraphicRanges); 
-   carRangeEditText[2]=new GLUI_EditText( ranges_panel, "File name", carRange3);
+
+   new GLUI_Checkbox(ranges_panel, "Car Range 3", &cardata.carRange3dataC, 3, (GLUI_Update_CB)activateDeativateGraphicRanges);
+   carRangeEditText[2]=new GLUI_EditText( ranges_panel, "File name", cardata.carRange3);
    carRangeEditText[2]->w=250;
-   carRangeSpinner[2]=new GLUI_Spinner( ranges_panel, "Threshold", &carRange3dataA);
+   carRangeSpinner[2]=new GLUI_Spinner( ranges_panel, "Threshold", &cardata.carRange3dataA);
    carRangeSpinner[2]->set_int_limits( 0, 40 );
-   carRangeCheckbox[2]=new GLUI_Checkbox(ranges_panel, "Wheels", &carRange3dataB);
-   
+   carRangeCheckbox[2]=new GLUI_Checkbox(ranges_panel, "Wheels", &cardata.carRange3dataB);
+
    new GLUI_Separator( ranges_panel );
-   
-   new GLUI_Checkbox(ranges_panel, "Car Range 4", &carRange4dataC, 4, (GLUI_Update_CB)activateDeativateGraphicRanges); 
-   carRangeEditText[3]=new GLUI_EditText( ranges_panel, "File name", carRange4);
+
+   new GLUI_Checkbox(ranges_panel, "Car Range 4", &cardata.carRange4dataC, 4, (GLUI_Update_CB)activateDeativateGraphicRanges);
+   carRangeEditText[3]=new GLUI_EditText( ranges_panel, "File name", cardata.carRange4);
    carRangeEditText[3]->w=250;
-   carRangeSpinner[3]=new GLUI_Spinner( ranges_panel, "Threshold", &carRange4dataA);
+   carRangeSpinner[3]=new GLUI_Spinner( ranges_panel, "Threshold", &cardata.carRange4dataA);
    carRangeSpinner[3]->set_int_limits( 0, 40 );
-   carRangeCheckbox[3]=new GLUI_Checkbox(ranges_panel, "Wheels", &carRange4dataB);
-   
+   carRangeCheckbox[3]=new GLUI_Checkbox(ranges_panel, "Wheels", &cardata.carRange4dataB);
+
    new GLUI_Separator( ranges_panel );
-   
-   new GLUI_Checkbox(ranges_panel, "Car Range 5", &carRange5dataC, 5, (GLUI_Update_CB)activateDeativateGraphicRanges); 
-   carRangeEditText[4]=new GLUI_EditText( ranges_panel, "File name", carRange5);
+
+   new GLUI_Checkbox(ranges_panel, "Car Range 5", &cardata.carRange5dataC, 5, (GLUI_Update_CB)activateDeativateGraphicRanges);
+   carRangeEditText[4]=new GLUI_EditText( ranges_panel, "File name", cardata.carRange5);
    carRangeEditText[4]->w=250;
-   carRangeSpinner[4]=new GLUI_Spinner( ranges_panel, "Threshold", &carRange5dataA);
+   carRangeSpinner[4]=new GLUI_Spinner( ranges_panel, "Threshold", &cardata.carRange5dataA);
    carRangeSpinner[4]->set_int_limits( 0, 40 );
-   carRangeCheckbox[4]=new GLUI_Checkbox(ranges_panel, "Wheels", &carRange5dataB);
-  
-    
+   carRangeCheckbox[4]=new GLUI_Checkbox(ranges_panel, "Wheels", &cardata.carRange5dataB);
+
+
    new GLUI_Button( glui8, "Close Window", 8, (GLUI_Update_CB)hideglui );
 
 
-/* Window for Save Car Setup For Track*/                       
+/* Window for Save Car Setup For Track*/
   glui10 = GLUI_Master.create_glui("Save Car Setup For Track", 0, 0, 0);/* name, flags,
 								 x, and y */
-  glui10->hide(); 
+  glui10->hide();
 
 /* *********** using files ----> not used yet
 #include <sys/types.h>
@@ -2105,7 +2109,7 @@ chdir("../cars/");
  fb = new GLUI_FileBrowser(glui10, "Car", true, 1, (GLUI_Update_CB)printFileName);
 //fb->set_allow_change_dir(0);
   new GLUI_Column( glui10, false );
-  
+
 chdir("../tracks/");
  fb2 = new GLUI_FileBrowser(glui10, "Track", true, 1, (GLUI_Update_CB)printFileName);
 
@@ -2115,7 +2119,7 @@ new GLUI_Column( glui10, false );
  new GLUI_FileBrowser(glui10, "torcs-car-setup-editor", true, 1, (GLUI_Update_CB)printFileName);
 ************************/
   new GLUI_StaticText( glui10, "Save Car Setup for Player (Human) and Robots" );
-  
+
   GLUI_Panel *driversPanel = new GLUI_Panel(glui10, "Car setup for driver:");
   (new GLUI_EditText( driversPanel, "Driver:", driverName ))->w=170;
   GLUI_Listbox *driverList = new GLUI_Listbox( driversPanel, "Names:", &driverVal, 0, (GLUI_Update_CB)updateDriverName );
@@ -2124,38 +2128,38 @@ new GLUI_Column( glui10, false );
     driverList->add_item( i, driversList[i].c_str() );
 
   new GLUI_StaticText( driversPanel, "If you select a robot select" );
-  new GLUI_StaticText( driversPanel, "the number of the robot" );  
-  new GLUI_EditText( driversPanel, "Number:", driverNameNumber ); 
-  
+  new GLUI_StaticText( driversPanel, "the number of the robot" );
+  new GLUI_EditText( driversPanel, "Number:", driverNameNumber );
+
   new GLUI_Column( glui10, false );
-  
+
   new GLUI_StaticText( glui10, "" );
   GLUI_Panel *carPanel = new GLUI_Panel(glui10, "Car setup for car");
-  (new GLUI_EditText( carPanel, "CarName", carname ))->w=170;
-  
+  (new GLUI_EditText( carPanel, "CarName", cardata.carname ))->w=170;
+
   new GLUI_StaticText( carPanel, "" );
   loadCarsList();
   GLUI_Listbox *carsListPanel = new GLUI_Listbox( carPanel, "Cars:", &carsListVal, 0, (GLUI_Update_CB)updateCarName );
   for( i=0; i<carsList.size(); i++ )
     carsListPanel->add_item( i, carsList[i].c_str() );
-  	
+
   new GLUI_Column( glui10, false );
-  
+
   new GLUI_StaticText( glui10, "" );
-   
+
   GLUI_Panel *trackPanel = new GLUI_Panel(glui10, "Select the track");
   (new GLUI_EditText( trackPanel, "Track:", trackname ))->w=170;
   new GLUI_StaticText( glui10, "" );
-  
+
   GLUI_Listbox *tracksRoadList = new GLUI_Listbox( trackPanel, "Road:", &tracksRoadVal, 1, (GLUI_Update_CB)updateTrackName );
   loadTrackList();
   for( i=0; i<tracksRoad.size(); i++ )
     tracksRoadList->add_item( i, tracksRoad[i].c_str() );
-  
+
   GLUI_Listbox *trackOvalList = new GLUI_Listbox( trackPanel, "Oval:", &tracksOvalVal, 2, (GLUI_Update_CB)updateTrackName );
   for( i=0; i<tracksOval.size(); i++ )
     trackOvalList->add_item( i, tracksOval[i].c_str() );
-    
+
   GLUI_Listbox *trackDirtList = new GLUI_Listbox( trackPanel, "Dirt:", &tracksDirtVal, 3, (GLUI_Update_CB)updateTrackName );
   for( i=0; i<tracksDirt.size(); i++ )
     trackDirtList->add_item( i, tracksDirt[i].c_str() );
@@ -2166,241 +2170,241 @@ new GLUI_Column( glui10, false );
 
  new GLUI_Column( glui10, false );
  new GLUI_StaticText( glui10, "" );
- 
-  GLUI_Panel *savexmlPanel = new GLUI_Panel(glui10, "Save the car setup data"); 
-  new GLUI_Button( savexmlPanel, "Save Car Data for All Tracks", 1, (GLUI_Update_CB)savecardata ); 
-  new GLUI_Button( savexmlPanel, "Save Car Data for Selected Track", 2, (GLUI_Update_CB)savecardata ); 
+
+  GLUI_Panel *savexmlPanel = new GLUI_Panel(glui10, "Save the car setup data");
+  new GLUI_Button( savexmlPanel, "Save Car Data for All Tracks", 1, (GLUI_Update_CB)savecardata );
+  new GLUI_Button( savexmlPanel, "Save Car Data for Selected Track", 2, (GLUI_Update_CB)savecardata );
   new GLUI_StaticText( savexmlPanel, "" );
   new GLUI_Button( savexmlPanel, "Save XML for the Car", 1, (GLUI_Update_CB)savexml );
   new GLUI_StaticText( savexmlPanel, "" );
   new GLUI_StaticText( savexmlPanel, "Save XML for the selected driver" );
   new GLUI_Button( savexmlPanel, "Save XML for All Tracks", 2, (GLUI_Update_CB)savexml );
   new GLUI_Button( savexmlPanel, "Save XML for Selected Track", 3, (GLUI_Update_CB)savexml );
-  
+
   new GLUI_StaticText( savexmlPanel, "" );
-    
+
   new GLUI_Button( savexmlPanel, "Open CarData", 1, (GLUI_Update_CB)opencardata );
   new GLUI_Button( savexmlPanel, "Open CarData for Selected Track", 2, (GLUI_Update_CB)opencardata );
-  
+
   new GLUI_StaticText( savexmlPanel, "" );
-  
+
   new GLUI_Button( savexmlPanel, "Import XML", 0, (GLUI_Update_CB)importxml );
-  
+
   new GLUI_StaticText( savexmlPanel, "" );
-  
+
   new GLUI_Button( savexmlPanel, "Browser Window", 0, (GLUI_Update_CB)fileBrowserWindow );
-  
+
   new GLUI_StaticText( savexmlPanel, "" );
 
    new GLUI_Button( glui10, "Close Window", 10, (GLUI_Update_CB)hideglui );
 
-/* Window for Sound and Graphic*/                       
+/* Window for Sound and Graphic*/
   glui11 = GLUI_Master.create_glui("Engine", 0, 0, 0);/* name, flags,
 								 x, and y */
-  glui11->hide(); 
+  glui11->hide();
 
   GLUI_Panel *engine_panel1 = new GLUI_Panel( glui11, "RPM" );
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[0], 0,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 ); 
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[1], 1,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 ); 
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[2], 2,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 ); 
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[3], 3,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 ); 
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[4], 4,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );  
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[5], 5,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );  
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[6], 6,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 ); 
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[7], 7,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );  
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[8], 8,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );  
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[9], 9,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );  
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[10], 10,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );  
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[11], 11,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );  
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[12], 12,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );      
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[13], 13,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );  
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[14], 14,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );  
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[15], 15,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );      
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[16], 16,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );  
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[17], 17,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );  
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[18], 18,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );  
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[19], 19,(GLUI_Update_CB)CalcRPM  ))
-    ->set_int_limits( 0, 30000 );  
-   (new GLUI_Spinner( engine_panel1, "", &rpmValue[20], 20,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[0], 0,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-     
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[1], 1,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[2], 2,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[3], 3,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[4], 4,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[5], 5,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[6], 6,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[7], 7,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[8], 8,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[9], 9,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[10], 10,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[11], 11,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[12], 12,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[13], 13,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[14], 14,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[15], 15,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[16], 16,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[17], 17,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[18], 18,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[19], 19,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[20], 20,(GLUI_Update_CB)CalcRPM  ))
+    ->set_int_limits( 0, 30000 );
+
      new GLUI_Column( glui11, false );
-                         
+
   GLUI_Panel *engine_panel = new GLUI_Panel( glui11, "Torque(N.m)" );
-   (new GLUI_Spinner( engine_panel, "", &tqValue[0], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 ); 
-   (new GLUI_Spinner( engine_panel, "", &tqValue[1], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 ); 
-   (new GLUI_Spinner( engine_panel, "", &tqValue[2], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 ); 
-   (new GLUI_Spinner( engine_panel, "", &tqValue[3], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 ); 
-   (new GLUI_Spinner( engine_panel, "", &tqValue[4], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
-   (new GLUI_Spinner( engine_panel, "", &tqValue[5], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
-   (new GLUI_Spinner( engine_panel, "", &tqValue[6], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 ); 
-   (new GLUI_Spinner( engine_panel, "", &tqValue[7], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
-   (new GLUI_Spinner( engine_panel, "", &tqValue[8], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
-   (new GLUI_Spinner( engine_panel, "", &tqValue[9], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
-   (new GLUI_Spinner( engine_panel, "", &tqValue[10], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
-   (new GLUI_Spinner( engine_panel, "", &tqValue[11], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
-   (new GLUI_Spinner( engine_panel, "", &tqValue[12], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );      
-   (new GLUI_Spinner( engine_panel, "", &tqValue[13], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
-   (new GLUI_Spinner( engine_panel, "", &tqValue[14], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
-   (new GLUI_Spinner( engine_panel, "", &tqValue[15], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );      
-   (new GLUI_Spinner( engine_panel, "", &tqValue[16], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
-   (new GLUI_Spinner( engine_panel, "", &tqValue[17], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
-   (new GLUI_Spinner( engine_panel, "", &tqValue[18], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
-   (new GLUI_Spinner( engine_panel, "", &tqValue[19], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
-   (new GLUI_Spinner( engine_panel, "", &tqValue[20], 1,(GLUI_Update_CB)CalcCV  ))
-    ->set_int_limits( 0, 1000 );  
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[0], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[1], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[2], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[3], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[4], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[5], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[6], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[7], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[8], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[9], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[10], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[11], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[12], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[13], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[14], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[15], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[16], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[17], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[18], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[19], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
+   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[20], 1,(GLUI_Update_CB)CalcCV  ))
+    ->set_int_limits( 0, 1000 );
 
 
    new GLUI_Column( glui11, false );
 
   GLUI_Panel *engine_panel3 = new GLUI_Panel( glui11, "Power (CV)" );
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[0], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 ); 
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[1], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 ); 
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[2], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 ); 
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[3], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 ); 
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[4], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );  
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[5], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );  
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[6], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 ); 
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[7], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );  
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[8], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );  
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[9], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );  
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[10], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );  
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[11], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );  
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[12], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );      
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[13], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );  
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[14], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );  
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[15], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );      
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[16], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );  
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[17], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );  
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[18], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );  
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[19], 1,(GLUI_Update_CB)CalcTQ ))
-    ->set_int_limits( 0, 3000 );  
-   (new GLUI_Spinner( engine_panel3, "", &cvValue[20], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[0], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[1], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[2], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[3], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[4], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[5], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[6], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[7], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[8], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[9], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[10], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[11], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[12], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[13], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[14], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[15], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[16], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[17], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[18], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[19], 1,(GLUI_Update_CB)CalcTQ ))
+    ->set_int_limits( 0, 3000 );
+   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[20], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
 
    new GLUI_Column( glui11, false );
 
 
   GLUI_Panel *engine_type_panel = new GLUI_Panel( glui11, "Type" );
-   (new GLUI_Spinner( engine_type_panel, "Capacity", &engineCapacity))
+   (new GLUI_Spinner( engine_type_panel, "Capacity", &cardata.engineCapacity))
     ->set_float_limits( 0, 20000 );
-   list_engine_capacity_units = new GLUI_Listbox( engine_type_panel, "Units:", &curr_engine_capacity_units );
+   list_engine_capacity_units = new GLUI_Listbox( engine_type_panel, "Units:", &cardata.curr_engine_capacity_units );
    for( i=0; i<3; i++ )
-    list_engine_capacity_units->add_item( i, engine_capacity_units[i] );
-   (new GLUI_Spinner( engine_type_panel, "Cylinders", &engineCylinders))
+    list_engine_capacity_units->add_item( i, cardata.engine_capacity_units[i] );
+   (new GLUI_Spinner( engine_type_panel, "Cylinders", &cardata.engineCylinders))
     ->set_int_limits( 0, 16 );
-   list_engine_shape = new GLUI_Listbox( engine_type_panel, "Shape:", &curr_engine_shape );
+   list_engine_shape = new GLUI_Listbox( engine_type_panel, "Shape:", &cardata.curr_engine_shape );
    for( i=0; i<4; i++ )
-    list_engine_shape->add_item( i, engine_shape[i] );
-   list_engine_position = new GLUI_Listbox( engine_type_panel, "Position:", &curr_engine_position );
+    list_engine_shape->add_item( i, cardata.engine_shape[i] );
+   list_engine_position = new GLUI_Listbox( engine_type_panel, "Position:", &cardata.curr_engine_position );
    for( i=0; i<5; i++ )
-    list_engine_position->add_item( i, engine_position[i] );
+    list_engine_position->add_item( i, cardata.engine_position[i] );
 
   GLUI_Panel *engine_brake_panel = new GLUI_Panel( glui11, "Brake" );
-   (new GLUI_Spinner( engine_brake_panel, "Linear Coefficient", &brakeLinearCoefficient))
+   (new GLUI_Spinner( engine_brake_panel, "Linear Coefficient", &cardata.brakeLinearCoefficient))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( engine_brake_panel, "Coefficient", &brakeCoefficient))
+   (new GLUI_Spinner( engine_brake_panel, "Coefficient", &cardata.brakeCoefficient))
     ->set_float_limits( 0, 1 );
 
   GLUI_Panel *engine_turbo_panel = new GLUI_Panel( glui11, "Turbo" );
-    new GLUI_Checkbox(engine_turbo_panel, "Activate", &turboS);
-   (new GLUI_Spinner( engine_turbo_panel, "rpm", &turbo[0]))
+    new GLUI_Checkbox(engine_turbo_panel, "Activate", &cardata.turboS);
+   (new GLUI_Spinner( engine_turbo_panel, "rpm", &cardata.turbo[0]))
     ->set_float_limits( 0, 20000 );
-   (new GLUI_Spinner( engine_turbo_panel, "factor", &turbo[1]))
+   (new GLUI_Spinner( engine_turbo_panel, "factor", &cardata.turbo[1]))
     ->set_float_limits( 0, 10 );
-   (new GLUI_Spinner( engine_turbo_panel, "lag", &turbo[2]))
+   (new GLUI_Spinner( engine_turbo_panel, "lag", &cardata.turbo[2]))
     ->set_float_limits( 0, 10 );
 
   new GLUI_Checkbox(glui11, "Full RPM Scale", &fullRpmScale);
-  
+
   GLUI_Panel *loadEngine_panel = new GLUI_Panel( glui11, "Load Engine" );
   loadEngine_List = new GLUI_Listbox( loadEngine_panel, "Engine:", &currentEngine);
   loadEngineList ();
   new GLUI_Button( loadEngine_panel, "loadEngine", 0, (GLUI_Update_CB)loadEngine );
-  
-  GLUI_Panel *glui11a = new GLUI_Panel( glui11, "", GLUI_PANEL_NONE ); 
+
+  GLUI_Panel *glui11a = new GLUI_Panel( glui11, "", GLUI_PANEL_NONE );
   (new GLUI_Spinner( glui11a, "", &cvmaxNew))
      ->set_float_limits( 0, 9000 );
    new GLUI_Column( glui11a, false );
   new GLUI_Button( glui11a, "Scale All CV", 1, (GLUI_Update_CB)scaleAllEnginePoints );
 
-  GLUI_Panel *glui11b = new GLUI_Panel( glui11, "", GLUI_PANEL_NONE ); 
+  GLUI_Panel *glui11b = new GLUI_Panel( glui11, "", GLUI_PANEL_NONE );
   (new GLUI_Spinner( glui11b, "", &cvctNew))
     ->set_float_limits( 0, 9000 );
   new GLUI_Column( glui11b, false );
   new GLUI_Button( glui11b, "constant CV", 4, (GLUI_Update_CB)scaleAllEnginePoints );
-    
-  GLUI_Panel *glui11c = new GLUI_Panel( glui11, "", GLUI_PANEL_NONE ); 
+
+  GLUI_Panel *glui11c = new GLUI_Panel( glui11, "", GLUI_PANEL_NONE );
   (new GLUI_Spinner( glui11c, "", &tqmaxNew))
     ->set_float_limits( 0, 9000 );
   new GLUI_Column( glui11c, false );
   new GLUI_Button( glui11c, "Scale All TQ", 2, (GLUI_Update_CB)scaleAllEnginePoints );
-  
-  GLUI_Panel *glui11d = new GLUI_Panel( glui11, "", GLUI_PANEL_NONE ); 
+
+  GLUI_Panel *glui11d = new GLUI_Panel( glui11, "", GLUI_PANEL_NONE );
   (new GLUI_Spinner( glui11d, "", &tqctNew))
     ->set_float_limits( 0, 9000 );
   new GLUI_Column( glui11d, false );
   new GLUI_Button( glui11d, "constant TQ", 3, (GLUI_Update_CB)scaleAllEnginePoints );
-   
-  GLUI_Panel *glui11e = new GLUI_Panel( glui11, "", GLUI_PANEL_NONE ); 
+
+  GLUI_Panel *glui11e = new GLUI_Panel( glui11, "", GLUI_PANEL_NONE );
   new GLUI_Button( glui11e, "Change Shape", 2, (GLUI_Update_CB)modifyShapeOfEnginePoints );
   (new GLUI_Spinner( glui11e, "", &cvEngineShape[0]))->set_float_limits( 0, 300 );
   (new GLUI_Spinner( glui11e, "", &cvEngineShape[1]))->set_float_limits( 0, 50 );
@@ -2408,259 +2412,259 @@ new GLUI_Column( glui10, false );
   (new GLUI_Spinner( glui11e, "", &cvEngineShape[3]))->set_float_limits( -5, 5 );
   new GLUI_Column( glui11e, false );
   new GLUI_Button( glui11e, "Change RPM Points", 3, (GLUI_Update_CB)modifyShapeOfEnginePoints );
-  
+
   new GLUI_StaticText( glui11, "");
   new GLUI_Button( glui11, "Close Window", 11, (GLUI_Update_CB)hideglui );
 
 
-/* Window for Car dimensions and driver position*/                       
+/* Window for Car dimensions and driver position*/
   glui12 = GLUI_Master.create_glui("Car dimensions and driver position", 0, 0, 0);/* name, flags,
 								 x, and y */
-  glui12->hide(); 
+  glui12->hide();
 
   GLUI_Panel *driver_position_panel = new GLUI_Panel( glui12, "Driver Position" );
-   (new GLUI_Spinner( driver_position_panel, "x pos (m)", &driverPosition[0]))
+   (new GLUI_Spinner( driver_position_panel, "x pos (m)", &cardata.driverPosition[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( driver_position_panel, "y pos (m)", &driverPosition[1]))
+   (new GLUI_Spinner( driver_position_panel, "y pos (m)", &cardata.driverPosition[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( driver_position_panel, "z pos (m)", &driverPosition[2]))
+   (new GLUI_Spinner( driver_position_panel, "z pos (m)", &cardata.driverPosition[2]))
     ->set_float_limits( -10, 10 );
 
   GLUI_Panel *bonnet_position_panel = new GLUI_Panel( glui12, "Bonnet Position" );
-   (new GLUI_Spinner( bonnet_position_panel, "x pos (m)", &bonnetPosition[0]))
+   (new GLUI_Spinner( bonnet_position_panel, "x pos (m)", &cardata.bonnetPosition[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( bonnet_position_panel, "y pos (m)", &bonnetPosition[1]))
+   (new GLUI_Spinner( bonnet_position_panel, "y pos (m)", &cardata.bonnetPosition[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( bonnet_position_panel, "z pos (m)", &bonnetPosition[2]))
+   (new GLUI_Spinner( bonnet_position_panel, "z pos (m)", &cardata.bonnetPosition[2]))
     ->set_float_limits( -10, 10 );
-  
-  GLUI_Panel *carBodyDimensions_panel = new GLUI_Panel( glui12, "Car Body Dimensions" );
-   (new GLUI_Spinner( carBodyDimensions_panel, "Body length (m)", &carBodyDimensions[0]))
-    ->set_float_limits( 0, 20 );
-   (new GLUI_Spinner( carBodyDimensions_panel, "Body width (m)", &carBodyDimensions[1]))
-    ->set_float_limits( 0, 20 );
-   (new GLUI_Spinner( carBodyDimensions_panel, "Body height (m)", &carBodyDimensions[2]))
-    ->set_float_limits( 0, 20 );
-    
-  GLUI_Panel *carOverallDimensions_panel = new GLUI_Panel( glui12, "Car Body Dimensions" );
-   (new GLUI_Spinner( carOverallDimensions_panel, "Body length (m)", &carOverallDimensions[0]))
-    ->set_float_limits( 0, 20 );
-   (new GLUI_Spinner( carOverallDimensions_panel, "Body width (m)", &carOverallDimensions[1]))
-    ->set_float_limits( 0, 20 );
-    
-   new GLUI_Button( glui12, "Close Window", 12, (GLUI_Update_CB)hideglui ); 
 
-/* Window for Car Lights*/                       
+  GLUI_Panel *carBodyDimensions_panel = new GLUI_Panel( glui12, "Car Body Dimensions" );
+   (new GLUI_Spinner( carBodyDimensions_panel, "Body length (m)", &cardata.carBodyDimensions[0]))
+    ->set_float_limits( 0, 20 );
+   (new GLUI_Spinner( carBodyDimensions_panel, "Body width (m)", &cardata.carBodyDimensions[1]))
+    ->set_float_limits( 0, 20 );
+   (new GLUI_Spinner( carBodyDimensions_panel, "Body height (m)", &cardata.carBodyDimensions[2]))
+    ->set_float_limits( 0, 20 );
+
+  GLUI_Panel *carOverallDimensions_panel = new GLUI_Panel( glui12, "Car Body Dimensions" );
+   (new GLUI_Spinner( carOverallDimensions_panel, "Body length (m)", &cardata.carOverallDimensions[0]))
+    ->set_float_limits( 0, 20 );
+   (new GLUI_Spinner( carOverallDimensions_panel, "Body width (m)", &cardata.carOverallDimensions[1]))
+    ->set_float_limits( 0, 20 );
+
+   new GLUI_Button( glui12, "Close Window", 12, (GLUI_Update_CB)hideglui );
+
+/* Window for Car Lights*/
   glui13 = GLUI_Master.create_glui("Car Lights & Flames", 0, 0, 0);/* name, flags,
 								 x, and y */
-  glui13->hide(); 
+  glui13->hide();
 
   GLUI_Panel *car_lights1 = new GLUI_Panel( glui13, "Head1" );
-    new GLUI_Checkbox(car_lights1, "Activate", &head1aS);
-   (new GLUI_Spinner( car_lights1, "x pos (m)", &head1a[0]))
+    new GLUI_Checkbox(car_lights1, "Activate", &cardata.head1aS);
+   (new GLUI_Spinner( car_lights1, "x pos (m)", &cardata.head1a[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights1, "y pos (m)", &head1a[1]))
+   (new GLUI_Spinner( car_lights1, "y pos (m)", &cardata.head1a[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights1, "z pos (m)", &head1a[2]))
+   (new GLUI_Spinner( car_lights1, "z pos (m)", &cardata.head1a[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights1, "size (m)", &head1a[3]))
+   (new GLUI_Spinner( car_lights1, "size (m)", &cardata.head1a[3]))
     ->set_float_limits( 0, 0.8 );
 
   GLUI_Panel *car_lights2 = new GLUI_Panel( glui13, "Head1" );
-    new GLUI_Checkbox(car_lights2, "Activate", &head1bS);
-   (new GLUI_Spinner( car_lights2, "x pos (m)", &head1b[0]))
+    new GLUI_Checkbox(car_lights2, "Activate", &cardata.head1bS);
+   (new GLUI_Spinner( car_lights2, "x pos (m)", &cardata.head1b[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights2, "y pos (m)", &head1b[1]))
+   (new GLUI_Spinner( car_lights2, "y pos (m)", &cardata.head1b[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights2, "z pos (m)", &head1b[2]))
+   (new GLUI_Spinner( car_lights2, "z pos (m)", &cardata.head1b[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights2, "size (m)", &head1b[3]))
+   (new GLUI_Spinner( car_lights2, "size (m)", &cardata.head1b[3]))
     ->set_float_limits( 0, 0.8 );
 
   GLUI_Panel *car_lights3 = new GLUI_Panel( glui13, "Head2" );
-    new GLUI_Checkbox(car_lights3, "Activate", &head2aS);
-   (new GLUI_Spinner( car_lights3, "x pos (m)", &head2a[0]))
+    new GLUI_Checkbox(car_lights3, "Activate", &cardata.head2aS);
+   (new GLUI_Spinner( car_lights3, "x pos (m)", &cardata.head2a[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights3, "y pos (m)", &head2a[1]))
+   (new GLUI_Spinner( car_lights3, "y pos (m)", &cardata.head2a[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights3, "z pos (m)", &head2a[2]))
+   (new GLUI_Spinner( car_lights3, "z pos (m)", &cardata.head2a[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights3, "size (m)", &head2a[3]))
+   (new GLUI_Spinner( car_lights3, "size (m)", &cardata.head2a[3]))
     ->set_float_limits( 0, 0.8 );
 
   GLUI_Panel *car_lights4 = new GLUI_Panel( glui13, "Head2" );
-    new GLUI_Checkbox(car_lights4, "Activate", &head2bS);
-   (new GLUI_Spinner( car_lights4, "x pos (m)", &head2b[0]))
+    new GLUI_Checkbox(car_lights4, "Activate", &cardata.head2bS);
+   (new GLUI_Spinner( car_lights4, "x pos (m)", &cardata.head2b[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights4, "y pos (m)", &head2b[1]))
+   (new GLUI_Spinner( car_lights4, "y pos (m)", &cardata.head2b[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights4, "z pos (m)", &head2b[2]))
+   (new GLUI_Spinner( car_lights4, "z pos (m)", &cardata.head2b[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights4, "size (m)", &head2b[3]))
+   (new GLUI_Spinner( car_lights4, "size (m)", &cardata.head2b[3]))
     ->set_float_limits( 0, 0.8 );
 
    new GLUI_Column( glui13, false );
 
   GLUI_Panel *car_lights5 = new GLUI_Panel( glui13, "Rear" );
-    new GLUI_Checkbox(car_lights5, "Activate", &rearaS);
-   (new GLUI_Spinner( car_lights5, "x pos (m)", &reara[0]))
+    new GLUI_Checkbox(car_lights5, "Activate", &cardata.rearaS);
+   (new GLUI_Spinner( car_lights5, "x pos (m)", &cardata.reara[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights5, "y pos (m)", &reara[1]))
+   (new GLUI_Spinner( car_lights5, "y pos (m)", &cardata.reara[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights5, "z pos (m)", &reara[2]))
+   (new GLUI_Spinner( car_lights5, "z pos (m)", &cardata.reara[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights5, "size (m)", &reara[3]))
+   (new GLUI_Spinner( car_lights5, "size (m)", &cardata.reara[3]))
     ->set_float_limits( 0, 0.8 );
 
   GLUI_Panel *car_lights6 = new GLUI_Panel( glui13, "Rear" );
-    new GLUI_Checkbox(car_lights6, "Activate", &rearbS);
-   (new GLUI_Spinner( car_lights6, "x pos (m)", &rearb[0]))
+    new GLUI_Checkbox(car_lights6, "Activate", &cardata.rearbS);
+   (new GLUI_Spinner( car_lights6, "x pos (m)", &cardata.rearb[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights6, "y pos (m)", &rearb[1]))
+   (new GLUI_Spinner( car_lights6, "y pos (m)", &cardata.rearb[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights6, "z pos (m)", &rearb[2]))
+   (new GLUI_Spinner( car_lights6, "z pos (m)", &cardata.rearb[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights6, "size (m)", &rearb[3]))
+   (new GLUI_Spinner( car_lights6, "size (m)", &cardata.rearb[3]))
     ->set_float_limits( 0, 0.8 );
 
   GLUI_Panel *car_lights7 = new GLUI_Panel( glui13, "Brake" );
-    new GLUI_Checkbox(car_lights7, "Activate", &brakeaS);
-   (new GLUI_Spinner( car_lights7, "x pos (m)", &brakea[0]))
+    new GLUI_Checkbox(car_lights7, "Activate", &cardata.brakeaS);
+   (new GLUI_Spinner( car_lights7, "x pos (m)", &cardata.brakea[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights7, "y pos (m)", &brakea[1]))
+   (new GLUI_Spinner( car_lights7, "y pos (m)", &cardata.brakea[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights7, "z pos (m)", &brakea[2]))
+   (new GLUI_Spinner( car_lights7, "z pos (m)", &cardata.brakea[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights7, "size (m)", &brakea[3]))
+   (new GLUI_Spinner( car_lights7, "size (m)", &cardata.brakea[3]))
     ->set_float_limits( 0, 0.8 );
 
   GLUI_Panel *car_lights8 = new GLUI_Panel( glui13, "Brake" );
-    new GLUI_Checkbox(car_lights8, "Activate", &brakebS);
-   (new GLUI_Spinner( car_lights8, "x pos (m)", &brakeb[0]))
+    new GLUI_Checkbox(car_lights8, "Activate", &cardata.brakebS);
+   (new GLUI_Spinner( car_lights8, "x pos (m)", &cardata.brakeb[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights8, "y pos (m)", &brakeb[1]))
+   (new GLUI_Spinner( car_lights8, "y pos (m)", &cardata.brakeb[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights8, "z pos (m)", &brakeb[2]))
+   (new GLUI_Spinner( car_lights8, "z pos (m)", &cardata.brakeb[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights8, "size (m)", &brakeb[3]))
+   (new GLUI_Spinner( car_lights8, "size (m)", &cardata.brakeb[3]))
     ->set_float_limits( 0, 0.8 );
 
    new GLUI_Column( glui13, false );
 
   GLUI_Panel *car_lights9 = new GLUI_Panel( glui13, "Rear" );
-    new GLUI_Checkbox(car_lights9, "Activate", &rearcS);
-   (new GLUI_Spinner( car_lights9, "x pos (m)", &rearc[0]))
+    new GLUI_Checkbox(car_lights9, "Activate", &cardata.rearcS);
+   (new GLUI_Spinner( car_lights9, "x pos (m)", &cardata.rearc[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights9, "y pos (m)", &rearc[1]))
+   (new GLUI_Spinner( car_lights9, "y pos (m)", &cardata.rearc[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights9, "z pos (m)", &rearc[2]))
+   (new GLUI_Spinner( car_lights9, "z pos (m)", &cardata.rearc[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights9, "size (m)", &rearc[3]))
+   (new GLUI_Spinner( car_lights9, "size (m)", &cardata.rearc[3]))
     ->set_float_limits( 0, 0.8 );
 
   GLUI_Panel *car_lights10 = new GLUI_Panel( glui13, "Rear" );
-    new GLUI_Checkbox(car_lights10, "Activate", &reardS);
-   (new GLUI_Spinner( car_lights10, "x pos (m)", &reard[0]))
+    new GLUI_Checkbox(car_lights10, "Activate", &cardata.reardS);
+   (new GLUI_Spinner( car_lights10, "x pos (m)", &cardata.reard[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights10, "y pos (m)", &reard[1]))
+   (new GLUI_Spinner( car_lights10, "y pos (m)", &cardata.reard[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights10, "z pos (m)", &reard[2]))
+   (new GLUI_Spinner( car_lights10, "z pos (m)", &cardata.reard[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights10, "size (m)", &reard[3]))
+   (new GLUI_Spinner( car_lights10, "size (m)", &cardata.reard[3]))
     ->set_float_limits( 0, 0.8 );
 
   GLUI_Panel *car_lights11 = new GLUI_Panel( glui13, "Brake" );
-    new GLUI_Checkbox(car_lights11, "Activate", &brakecS);
-   (new GLUI_Spinner( car_lights11, "x pos (m)", &brakec[0]))
+    new GLUI_Checkbox(car_lights11, "Activate", &cardata.brakecS);
+   (new GLUI_Spinner( car_lights11, "x pos (m)", &cardata.brakec[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights11, "y pos (m)", &brakec[1]))
+   (new GLUI_Spinner( car_lights11, "y pos (m)", &cardata.brakec[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights11, "z pos (m)", &brakec[2]))
+   (new GLUI_Spinner( car_lights11, "z pos (m)", &cardata.brakec[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights11, "size (m)", &brakec[3]))
+   (new GLUI_Spinner( car_lights11, "size (m)", &cardata.brakec[3]))
     ->set_float_limits( 0, 0.8 );
 
   GLUI_Panel *car_lights12 = new GLUI_Panel( glui13, "Brake" );
-    new GLUI_Checkbox(car_lights12, "Activate", &brakedS);
-   (new GLUI_Spinner( car_lights12, "x pos (m)", &braked[0]))
+    new GLUI_Checkbox(car_lights12, "Activate", &cardata.brakedS);
+   (new GLUI_Spinner( car_lights12, "x pos (m)", &cardata.braked[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights12, "y pos (m)", &braked[1]))
+   (new GLUI_Spinner( car_lights12, "y pos (m)", &cardata.braked[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights12, "z pos (m)", &braked[2]))
+   (new GLUI_Spinner( car_lights12, "z pos (m)", &cardata.braked[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights12, "size (m)", &braked[3]))
+   (new GLUI_Spinner( car_lights12, "size (m)", &cardata.braked[3]))
     ->set_float_limits( 0, 0.8 );
 
    new GLUI_Column( glui13, false );
 
   GLUI_Panel *car_lights13 = new GLUI_Panel( glui13, "Brake2" );
-    new GLUI_Checkbox(car_lights13, "Activate", &brake2aS);
-   (new GLUI_Spinner( car_lights13, "x pos (m)", &brake2a[0]))
+    new GLUI_Checkbox(car_lights13, "Activate", &cardata.brake2aS);
+   (new GLUI_Spinner( car_lights13, "x pos (m)", &cardata.brake2a[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights13, "y pos (m)", &brake2a[1]))
+   (new GLUI_Spinner( car_lights13, "y pos (m)", &cardata.brake2a[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights13, "z pos (m)", &brake2a[2]))
+   (new GLUI_Spinner( car_lights13, "z pos (m)", &cardata.brake2a[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights13, "size (m)", &brake2a[3]))
+   (new GLUI_Spinner( car_lights13, "size (m)", &cardata.brake2a[3]))
     ->set_float_limits( 0, 0.8 );
 
   GLUI_Panel *car_lights14 = new GLUI_Panel( glui13, "Brake2" );
-    new GLUI_Checkbox(car_lights14, "Activate", &brake2bS);
-   (new GLUI_Spinner( car_lights14, "x pos (m)", &brake2b[0]))
+    new GLUI_Checkbox(car_lights14, "Activate", &cardata.brake2bS);
+   (new GLUI_Spinner( car_lights14, "x pos (m)", &cardata.brake2b[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights14, "y pos (m)", &brake2b[1]))
+   (new GLUI_Spinner( car_lights14, "y pos (m)", &cardata.brake2b[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights14, "z pos (m)", &brake2b[2]))
+   (new GLUI_Spinner( car_lights14, "z pos (m)", &cardata.brake2b[2]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_lights14, "size (m)", &brake2b[3]))
+   (new GLUI_Spinner( car_lights14, "size (m)", &cardata.brake2b[3]))
     ->set_float_limits( 0, 0.8 );
 
   GLUI_Panel *car_flames = new GLUI_Panel( glui13, "Flames" );
-  
-    new GLUI_Checkbox(car_flames, "Activate flames", &flameS);
-   (new GLUI_Spinner( car_flames, "Power", &flamePower))
+
+    new GLUI_Checkbox(car_flames, "Activate flames", &cardata.flameS);
+   (new GLUI_Spinner( car_flames, "Power", &cardata.flamePower))
     ->set_float_limits( 0, 10 );
 
     new GLUI_Separator( car_flames );
-        
-   (new GLUI_Spinner( car_flames, "x pos (m)", &flame1[0]))
+
+   (new GLUI_Spinner( car_flames, "x pos (m)", &cardata.flame1[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_flames, "y pos (m)", &flame1[1]))
+   (new GLUI_Spinner( car_flames, "y pos (m)", &cardata.flame1[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_flames, "z pos (m)", &flame1[2]))
+   (new GLUI_Spinner( car_flames, "z pos (m)", &cardata.flame1[2]))
     ->set_float_limits( -10, 10 );
 
     new GLUI_Separator( car_flames );
 
-   (new GLUI_Spinner( car_flames, "x pos (m)", &flame2[0]))
+   (new GLUI_Spinner( car_flames, "x pos (m)", &cardata.flame2[0]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_flames, "y pos (m)", &flame2[1]))
+   (new GLUI_Spinner( car_flames, "y pos (m)", &cardata.flame2[1]))
     ->set_float_limits( -10, 10 );
-   (new GLUI_Spinner( car_flames, "z pos (m)", &flame2[2]))
+   (new GLUI_Spinner( car_flames, "z pos (m)", &cardata.flame2[2]))
     ->set_float_limits( -10, 10 );
-            
-   new GLUI_Button( glui13, "Close Window", 13, (GLUI_Update_CB)hideglui ); 
 
-/* Window for Car Lights*/                       
+   new GLUI_Button( glui13, "Close Window", 13, (GLUI_Update_CB)hideglui );
+
+/* Window for Car Lights*/
   glui14 = GLUI_Master.create_glui("Car Name & Category -- Autor info", 0, 0, 0);/* name, flags,
 								 x, and y */
-  glui14->hide(); 
+  glui14->hide();
 
-  GLUI_Panel *carCategory_panel = new GLUI_Panel( glui14, "Car Category" );  
-  (new GLUI_EditText( carCategory_panel, "Category:", carCategory ))->w=200;
+  GLUI_Panel *carCategory_panel = new GLUI_Panel( glui14, "Car Category" );
+  (new GLUI_EditText( carCategory_panel, "Category:", cardata.carCategory ))->w=200;
 
-  GLUI_Panel *carName_panel = new GLUI_Panel( glui14, "Car Name" );  
-  (new GLUI_EditText( carName_panel, "Car name:", carname, 0,(GLUI_Update_CB)syncLiveAll ))->w=200;
-  (new GLUI_EditText( carName_panel, "Full Car name:", fullCarName, 0,(GLUI_Update_CB)syncLiveAll ))->w=300;
+  GLUI_Panel *carName_panel = new GLUI_Panel( glui14, "Car Name" );
+  (new GLUI_EditText( carName_panel, "Car name:", cardata.carname, 0,(GLUI_Update_CB)syncLiveAll ))->w=200;
+  (new GLUI_EditText( carName_panel, "Full Car name:", cardata.fullCarName, 0,(GLUI_Update_CB)syncLiveAll ))->w=300;
 
-  GLUI_Panel *autorInfo_panel = new GLUI_Panel( glui14, "Autor Info" );  
-  (new GLUI_EditText( autorInfo_panel, "name:", autorName, 0, (GLUI_Update_CB)saveAutorInfo ))->w=250;
-  (new GLUI_EditText( autorInfo_panel, "e-mail:", autorEmail, 0, (GLUI_Update_CB)saveAutorInfo ))->w=250;
-  
-            
-   new GLUI_Button( glui14, "Close Window", 14, (GLUI_Update_CB)hideglui ); 
+  GLUI_Panel *autorInfo_panel = new GLUI_Panel( glui14, "Autor Info" );
+  (new GLUI_EditText( autorInfo_panel, "name:", cardata.autorName, 0, (GLUI_Update_CB)saveAutorInfo ))->w=250;
+  (new GLUI_EditText( autorInfo_panel, "e-mail:", cardata.autorEmail, 0, (GLUI_Update_CB)saveAutorInfo ))->w=250;
 
-/* Window for the Help */                      
+
+   new GLUI_Button( glui14, "Close Window", 14, (GLUI_Update_CB)hideglui );
+
+/* Window for the Help */
   glui2 = GLUI_Master.create_glui("Torcs Car Setup Editor Help", 0, 0, 0);/* name, flags,
 								 x, and y */
   glui2->hide();
@@ -2669,19 +2673,19 @@ new GLUI_Column( glui10, false );
     //glui2->bkgd_color.g = 0.5;
     //glui2->bkgd_color.b = 0.5;
 
-  
+
   GLUI_Panel *help1_panel =new GLUI_Panel(glui2, "How to use the program");
     new GLUI_StaticText( help1_panel, "You can edit all the parameters by "
     "using the text boxes and spiners of the program." );
     new GLUI_StaticText( help1_panel,
     "At the right you can see the engine graph and how afect your changes "
-    "in acceleration, grip, speed and braking at your car." );   
+    "in acceleration, grip, speed and braking at your car." );
     new GLUI_StaticText( help1_panel,
     "You can select in this window at the box of the left an item and "
     "it will be displayed at the right." );
 
   GLUI_Panel *help2_panel =new GLUI_Panel(glui2, "Description of the parameters");
-    
+
     new GLUI_StaticText(help2_panel,"Items");
     helpList = new GLUI_List(help2_panel,true,0,helpSelectList);
       helpList->set_h(400);
@@ -2695,9 +2699,9 @@ new GLUI_Column( glui10, false );
       helpList->add_item(6,"Wheels & Tires");
       helpList->add_item(7,"Steer, Differential...");
       helpList->add_item(8,"Suspension");
-  
+
    new GLUI_Column( help2_panel, false);
-      
+
     helpTextBox = new GLUI_TextBox(help2_panel,true);
     //helpTextBox->set_text(help_general.c_str());
     helpSelectList(0);
@@ -2705,14 +2709,14 @@ new GLUI_Column( glui10, false );
     helpTextBox->set_w(650);
     helpTextBox->disable();
     helpTextBox->scrollbar->enable();
-        
+
   new GLUI_Button( glui2, "Close Window", 2, (GLUI_Update_CB)hideglui );
-  
+
   /* end of Window for help */
 
 
 
- 
+
   glui->set_main_gfx_window( main_window );
   glui2->set_main_gfx_window( main_window );
   glui3->set_main_gfx_window( main_window );
@@ -2730,18 +2734,18 @@ new GLUI_Column( glui10, false );
 
 //hide all the windows
 glui2->hide();
-glui3->hide(); 
-glui4->hide(); 
-glui5->hide(); 
-glui6->hide(); 
-glui7->hide(); 
-glui8->hide(); 
-glui10->hide(); 
-glui11->hide(); 
-glui12->hide(); 
-glui13->hide(); 
-glui14->hide(); 
-  
+glui3->hide();
+glui4->hide();
+glui5->hide();
+glui6->hide();
+glui7->hide();
+glui8->hide();
+glui10->hide();
+glui11->hide();
+glui12->hide();
+glui13->hide();
+glui14->hide();
+
   /* We register the idle callback with GLUI, *not* with GLUT */
   GLUI_Master.set_glutIdleFunc( NULL );
   //GLUI_Master.set_glutIdleFunc( myGlutIdle );
@@ -2750,7 +2754,7 @@ glui14->hide();
   glutMainLoop();
 
   return EXIT_SUCCESS;
-  
+
 }
 
 

@@ -26,6 +26,7 @@
 
 using namespace std;
 
+extern CarData cardata;
 extern GLUI_CommandLine *cmd_line; /* command line */
 extern float cvmaxNew;
 extern float tqmaxNew;
@@ -94,7 +95,7 @@ void cmd_line_cb (int k)
         bufferInt = atoi( bufferStr.c_str() );
         if (bufferInt <= 0) bufferInt = 1;
         if (bufferInt > 7) bufferInt = 7;
-        numberOfGears=bufferInt;
+        cardata.numberOfGears=bufferInt;
         numberOfGearsDisable();
     }
     else if (text.find(val="cv=") != std::string::npos){
@@ -120,7 +121,7 @@ void cmd_line_cb (int k)
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         buffer = atof( bufferStr.c_str() );
         if (buffer <= 0.0) buffer = 150.0;
-        gearbox_speed[numberOfGears]=buffer;
+        gearbox_speed[cardata.numberOfGears]=buffer;
         gearboxRatioSpeed ( 0 );
         if (text.find(val="r="))
         {
@@ -140,7 +141,7 @@ void cmd_line_cb (int k)
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         buffer = atof( bufferStr.c_str() );
         if (buffer <= 0.0) buffer = 50.0;
-        engineparams[2]=buffer;
+        cardata.engineparams[2]=buffer;
         CalcCVTQmax();
     }     
 
@@ -154,27 +155,27 @@ void cmd_line_cb (int k)
         bufferStr = "";
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
-        carname=bufferStr;
+        cardata.carname=bufferStr;
     }
     else if (text.find(val="carnamef=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
-        fullCarName=bufferStr;
+        cardata.fullCarName=bufferStr;
     } 
     else if (text.find(val="autor=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
-        autorName=bufferStr;
+        cardata.autorName=bufferStr;
     } 
     else if (text.find(val="autore=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
-        autorEmail=bufferStr;
+        cardata.autorEmail=bufferStr;
     }
     else if (text.find(val="carcat=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
-        carCategory=bufferStr;
+        cardata.carCategory=bufferStr;
     }
     else if (text=="open"){
         opencardata( 1 );
@@ -182,7 +183,7 @@ void cmd_line_cb (int k)
     else if (text.find(val="open=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
-        carname=bufferStr;
+        cardata.carname=bufferStr;
         opencardata( 1 );
     }    
     else if (text=="opent"){
@@ -191,7 +192,7 @@ void cmd_line_cb (int k)
     else if (text.find(val="opent=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
-        carname=bufferStr;
+        cardata.carname=bufferStr;
         opencardata( 2 );
     }
     else if (text.find(val="openct=") != std::string::npos){
@@ -211,7 +212,7 @@ void cmd_line_cb (int k)
     else if (text.find(val="save=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
-        carname=bufferStr;
+        cardata.carname=bufferStr;
         savecardata( 1 );
     }
     else if (text=="savet"){
@@ -220,7 +221,7 @@ void cmd_line_cb (int k)
     else if (text.find(val="savet=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
-        carname=bufferStr;
+        cardata.carname=bufferStr;
         savecardata( 2 );
     }
     else if (text=="xml"){
@@ -229,7 +230,7 @@ void cmd_line_cb (int k)
     else if (text.find(val="xml=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
-        carname=bufferStr;
+        cardata.carname=bufferStr;
         savexml( 1 );
     }
     else if (text=="import"){
@@ -238,7 +239,7 @@ void cmd_line_cb (int k)
     else if (text.find(val="import=") != std::string::npos){
         pos = text.find(val);
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
-        carname=bufferStr;
+        cardata.carname=bufferStr;
         importxml( 0 );
     }
     else if (text=="rpmscale=full"){

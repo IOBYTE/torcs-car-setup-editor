@@ -141,7 +141,7 @@ void cmd_line_cb (int k)
         bufferStr.assign(text,pos+val.length(),text.length()-pos);
         buffer = atof( bufferStr.c_str() );
         if (buffer <= 0.0) buffer = 50.0;
-        cardata.engineparams[2]=buffer;
+        cardata.engine.params[2]=buffer;
         CalcCVTQmax();
     }     
 

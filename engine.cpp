@@ -57,7 +57,7 @@ int calcEnginePointsLesRL (void)
 
     while (i < 21)
     {
-        if ( cardata.rpmValue[i] >= cardata.engineparams[2] )
+        if ( cardata.engine.rpmValue[i] >= cardata.engine.params[2] )
             {
               points = i;
               return points;
@@ -76,7 +76,7 @@ int calcEnginePointsLesRM (void)
 
     while (i < 21)
     {
-        if ( cardata.rpmValue[i] >= cardata.engineparams[1] )
+        if ( cardata.engine.rpmValue[i] >= cardata.engine.params[1] )
             {
               points = i;
               return points;
@@ -164,16 +164,16 @@ float CalcMaxEngine(float vector[TAM], float vector2[TAM],int init, int tamv, fl
      {
          int points = calcEnginePointsLesRL ();
 
-         if (  revs > cardata.engineparams[2] )
+         if (  revs > cardata.engine.params[2] )
          {
-             revs = cardata.engineparams[2];
+             revs = cardata.engine.params[2];
 
                 int i = 0 ;
                 while (i < 20)
                 {
-                    if (cardata.engineparams[2] >= vector2[i] && cardata.engineparams[2] <= vector2[i+1])
+                    if (cardata.engine.params[2] >= vector2[i] && cardata.engine.params[2] <= vector2[i+1])
                     {
-                        max=vector[i]+((vector[i+1]-vector[i])/(vector2[i+1]-vector2[i]))*(cardata.engineparams[2]-vector2[i]);
+                        max=vector[i]+((vector[i+1]-vector[i])/(vector2[i+1]-vector2[i]))*(cardata.engine.params[2]-vector2[i]);
                         break;
                     }
 
@@ -262,13 +262,13 @@ float CalcMax(float vector[TAM], int tamv)
  void CalcRPM( int i )
  {
   if (i == 0)
-    if (cardata.rpmValue[i] > cardata.rpmValue[i+1]) cardata.rpmValue[i] = cardata.rpmValue[i+1]-1;
+    if (cardata.engine.rpmValue[i] > cardata.engine.rpmValue[i+1]) cardata.engine.rpmValue[i] = cardata.engine.rpmValue[i+1]-1;
   if (i == 20)
-    if (cardata.rpmValue[i] < cardata.rpmValue[i-1]) cardata.rpmValue[i] = cardata.rpmValue[i-1]+1;
+    if (cardata.engine.rpmValue[i] < cardata.engine.rpmValue[i-1]) cardata.engine.rpmValue[i] = cardata.engine.rpmValue[i-1]+1;
   if ( i > 0 && i < 20 )
     {
-      if (cardata.rpmValue[i] > cardata.rpmValue[i+1]) cardata.rpmValue[i] = cardata.rpmValue[i+1]-1;
-      if (cardata.rpmValue[i] < cardata.rpmValue[i-1]) cardata.rpmValue[i] = cardata.rpmValue[i-1]+1;
+      if (cardata.engine.rpmValue[i] > cardata.engine.rpmValue[i+1]) cardata.engine.rpmValue[i] = cardata.engine.rpmValue[i+1]-1;
+      if (cardata.engine.rpmValue[i] < cardata.engine.rpmValue[i-1]) cardata.engine.rpmValue[i] = cardata.engine.rpmValue[i-1]+1;
     }
     GLUI_Master.sync_live_all();
  }
@@ -280,35 +280,35 @@ float CalcMax(float vector[TAM], int tamv)
  void CalcCV(void)
  {
         int i;
-        cardata.cvValue[0] = 0.0;
+        cardata.engine.cvValue[0] = 0.0;
 
         for (i=0; i < 20; i++)
         {
-            if (cardata.rpmValue[i] > cardata.rpmValue[i+1])
+            if (cardata.engine.rpmValue[i] > cardata.engine.rpmValue[i+1])
             {
-              cardata.rpmValue[i] = cardata.rpmValue[i+1]-1;
+              cardata.engine.rpmValue[i] = cardata.engine.rpmValue[i+1]-1;
             }
         }
         for (i=1; i < 21; i++)
         {
-            if (cardata.rpmValue[i] < cardata.rpmValue[i-1])
+            if (cardata.engine.rpmValue[i] < cardata.engine.rpmValue[i-1])
             {
-              cardata.rpmValue[i] = cardata.rpmValue[i-1]+1;
+              cardata.engine.rpmValue[i] = cardata.engine.rpmValue[i-1]+1;
             }
         }
 
         for (i=1; i < 21; i++)
         {
-            cardata.cvValue[i] = cardata.tqValue[i]*cardata.rpmValue[i]*2*3.141592654/(60*CVW);
+            cardata.engine.cvValue[i] = cardata.engine.tqValue[i]*cardata.engine.rpmValue[i]*2*3.141592654/(60*CVW);
         }
 
         /* calc the max values of cv and tq under the revs lim */
         int points = calcEnginePointsLesRL ();
 
-        cvmaxY = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,21,rpmatcvmaxY,0);
-        revsmax = CalcMax(cardata.rpmValue,21);
-        cvmax = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,points,rpmatcvmax,1);
-        tqmax = CalcMaxEngine(cardata.tqValue,cardata.rpmValue,1,points,rpmattqmax,1);
+        cvmaxY = CalcMaxEngine(cardata.engine.cvValue,cardata.engine.rpmValue,1,21,rpmatcvmaxY,0);
+        revsmax = CalcMax(cardata.engine.rpmValue,21);
+        cvmax = CalcMaxEngine(cardata.engine.cvValue,cardata.engine.rpmValue,1,points,rpmatcvmax,1);
+        tqmax = CalcMaxEngine(cardata.engine.tqValue,cardata.engine.rpmValue,1,points,rpmattqmax,1);
 
         GLUI_Master.sync_live_all();
  }
@@ -319,10 +319,10 @@ void CalcCVTQmax ( void )
         /* calc the max values of cv and tq under the revs lim */
         int points = calcEnginePointsLesRL ();
 
-        cvmaxY = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,21,rpmatcvmaxY,0);
-        revsmax = CalcMax(cardata.rpmValue,21);
-        cvmax = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,points,rpmatcvmax,1);
-        tqmax = CalcMaxEngine(cardata.tqValue,cardata.rpmValue,1,points,rpmattqmax,1);
+        cvmaxY = CalcMaxEngine(cardata.engine.cvValue,cardata.engine.rpmValue,1,21,rpmatcvmaxY,0);
+        revsmax = CalcMax(cardata.engine.rpmValue,21);
+        cvmax = CalcMaxEngine(cardata.engine.cvValue,cardata.engine.rpmValue,1,points,rpmatcvmax,1);
+        tqmax = CalcMaxEngine(cardata.engine.tqValue,cardata.engine.rpmValue,1,points,rpmattqmax,1);
 
         GLUI_Master.sync_live_all();
 
@@ -330,19 +330,19 @@ void CalcCVTQmax ( void )
 
  void CalcTQ(void)
  {
-        cardata.tqValue[0]=0.0;
+        cardata.engine.tqValue[0]=0.0;
         int i;
         for (i=1; i < 21; i++)
         {
-            cardata.tqValue[i] = cardata.cvValue[i] / (cardata.rpmValue[i]*2*3.141592654/(60*CVW));
+            cardata.engine.tqValue[i] = cardata.engine.cvValue[i] / (cardata.engine.rpmValue[i]*2*3.141592654/(60*CVW));
         }
         /* calc the max values of cv and tq under the revs lim */
         int points = calcEnginePointsLesRL ();
 
-        cvmaxY = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,21,rpmatcvmaxY,0);
-        revsmax = CalcMax(cardata.rpmValue,21);
-        cvmax = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,points,rpmatcvmax,1);
-        tqmax = CalcMaxEngine(cardata.tqValue,cardata.rpmValue,1,points,rpmattqmax,1);
+        cvmaxY = CalcMaxEngine(cardata.engine.cvValue,cardata.engine.rpmValue,1,21,rpmatcvmaxY,0);
+        revsmax = CalcMax(cardata.engine.rpmValue,21);
+        cvmax = CalcMaxEngine(cardata.engine.cvValue,cardata.engine.rpmValue,1,points,rpmatcvmax,1);
+        tqmax = CalcMaxEngine(cardata.engine.tqValue,cardata.engine.rpmValue,1,points,rpmattqmax,1);
 
         GLUI_Master.sync_live_all();
  }
@@ -366,12 +366,12 @@ switch (k)
 {
 case 1: /* cv */
   /* calc the max of cv in all the range*/
-  cvmax = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,points,rpmatcvmax,0);
+  cvmax = CalcMaxEngine(cardata.engine.cvValue,cardata.engine.rpmValue,1,points,rpmatcvmax,0);
   //cout << "cvmax: " << cvmax << "at rpm:"<< rpmatcvmax <<endl;
   /* update all engine points */
   for (i=0;i<21;i++)
   {
-     cardata.cvValue[i]=cardata.cvValue[i]*cvmaxNew/cvmax;
+     cardata.engine.cvValue[i]=cardata.engine.cvValue[i]*cvmaxNew/cvmax;
   }
   CalcTQ();
 
@@ -379,11 +379,11 @@ break;
 
 case 2: /* tq */
   /* calc the max of tq in all the range*/
-  tqmax = CalcMaxEngine(cardata.tqValue,cardata.rpmValue,1,points,rpmattqmax,0);
+  tqmax = CalcMaxEngine(cardata.engine.tqValue,cardata.engine.rpmValue,1,points,rpmattqmax,0);
   /* update all engine points */
   for (i=0;i<21;i++)
   {
-     cardata.tqValue[i]=cardata.tqValue[i]*tqmaxNew/tqmax;
+     cardata.engine.tqValue[i]=cardata.engine.tqValue[i]*tqmaxNew/tqmax;
   }
   CalcCV();
 
@@ -394,7 +394,7 @@ case 3: /* tq */
   /* update all engine points */
   for (i=0;i<21;i++)
   {
-     cardata.tqValue[i]=tqctNew;
+     cardata.engine.tqValue[i]=tqctNew;
   }
   CalcCV();
 
@@ -405,7 +405,7 @@ case 4: /* cv */
   /* update all engine points */
   for (i=0;i<21;i++)
   {
-     cardata.cvValue[i]=cvctNew;
+     cardata.engine.cvValue[i]=cvctNew;
   }
   CalcTQ();
 
@@ -460,16 +460,16 @@ switch ( k )
 {
 case 1:
     /* calc the cv imax */
-    CalcMaxEngine2(cardata.cvValue,cardata.rpmValue,cvimax);
+    CalcMaxEngine2(cardata.engine.cvValue,cardata.engine.rpmValue,cvimax);
     if (cvimax>21) cvimax = 21;
     if (cvimax<0) cvimax = 0;
 
-    cardata.cvValue[0]=0.0;
+    cardata.engine.cvValue[0]=0.0;
 
     factorCount = 0;
     for (i=cvimax+1;i<21;i++)
     {
-       cardata.cvValue[i]=cardata.cvValue[i]+factor;
+       cardata.engine.cvValue[i]=cardata.engine.cvValue[i]+factor;
     }
 
     factorCount = 0;
@@ -482,9 +482,9 @@ case 1:
           factor = -1.0*i;
        }
 
-       newCVvalue=cardata.cvValue[i]+factor;
+       newCVvalue=cardata.engine.cvValue[i]+factor;
 
-       cardata.cvValue[i] = newCVvalue;
+       cardata.engine.cvValue[i] = newCVvalue;
 
        ++factorCount;
     }
@@ -496,9 +496,9 @@ case 2:
     for (i=0;i<21;i++)
     {
        //cvValue[i]=10.0+15.1289*i+6.4029*pow(i,2)-0.2431*pow(i,3);
-       cardata.cvValue[i]=cvEngineShape[0]+cvEngineShape[1]*i+cvEngineShape[2]*pow((float)i,2)+cvEngineShape[3]*pow((float)i,3);
-       if (cardata.cvValue[i]<0.0) cardata.cvValue[i]=0.0;
-       cardata.rpmValue[i]=1000.0*i;
+       cardata.engine.cvValue[i]=cvEngineShape[0]+cvEngineShape[1]*i+cvEngineShape[2]*pow((float)i,2)+cvEngineShape[3]*pow((float)i,3);
+       if (cardata.engine.cvValue[i]<0.0) cardata.engine.cvValue[i]=0.0;
+       cardata.engine.rpmValue[i]=1000.0*i;
     }
 
     scaleAllEnginePoints ( 1 );
@@ -510,7 +510,7 @@ break;
 case 3: /* change the rpmengine points */
     for (i=0;i<21;i++)
     {
-       cardata.rpmValue[i]=cardata.engineparams[1]/20.0*i;
+       cardata.engine.rpmValue[i]=cardata.engine.params[1]/20.0*i;
     }
 break;
 
@@ -523,5 +523,5 @@ GLUI_Master.sync_live_all();
 extern GLUI_Spinner *revsLimiterSpinner;
 void setRevsLimiterLimits ( void )
 {
-    revsLimiterSpinner -> set_float_limits( cardata.engineparams[3], cardata.engineparams[1] );
+    revsLimiterSpinner -> set_float_limits( cardata.engine.params[3], cardata.engine.params[1] );
 }

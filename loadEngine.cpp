@@ -58,16 +58,16 @@ void loadEngine( int k )
             {    
                 int i; 
                 f >> buffer; //#engineparams
-                for (i=0; i<5; i++) {f >> cardata.engineparams[i];}
+                for (i=0; i<5; i++) {f >> cardata.engine.params[i];}
                 f >> buffer; //#rpmValue
-                for (i=0; i<21; i++) {f >> cardata.rpmValue[i];}
+                for (i=0; i<21; i++) {f >> cardata.engine.rpmValue[i];}
                 f >> buffer; //#tqValue
-                for (i=0; i<21; i++) {f >> cardata.tqValue[i];}
+                for (i=0; i<21; i++) {f >> cardata.engine.tqValue[i];}
                 CalcCV(); // after reading the tq we calculate the cv to update the values of cv
                 f >> buffer; //#turboS
-                f >> cardata.turboS;
+                f >> cardata.engine.turboS;
                 f >> buffer; //#turbo
-                for (i=0; i<3; i++) {f >> cardata.turbo[i];}
+                for (i=0; i<3; i++) {f >> cardata.engine.turbo[i];}
                 GLUI_Master.sync_live_all();
                 cout << "Engine Loaded " << currentEngine << " - " << engineList.at(currentEngine)<< endl;
             }        

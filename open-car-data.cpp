@@ -80,8 +80,6 @@ void opencardata( int j )
         }
     else
     { //operacions en el fitxer
-    //getVal("#engineparams",engineparams,5);
-    //f >> textdata; //1st line
     getline(f, bufer);
     f >> textdata; //#TcseVersion
     f >> tcseFileVersion; //#TcseVersion
@@ -92,34 +90,34 @@ void opencardata( int j )
     f >> textdata; //#carname
     f >> cardata.carname;
     f >> textdata; //#engineparams
-    for (i=0; i<5; i++) {f >> cardata.engineparams[i];}
+    for (i=0; i<5; i++) {f >> cardata.engine.params[i];}
     f >> textdata; //#rpmValue or #engineCapacity
     if (textdata == "engineCapacity")
     {
-	f >> cardata.engineCapacity;
+	f >> cardata.engine.capacity;
 	f >> textdata; // #engineCapacityUnits
 	string engineCapacityUnits;
 	f >> engineCapacityUnits;
 	for (int i = 0; i < 3; i++)
 	{
-            if (engineCapacityUnits == cardata.engine_capacity_units[i])
+            if (engineCapacityUnits == cardata.engine.capacity_units[i])
 	    {
-		cardata.curr_engine_capacity_units = i;
-		list_engine_capacity_units->set_int_val(cardata.curr_engine_capacity_units);
+		cardata.engine.curr_capacity_units = i;
+		list_engine_capacity_units->set_int_val(cardata.engine.curr_capacity_units);
 		break;
 	    }
 	}
 	f >> textdata; // #engineCylinders
-	f >> cardata.engineCylinders;
+	f >> cardata.engine.cylinders;
 	f >> textdata; // #engineShape
 	string engineShape;
 	f >> engineShape;
 	for (int i = 0; i < 4; i++)
 	{
-            if (engineShape == cardata.engine_shape[i])
+            if (engineShape == cardata.engine.shape[i])
 	    {
-		cardata.curr_engine_shape = i;
-		list_engine_shape->set_int_val(cardata.curr_engine_shape);
+		cardata.engine.curr_shape = i;
+		list_engine_shape->set_int_val(cardata.engine.curr_shape);
 		break;
 	    }
 	}
@@ -128,10 +126,10 @@ void opencardata( int j )
 	f >> enginePosition;
 	for (int i = 0; i < 5; i++)
 	{
-            if (enginePosition == cardata.engine_position[i])
+            if (enginePosition == cardata.engine.position[i])
 	    {
-		cardata.curr_engine_position = i;
-		list_engine_position->set_int_val(cardata.curr_engine_position);
+		cardata.engine.curr_position = i;
+		list_engine_position->set_int_val(cardata.engine.curr_position);
 		break;
 	    }
 	}
@@ -139,19 +137,19 @@ void opencardata( int j )
     }
     if (textdata == "brakeLinearCoefficient")
     {
-        f >> cardata.brakeLinearCoefficient;
+        f >> cardata.engine.brakeLinearCoefficient;
         f >> textdata; //#"brakeCoefficient"
-        f >> cardata.brakeCoefficient;
+        f >> cardata.engine.brakeCoefficient;
         f >> textdata; //#rpmValue
     }
-    for (i=0; i<21; i++) {f >> cardata.rpmValue[i];}
+    for (i=0; i<21; i++) {f >> cardata.engine.rpmValue[i];}
     f >> textdata; //#tqValue
-    for (i=0; i<21; i++) {f >> cardata.tqValue[i];}
+    for (i=0; i<21; i++) {f >> cardata.engine.tqValue[i];}
     CalcCV(); // after reading the tq we calculate the cv to update the values of cv
     f >> textdata; //#turboS
-    f >> cardata.turboS;
+    f >> cardata.engine.turboS;
     f >> textdata; //#turbo
-    for (i=0; i<3; i++) {f >> cardata.turbo[i];}
+    for (i=0; i<3; i++) {f >> cardata.engine.turbo[i];}
     f >> textdata; //#numberOfGears
     f >> cardata.numberOfGears;
     numberOfGearsDisable( );

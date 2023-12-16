@@ -68,7 +68,7 @@ float calcSpeed ( void )
    }
    if ( finalRatio <= 0.0 ) finalRatio = 1.0;
    
-   float maxSpeed = cardata.engineparams[2]*60*wRadius*2.0*3.1416*0.001/(finalRatio);
+   float maxSpeed = cardata.engine.params[2]*60*wRadius*2.0*3.1416*0.001/(finalRatio);
     
     float param = 0;
     param = maxSpeed/4; 

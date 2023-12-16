@@ -920,34 +920,34 @@ void importxml( int param )
     {
     getXmlParamName(cardata.fullCarName);
 
-    getXmlValf (cardata.engineparams[0],"inertia","Engine");
-    getXmlValf (cardata.engineparams[1],"revs maxi","Engine");
-    getXmlValf (cardata.engineparams[2],"revs limiter","Engine");
-    getXmlValf (cardata.engineparams[3],"tickover","Engine");
-    getXmlValf (cardata.engineparams[4],"fuel cons factor","Engine");
+    getXmlValf (cardata.engine.params[0],"inertia","Engine");
+    getXmlValf (cardata.engine.params[1],"revs maxi","Engine");
+    getXmlValf (cardata.engine.params[2],"revs limiter","Engine");
+    getXmlValf (cardata.engine.params[3],"tickover","Engine");
+    getXmlValf (cardata.engine.params[4],"fuel cons factor","Engine");
 
-    getXmlValf (cardata.engineCapacity, "capacity","Engine");
+    getXmlValf (cardata.engine.capacity, "capacity","Engine");
     string engineCapacityUnits;
     getXmlUnits (engineCapacityUnits, "capacity","Engine");
     for (int i = 0; i < 3; i++)
     {
-        if (engineCapacityUnits == cardata.engine_capacity_units[i])
+        if (engineCapacityUnits == cardata.engine.capacity_units[i])
         {
-            cardata.curr_engine_capacity_units = i;
-            list_engine_capacity_units->set_int_val(cardata.curr_engine_capacity_units);
+            cardata.engine.curr_capacity_units = i;
+            list_engine_capacity_units->set_int_val(cardata.engine.curr_capacity_units);
 	    break;
         }
     }
 
-    getXmlVali (cardata.engineCylinders, "cylinders","Engine");
+    getXmlVali (cardata.engine.cylinders, "cylinders","Engine");
     string engineShape;
     getXmlVal (engineShape, "shape","Engine");
     for (int i = 0; i < 4; i++)
     {
-        if (engineShape == cardata.engine_shape[i])
+        if (engineShape == cardata.engine.shape[i])
         {
-            cardata.curr_engine_shape = i;
-            list_engine_shape->set_int_val(cardata.curr_engine_shape);
+            cardata.engine.curr_shape = i;
+            list_engine_shape->set_int_val(cardata.engine.curr_shape);
 	    break;
         }
     }
@@ -956,77 +956,77 @@ void importxml( int param )
     getXmlVal (enginePosition, "position","Engine");
     for (int i = 0; i < 5; i++)
     {
-        if (enginePosition == cardata.engine_position[i])
+        if (enginePosition == cardata.engine.position[i])
         {
-            cardata.curr_engine_position = i;
-            list_engine_position->set_int_val(cardata.curr_engine_position);
+            cardata.engine.curr_position = i;
+            list_engine_position->set_int_val(cardata.engine.curr_position);
 	    break;
         }
     }
 
-    getXmlValf (cardata.brakeLinearCoefficient,"brake linear coefficient","Engine");
-    getXmlValf (cardata.brakeCoefficient,"brake coefficient","Engine");
+    getXmlValf (cardata.engine.brakeLinearCoefficient,"brake linear coefficient","Engine");
+    getXmlValf (cardata.engine.brakeCoefficient,"brake coefficient","Engine");
 
-    getXmlValf (cardata.rpmValue[0],"rpm","Engine","data points","1");
-    getXmlValf (cardata.rpmValue[1],"rpm","Engine","data points","2");
-    getXmlValf (cardata.rpmValue[2],"rpm","Engine","data points","3");
-    getXmlValf (cardata.rpmValue[3],"rpm","Engine","data points","4");
-    getXmlValf (cardata.rpmValue[4],"rpm","Engine","data points","5");
-    getXmlValf (cardata.rpmValue[5],"rpm","Engine","data points","6");
-    getXmlValf (cardata.rpmValue[6],"rpm","Engine","data points","7");
-    getXmlValf (cardata.rpmValue[7],"rpm","Engine","data points","8");
-    getXmlValf (cardata.rpmValue[8],"rpm","Engine","data points","9");
-    getXmlValf (cardata.rpmValue[9],"rpm","Engine","data points","10");
-    getXmlValf (cardata.rpmValue[10],"rpm","Engine","data points","11");
-    getXmlValf (cardata.rpmValue[11],"rpm","Engine","data points","12");
-    getXmlValf (cardata.rpmValue[12],"rpm","Engine","data points","13");
-    getXmlValf (cardata.rpmValue[13],"rpm","Engine","data points","14");
-    getXmlValf (cardata.rpmValue[14],"rpm","Engine","data points","15");
-    getXmlValf (cardata.rpmValue[15],"rpm","Engine","data points","16");
-    getXmlValf (cardata.rpmValue[16],"rpm","Engine","data points","17");
-    getXmlValf (cardata.rpmValue[17],"rpm","Engine","data points","18");
-    getXmlValf (cardata.rpmValue[18],"rpm","Engine","data points","19");
-    getXmlValf (cardata.rpmValue[19],"rpm","Engine","data points","20");
-    getXmlValf (cardata.rpmValue[20],"rpm","Engine","data points","21");
+    getXmlValf (cardata.engine.rpmValue[0],"rpm","Engine","data points","1");
+    getXmlValf (cardata.engine.rpmValue[1],"rpm","Engine","data points","2");
+    getXmlValf (cardata.engine.rpmValue[2],"rpm","Engine","data points","3");
+    getXmlValf (cardata.engine.rpmValue[3],"rpm","Engine","data points","4");
+    getXmlValf (cardata.engine.rpmValue[4],"rpm","Engine","data points","5");
+    getXmlValf (cardata.engine.rpmValue[5],"rpm","Engine","data points","6");
+    getXmlValf (cardata.engine.rpmValue[6],"rpm","Engine","data points","7");
+    getXmlValf (cardata.engine.rpmValue[7],"rpm","Engine","data points","8");
+    getXmlValf (cardata.engine.rpmValue[8],"rpm","Engine","data points","9");
+    getXmlValf (cardata.engine.rpmValue[9],"rpm","Engine","data points","10");
+    getXmlValf (cardata.engine.rpmValue[10],"rpm","Engine","data points","11");
+    getXmlValf (cardata.engine.rpmValue[11],"rpm","Engine","data points","12");
+    getXmlValf (cardata.engine.rpmValue[12],"rpm","Engine","data points","13");
+    getXmlValf (cardata.engine.rpmValue[13],"rpm","Engine","data points","14");
+    getXmlValf (cardata.engine.rpmValue[14],"rpm","Engine","data points","15");
+    getXmlValf (cardata.engine.rpmValue[15],"rpm","Engine","data points","16");
+    getXmlValf (cardata.engine.rpmValue[16],"rpm","Engine","data points","17");
+    getXmlValf (cardata.engine.rpmValue[17],"rpm","Engine","data points","18");
+    getXmlValf (cardata.engine.rpmValue[18],"rpm","Engine","data points","19");
+    getXmlValf (cardata.engine.rpmValue[19],"rpm","Engine","data points","20");
+    getXmlValf (cardata.engine.rpmValue[20],"rpm","Engine","data points","21");
 
-    getXmlValf (cardata.tqValue[0],"Tq","Engine","data points","1");
-    getXmlValf (cardata.tqValue[1],"Tq","Engine","data points","2");
-    getXmlValf (cardata.tqValue[2],"Tq","Engine","data points","3");
-    getXmlValf (cardata.tqValue[3],"Tq","Engine","data points","4");
-    getXmlValf (cardata.tqValue[4],"Tq","Engine","data points","5");
-    getXmlValf (cardata.tqValue[5],"Tq","Engine","data points","6");
-    getXmlValf (cardata.tqValue[6],"Tq","Engine","data points","7");
-    getXmlValf (cardata.tqValue[7],"Tq","Engine","data points","8");
-    getXmlValf (cardata.tqValue[8],"Tq","Engine","data points","9");
-    getXmlValf (cardata.tqValue[9],"Tq","Engine","data points","10");
-    getXmlValf (cardata.tqValue[10],"Tq","Engine","data points","11");
-    getXmlValf (cardata.tqValue[11],"Tq","Engine","data points","12");
-    getXmlValf (cardata.tqValue[12],"Tq","Engine","data points","13");
-    getXmlValf (cardata.tqValue[13],"Tq","Engine","data points","14");
-    getXmlValf (cardata.tqValue[14],"Tq","Engine","data points","15");
-    getXmlValf (cardata.tqValue[15],"Tq","Engine","data points","16");
-    getXmlValf (cardata.tqValue[16],"Tq","Engine","data points","17");
-    getXmlValf (cardata.tqValue[17],"Tq","Engine","data points","18");
-    getXmlValf (cardata.tqValue[18],"Tq","Engine","data points","19");
-    getXmlValf (cardata.tqValue[19],"Tq","Engine","data points","20");
-    getXmlValf (cardata.tqValue[20],"Tq","Engine","data points","21");
+    getXmlValf (cardata.engine.tqValue[0],"Tq","Engine","data points","1");
+    getXmlValf (cardata.engine.tqValue[1],"Tq","Engine","data points","2");
+    getXmlValf (cardata.engine.tqValue[2],"Tq","Engine","data points","3");
+    getXmlValf (cardata.engine.tqValue[3],"Tq","Engine","data points","4");
+    getXmlValf (cardata.engine.tqValue[4],"Tq","Engine","data points","5");
+    getXmlValf (cardata.engine.tqValue[5],"Tq","Engine","data points","6");
+    getXmlValf (cardata.engine.tqValue[6],"Tq","Engine","data points","7");
+    getXmlValf (cardata.engine.tqValue[7],"Tq","Engine","data points","8");
+    getXmlValf (cardata.engine.tqValue[8],"Tq","Engine","data points","9");
+    getXmlValf (cardata.engine.tqValue[9],"Tq","Engine","data points","10");
+    getXmlValf (cardata.engine.tqValue[10],"Tq","Engine","data points","11");
+    getXmlValf (cardata.engine.tqValue[11],"Tq","Engine","data points","12");
+    getXmlValf (cardata.engine.tqValue[12],"Tq","Engine","data points","13");
+    getXmlValf (cardata.engine.tqValue[13],"Tq","Engine","data points","14");
+    getXmlValf (cardata.engine.tqValue[14],"Tq","Engine","data points","15");
+    getXmlValf (cardata.engine.tqValue[15],"Tq","Engine","data points","16");
+    getXmlValf (cardata.engine.tqValue[16],"Tq","Engine","data points","17");
+    getXmlValf (cardata.engine.tqValue[17],"Tq","Engine","data points","18");
+    getXmlValf (cardata.engine.tqValue[18],"Tq","Engine","data points","19");
+    getXmlValf (cardata.engine.tqValue[19],"Tq","Engine","data points","20");
+    getXmlValf (cardata.engine.tqValue[20],"Tq","Engine","data points","21");
     CalcCV(); // after reading the tq we calculate the cv to update the values of cv
 
     std::string bufferValStr = "";
     getXmlVal (bufferValStr,"turbo","Engine","data points");
     if (bufferValStr == "true")
     {
-        cardata.turboS = 1;
+        cardata.engine.turboS = 1;
         GLUI_Master.sync_live_all();
     }
     else
     {
-        cardata.turboS = 0;
+        cardata.engine.turboS = 0;
         GLUI_Master.sync_live_all();
     }
-    getXmlValf (cardata.turbo[0],"turbo rpm","Engine","data points");
-    getXmlValf (cardata.turbo[1],"turbo factor","Engine","data points");
-    getXmlValf (cardata.turbo[2],"turbo lag","Engine","data points");
+    getXmlValf (cardata.engine.turbo[0],"turbo rpm","Engine","data points");
+    getXmlValf (cardata.engine.turbo[1],"turbo factor","Engine","data points");
+    getXmlValf (cardata.engine.turbo[2],"turbo lag","Engine","data points");
 
     getXmlValf (cardata.gearbox_shift_time,"shift time","Gearbox");
     getXmlValf (cardata.gearboxratio[0],"ratio","Gearbox","gears","r");

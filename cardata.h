@@ -24,22 +24,25 @@ struct CarData
     std::string fullCarName = "Formula TORCS";
 
     /* ENGINE */
-    float  engineparams[5]={0.02,20000,19000,5000,1.2};
-    float  tqValue[21] = {0,150,200,220,250,300,320,340,370,360,400,410,405,402,403,404,390,380,370,360,320};
-    float  rpmValue[21] = {0,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000,19000,20000};
-    float  cvValue[21] = { 0 };
-    int turboS = 0;
-    float turbo[3] = {3000.0, 1.0, 0.75};
-    float engineCapacity = 0;
-    const char *engine_capacity_units[3] = { "l", "cc", "ci" };
-    int curr_engine_capacity_units = 0;
-    int engineCylinders = 0;
-    const char *engine_shape[4] = { "v", "l", "h", "w" };
-    int curr_engine_shape = 0;
-    const char *engine_position[5] = { "front", "front-mid", "mid", "rear-mid", "rear" };
-    int curr_engine_position = 0;
-    float brakeLinearCoefficient = 0;
-    float brakeCoefficient = 0;
+    struct Engine
+    {
+        float params[5]={0.02,20000,19000,5000,1.2};
+        float tqValue[21] = {0,150,200,220,250,300,320,340,370,360,400,410,405,402,403,404,390,380,370,360,320};
+        float rpmValue[21] = {0,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000,19000,20000};
+        float cvValue[21] = { 0 };
+        int turboS = 0;
+        float turbo[3] = {3000.0, 1.0, 0.75};
+        float capacity = 0;
+        const char *capacity_units[3] = { "l", "cc", "ci" };
+        int curr_capacity_units = 0;
+        int cylinders = 0;
+        const char *shape[4] = { "v", "l", "h", "w" };
+        int curr_shape = 0;
+        const char *position[5] = { "front", "front-mid", "mid", "rear-mid", "rear" };
+        int curr_position = 0;
+        float brakeLinearCoefficient = 0;
+        float brakeCoefficient = 0;
+    } engine;
 
     /* GEARBOX */
     int numberOfGears = 7;

@@ -523,8 +523,8 @@ void lineGraph (void)
 
     float tqMaxGraphic = 100.0;
 
-    if (tqmax < cardata.tqValue[0]){
-        tqMaxGraphic = 2*cardata.tqValue[0];
+    if (tqmax < cardata.engine.tqValue[0]){
+        tqMaxGraphic = 2*cardata.engine.tqValue[0];
     }
     else{
         tqMaxGraphic = 2*tqmax;
@@ -539,11 +539,11 @@ void lineGraph (void)
     else{
        float rpmatcvmax;
        int points = calcEnginePointsLesRL ();
-       cvMaxGraph = CalcMaxEngine(cardata.cvValue,cardata.rpmValue,1,points,rpmatcvmax,1);
+       cvMaxGraph = CalcMaxEngine(cardata.engine.cvValue,cardata.engine.rpmValue,1,points,rpmatcvmax,1);
        int i;
        for (i=0;i<21;i++)
        {
-           if (cardata.rpmValue[i]>cardata.engineparams[1]){
+           if (cardata.engine.rpmValue[i]>cardata.engine.params[1]){
                kMax = i;
                break;
            }
@@ -563,16 +563,16 @@ void lineGraph (void)
     glBegin (GL_LINE_STRIP); // tq
     glColor3f (0.0, 0.0, 1.0);
         for (k = 0; k < kMax; k++)
-            //glVertex2f(x0 + k*4.5, y0 + cardata.tqValue [k]*(99-y0)/(1.5*cvmax));
-            glVertex2f(x0 + cardata.rpmValue[k]/cardata.rpmValue[kMax-1]*(100-2*x0), y0 + cardata.tqValue [k]*(97-y0)/tqMaxGraphic);
+            //glVertex2f(x0 + k*4.5, y0 + cardata.engine.tqValue [k]*(99-y0)/(1.5*cvmax));
+            glVertex2f(x0 + cardata.engine.rpmValue[k]/cardata.engine.rpmValue[kMax-1]*(100-2*x0), y0 + cardata.engine.tqValue [k]*(97-y0)/tqMaxGraphic);
     glEnd();
     glDisable (GL_LINE_STIPPLE);
 
     glBegin (GL_LINE_STRIP); // hp
     glColor3f (1.0, 0.0, 0.0);
         for (k = 0; k < kMax; k++)
-            //glVertex2f(x0 + k*4.5, y0 + cardata.cvValue[k]*(99-y0)/cvmax);
-            glVertex2f(x0 + cardata.rpmValue[k]/cardata.rpmValue[kMax-1]*(100-2*x0), y0 + cardata.cvValue[k]*(97-y0)/cvMaxGraph);
+            //glVertex2f(x0 + k*4.5, y0 + cardata.engine.cvValue[k]*(99-y0)/cvmax);
+            glVertex2f(x0 + cardata.engine.rpmValue[k]/cardata.engine.rpmValue[kMax-1]*(100-2*x0), y0 + cardata.engine.cvValue[k]*(97-y0)/cvMaxGraph);
     glEnd();
 
     /* revs limiter */
@@ -580,8 +580,8 @@ void lineGraph (void)
     glLineStipple (3, 0xAAAA);
     glBegin (GL_LINES);
             glColor3f (0.2, 0.4, 0.2);
-            glVertex2f(x0 + cardata.engineparams[2]/cardata.rpmValue[kMax-1]*(100-2*x0),y0);
-            glVertex2f(x0 + cardata.engineparams[2]/cardata.rpmValue[kMax-1]*(100-2*x0),(100-3));
+            glVertex2f(x0 + cardata.engine.params[2]/cardata.engine.rpmValue[kMax-1]*(100-2*x0),y0);
+            glVertex2f(x0 + cardata.engine.params[2]/cardata.engine.rpmValue[kMax-1]*(100-2*x0),(100-3));
     glEnd();
     glDisable (GL_LINE_STIPPLE);
 
@@ -636,7 +636,7 @@ text2 = cadena2;
 /* rpm min (x axle) */
   std::string minRPM = "0";
   char bufferSTR[20];
-  sprintf(bufferSTR, "%6.0f", cardata.rpmValue[0]);
+  sprintf(bufferSTR, "%6.0f", cardata.engine.rpmValue[0]);
   minRPM = bufferSTR;
 
  drawText ( minRPM, 10, 0.0, 0.4, 0.0, 3, y0-2);
@@ -645,10 +645,10 @@ text2 = cadena2;
   std::string maxRPM = "20000";
   bufferSTR[0] = '\0';
   if (fullRpmScale){
-    sprintf(bufferSTR, "%6.0f", cardata.rpmValue[20]);
+    sprintf(bufferSTR, "%6.0f", cardata.engine.rpmValue[20]);
   }
   else {
-    sprintf(bufferSTR, "%6.0f", cardata.engineparams[1]);
+    sprintf(bufferSTR, "%6.0f", cardata.engine.params[1]);
   }
 
   maxRPM = bufferSTR;
@@ -675,8 +675,8 @@ glDisable( GL_LIGHTING );
     {
     glBegin (GL_LINES);
             glColor3f (0.8, 0.8, 0.7);
-            glVertex2f(x0 + i*1000/cardata.rpmValue[kMax-1]*(100-2*x0),y0);
-            glVertex2f(x0 + i*1000/cardata.rpmValue[kMax-1]*(100-2*x0),(100-3));
+            glVertex2f(x0 + i*1000/cardata.engine.rpmValue[kMax-1]*(100-2*x0),y0);
+            glVertex2f(x0 + i*1000/cardata.engine.rpmValue[kMax-1]*(100-2*x0),(100-3));
     glEnd();
     }
 glEnable( GL_LIGHTING );
@@ -962,7 +962,7 @@ char cadena5[150];
            finalRatio = cardata.centraldifferential[1]*cardata.gearboxratio[k];
            }
            if ( finalRatio <= 0.0 ) finalRatio = 1.0;
-           sprintf(cadena4, "%2.1f", cardata.engineparams[2]*60*wRadius*2.0*3.1416*0.001/(finalRatio));
+           sprintf(cadena4, "%2.1f", cardata.engine.params[2]*60*wRadius*2.0*3.1416*0.001/(finalRatio));
            text4 = cadena4;
             glRasterPos2f (x0 + 5 + 20, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
@@ -970,7 +970,7 @@ char cadena5[150];
         }
   for (k = 2; k < (cardata.numberOfGears+1); k++)
         {
-           sprintf(cadena4, "%2.1f", cardata.engineparams[2]*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]);
+           sprintf(cadena4, "%2.1f", cardata.engine.params[2]*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]);
            text4 = cadena4;
             glRasterPos2f (x0 + 5 + 32.5, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
@@ -978,7 +978,7 @@ char cadena5[150];
         }
   for (k = 2; k < (cardata.numberOfGears+1); k++)
         {
-           sprintf(cadena4, "%2.1f", interpolationTQCV(cardata.rpmValue, cardata.tqValue, cardata.engineparams[2]*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]));
+           sprintf(cadena4, "%2.1f", interpolationTQCV(cardata.engine.rpmValue, cardata.engine.tqValue, cardata.engine.params[2]*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]));
            text4 = cadena4;
             glRasterPos2f (x0 + 5 + 49, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
@@ -986,7 +986,7 @@ char cadena5[150];
         }
   for (k = 2; k < (cardata.numberOfGears+1); k++)
         {
-           sprintf(cadena4, "%2.1f", interpolationTQCV(cardata.rpmValue, cardata.cvValue, cardata.engineparams[2]*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]));
+           sprintf(cadena4, "%2.1f", interpolationTQCV(cardata.engine.rpmValue, cardata.engine.cvValue, cardata.engine.params[2]*cardata.gearboxratio[k]/cardata.gearboxratio[k-1]));
            text4 = cadena4;
             glRasterPos2f (x0 + 5 + 62, y0 -4 -1.6*k);
             for (unsigned int i=0; i<text4.length(); ++i)
@@ -1290,17 +1290,17 @@ loadAutorInfo();
   new GLUI_Column( glui , false);
    /* Engine parameters */
    GLUI_Panel *engineparams_panel = new GLUI_Panel( glui, "Engine configuartion" );
-   (new GLUI_Spinner( engineparams_panel, "inertia(kg.m2):", &cardata.engineparams[0] ))
+   (new GLUI_Spinner( engineparams_panel, "inertia(kg.m2):", &cardata.engine.params[0] ))
     ->set_float_limits( 0.0, 0.5 );
-   (new GLUI_Spinner( engineparams_panel, "revs maxi:", &cardata.engineparams[1],0,(GLUI_Update_CB)setRevsLimiterLimits ))
+   (new GLUI_Spinner( engineparams_panel, "revs maxi:", &cardata.engine.params[1],0,(GLUI_Update_CB)setRevsLimiterLimits ))
     ->set_float_limits( 5000, 20000 );
 
-   revsLimiterSpinner = new GLUI_Spinner( engineparams_panel, "revs limiter:", &cardata.engineparams[2], 0, (GLUI_Update_CB)CalcCVTQmax );
-    revsLimiterSpinner -> set_float_limits( cardata.engineparams[3], cardata.engineparams[1] );
+   revsLimiterSpinner = new GLUI_Spinner( engineparams_panel, "revs limiter:", &cardata.engine.params[2], 0, (GLUI_Update_CB)CalcCVTQmax );
+    revsLimiterSpinner -> set_float_limits( cardata.engine.params[3], cardata.engine.params[1] );
 
-   (new GLUI_Spinner( engineparams_panel, "tickover:", &cardata.engineparams[3],0,(GLUI_Update_CB)setRevsLimiterLimits ))
+   (new GLUI_Spinner( engineparams_panel, "tickover:", &cardata.engine.params[3],0,(GLUI_Update_CB)setRevsLimiterLimits ))
     ->set_float_limits( 500, 20000 );
-   (new GLUI_Spinner( engineparams_panel, "fuel cons factor:", &cardata.engineparams[4] ))
+   (new GLUI_Spinner( engineparams_panel, "fuel cons factor:", &cardata.engine.params[4] ))
     ->set_float_limits( 1.1, 1.3 );
 
    new GLUI_Button( engineparams_panel, "Engine Advanced", 11, (GLUI_Update_CB)showglui );
@@ -1446,9 +1446,9 @@ loadAutorInfo();
   /* Roll out */
   /*GLUI_Panel *obj_panel2 = new GLUI_Rollout(glui, "Properties", false );
 
-   (new GLUI_Spinner( obj_panel2, "Tq 0.00rpm:", &cardata.tqValue[0] ))
+   (new GLUI_Spinner( obj_panel2, "Tq 0.00rpm:", &cardata.engine.tqValue[0] ))
     ->set_int_limits( 0, 1000 );
-    (new GLUI_Spinner( obj_panel2, "Tq 0.00rpm:", &cardata.tqValue[0] ))
+    (new GLUI_Spinner( obj_panel2, "Tq 0.00rpm:", &cardata.engine.tqValue[0] ))
     ->set_int_limits( 0, 1000 );
 */
   /* buttons */
@@ -2204,173 +2204,173 @@ new GLUI_Column( glui10, false );
   glui11->hide();
 
   GLUI_Panel *engine_panel1 = new GLUI_Panel( glui11, "RPM" );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[0], 0,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[0], 0,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[1], 1,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[1], 1,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[2], 2,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[2], 2,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[3], 3,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[3], 3,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[4], 4,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[4], 4,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[5], 5,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[5], 5,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[6], 6,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[6], 6,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[7], 7,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[7], 7,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[8], 8,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[8], 8,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[9], 9,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[9], 9,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[10], 10,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[10], 10,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[11], 11,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[11], 11,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[12], 12,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[12], 12,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[13], 13,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[13], 13,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[14], 14,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[14], 14,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[15], 15,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[15], 15,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[16], 16,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[16], 16,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[17], 17,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[17], 17,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[18], 18,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[18], 18,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[19], 19,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[19], 19,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
-   (new GLUI_Spinner( engine_panel1, "", &cardata.rpmValue[20], 20,(GLUI_Update_CB)CalcRPM  ))
+   (new GLUI_Spinner( engine_panel1, "", &cardata.engine.rpmValue[20], 20,(GLUI_Update_CB)CalcRPM  ))
     ->set_int_limits( 0, 30000 );
 
      new GLUI_Column( glui11, false );
 
   GLUI_Panel *engine_panel = new GLUI_Panel( glui11, "Torque(N.m)" );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[0], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[0], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[1], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[1], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[2], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[2], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[3], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[3], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[4], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[4], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[5], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[5], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[6], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[6], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[7], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[7], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[8], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[8], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[9], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[9], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[10], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[10], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[11], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[11], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[12], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[12], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[13], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[13], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[14], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[14], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[15], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[15], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[16], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[16], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[17], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[17], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[18], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[18], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[19], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[19], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
-   (new GLUI_Spinner( engine_panel, "", &cardata.tqValue[20], 1,(GLUI_Update_CB)CalcCV  ))
+   (new GLUI_Spinner( engine_panel, "", &cardata.engine.tqValue[20], 1,(GLUI_Update_CB)CalcCV  ))
     ->set_int_limits( 0, 1000 );
 
 
    new GLUI_Column( glui11, false );
 
   GLUI_Panel *engine_panel3 = new GLUI_Panel( glui11, "Power (CV)" );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[0], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[0], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[1], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[1], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[2], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[2], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[3], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[3], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[4], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[4], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[5], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[5], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[6], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[6], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[7], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[7], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[8], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[8], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[9], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[9], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[10], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[10], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[11], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[11], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[12], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[12], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[13], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[13], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[14], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[14], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[15], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[15], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[16], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[16], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[17], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[17], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[18], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[18], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[19], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[19], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
-   (new GLUI_Spinner( engine_panel3, "", &cardata.cvValue[20], 1,(GLUI_Update_CB)CalcTQ ))
+   (new GLUI_Spinner( engine_panel3, "", &cardata.engine.cvValue[20], 1,(GLUI_Update_CB)CalcTQ ))
     ->set_int_limits( 0, 3000 );
 
    new GLUI_Column( glui11, false );
 
 
   GLUI_Panel *engine_type_panel = new GLUI_Panel( glui11, "Type" );
-   (new GLUI_Spinner( engine_type_panel, "Capacity", &cardata.engineCapacity))
+   (new GLUI_Spinner( engine_type_panel, "Capacity", &cardata.engine.capacity))
     ->set_float_limits( 0, 20000 );
-   list_engine_capacity_units = new GLUI_Listbox( engine_type_panel, "Units:", &cardata.curr_engine_capacity_units );
+   list_engine_capacity_units = new GLUI_Listbox( engine_type_panel, "Units:", &cardata.engine.curr_capacity_units );
    for( i=0; i<3; i++ )
-    list_engine_capacity_units->add_item( i, cardata.engine_capacity_units[i] );
-   (new GLUI_Spinner( engine_type_panel, "Cylinders", &cardata.engineCylinders))
+    list_engine_capacity_units->add_item( i, cardata.engine.capacity_units[i] );
+   (new GLUI_Spinner( engine_type_panel, "Cylinders", &cardata.engine.cylinders))
     ->set_int_limits( 0, 16 );
-   list_engine_shape = new GLUI_Listbox( engine_type_panel, "Shape:", &cardata.curr_engine_shape );
+   list_engine_shape = new GLUI_Listbox( engine_type_panel, "Shape:", &cardata.engine.curr_shape );
    for( i=0; i<4; i++ )
-    list_engine_shape->add_item( i, cardata.engine_shape[i] );
-   list_engine_position = new GLUI_Listbox( engine_type_panel, "Position:", &cardata.curr_engine_position );
+    list_engine_shape->add_item( i, cardata.engine.shape[i] );
+   list_engine_position = new GLUI_Listbox( engine_type_panel, "Position:", &cardata.engine.curr_position );
    for( i=0; i<5; i++ )
-    list_engine_position->add_item( i, cardata.engine_position[i] );
+    list_engine_position->add_item( i, cardata.engine.position[i] );
 
   GLUI_Panel *engine_brake_panel = new GLUI_Panel( glui11, "Brake" );
-   (new GLUI_Spinner( engine_brake_panel, "Linear Coefficient", &cardata.brakeLinearCoefficient))
+   (new GLUI_Spinner( engine_brake_panel, "Linear Coefficient", &cardata.engine.brakeLinearCoefficient))
     ->set_float_limits( 0, 1 );
-   (new GLUI_Spinner( engine_brake_panel, "Coefficient", &cardata.brakeCoefficient))
+   (new GLUI_Spinner( engine_brake_panel, "Coefficient", &cardata.engine.brakeCoefficient))
     ->set_float_limits( 0, 1 );
 
   GLUI_Panel *engine_turbo_panel = new GLUI_Panel( glui11, "Turbo" );
-    new GLUI_Checkbox(engine_turbo_panel, "Activate", &cardata.turboS);
-   (new GLUI_Spinner( engine_turbo_panel, "rpm", &cardata.turbo[0]))
+    new GLUI_Checkbox(engine_turbo_panel, "Activate", &cardata.engine.turboS);
+   (new GLUI_Spinner( engine_turbo_panel, "rpm", &cardata.engine.turbo[0]))
     ->set_float_limits( 0, 20000 );
-   (new GLUI_Spinner( engine_turbo_panel, "factor", &cardata.turbo[1]))
+   (new GLUI_Spinner( engine_turbo_panel, "factor", &cardata.engine.turbo[1]))
     ->set_float_limits( 0, 10 );
-   (new GLUI_Spinner( engine_turbo_panel, "lag", &cardata.turbo[2]))
+   (new GLUI_Spinner( engine_turbo_panel, "lag", &cardata.engine.turbo[2]))
     ->set_float_limits( 0, 10 );
 
   new GLUI_Checkbox(glui11, "Full RPM Scale", &fullRpmScale);

@@ -2340,12 +2340,12 @@ new GLUI_Column( glui10, false );
 
 
   GLUI_Panel *engine_type_panel = new GLUI_Panel( glui11, "Type" );
-   (new GLUI_Spinner( engine_type_panel, "capacity", &engineCapacity))
+   (new GLUI_Spinner( engine_type_panel, "Capacity", &engineCapacity))
     ->set_float_limits( 0, 20000 );
    list_engine_capacity_units = new GLUI_Listbox( engine_type_panel, "Units:", &curr_engine_capacity_units );
    for( i=0; i<3; i++ )
     list_engine_capacity_units->add_item( i, engine_capacity_units[i] );
-   (new GLUI_Spinner( engine_type_panel, "cylinders", &engineCylinders))
+   (new GLUI_Spinner( engine_type_panel, "Cylinders", &engineCylinders))
     ->set_int_limits( 0, 16 );
    list_engine_shape = new GLUI_Listbox( engine_type_panel, "Shape:", &curr_engine_shape );
    for( i=0; i<4; i++ )
@@ -2354,6 +2354,11 @@ new GLUI_Column( glui10, false );
    for( i=0; i<5; i++ )
     list_engine_position->add_item( i, engine_position[i] );
 
+  GLUI_Panel *engine_brake_panel = new GLUI_Panel( glui11, "Brake" );
+   (new GLUI_Spinner( engine_brake_panel, "Linear Coefficient", &brakeLinearCoefficient))
+    ->set_float_limits( 0, 1 );
+   (new GLUI_Spinner( engine_brake_panel, "Coefficient", &brakeCoefficient))
+    ->set_float_limits( 0, 1 );
 
   GLUI_Panel *engine_turbo_panel = new GLUI_Panel( glui11, "Turbo" );
     new GLUI_Checkbox(engine_turbo_panel, "Activate", &turboS);

@@ -961,6 +961,9 @@ void importxml( int param )
         }
     }
 
+    getXmlValf (brakeLinearCoefficient,"brake linear coefficient","Engine");
+    getXmlValf (brakeCoefficient,"brake coefficient","Engine");
+
     getXmlValf (rpmValue[0],"rpm","Engine","data points","1");
     getXmlValf (rpmValue[1],"rpm","Engine","data points","2");
     getXmlValf (rpmValue[2],"rpm","Engine","data points","3");

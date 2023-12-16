@@ -174,11 +174,13 @@ void savecardata( int i )
     printValf("#TorcsCarSetupEditorVersion",TCSE_version);
     printStr("#carname",carname);  
     printVal("#engineparams",engineparams,5);
-    printVali("engineCapacity", engineCapacity);
+    printValf("engineCapacity", engineCapacity);
     printStr("#engineCapacityUnits", engine_capacity_units[curr_engine_capacity_units]);
-    printValf("#engineCylinders", engineCylinders);
+    printVali("#engineCylinders", engineCylinders);
     printStr("#engineShape", engine_shape[curr_engine_shape]);
     printStr("#enginePosition", engine_position[curr_engine_position]);	 
+    printValf("brakeLinearCoefficient", brakeLinearCoefficient);
+    printValf("brakeCoefficient", brakeCoefficient);
     printVal("#rpmValue",rpmValue,21);
     printVal("#tqValue",tqValue,21);
     printVali("#turboS",turboS);

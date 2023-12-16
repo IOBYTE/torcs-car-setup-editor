@@ -36,6 +36,8 @@
     int curr_engine_shape = 0;
     const char *engine_position[] = { "front", "front-mid", "mid", "rear-mid", "rear" };
     int curr_engine_position = 0;
+    float brakeLinearCoefficient = 0;
+    float brakeCoefficient = 0;
     
     /* GEARBOX */
     int numberOfGears = 7;

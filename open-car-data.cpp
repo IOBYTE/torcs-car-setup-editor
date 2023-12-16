@@ -130,6 +130,14 @@ void opencardata( int j )
 		break;
 	    }
 	}
+	f >> textdata; //#rpmValue or #brakeLinearCoefficient
+    }
+    if (textdata == "brakeLinearCoefficient")
+    {
+        f >> brakeLinearCoefficient;
+        f >> textdata; //#"brakeCoefficient"
+        f >> brakeCoefficient;
+        f >> textdata; //#rpmValue
     }
     for (i=0; i<21; i++) {f >> rpmValue[i];}
     f >> textdata; //#tqValue

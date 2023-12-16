@@ -34,6 +34,8 @@ extern int curr_engine_shape;
 extern const char *engine_shape[];
 extern int curr_engine_position;
 extern const char *engine_position[];
+extern float brakeLinearCoefficient;
+extern float brakeCoefficient;
 
 /* GEARBOX */
 extern int numberOfGears;

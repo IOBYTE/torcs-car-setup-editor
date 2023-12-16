@@ -484,6 +484,8 @@ f << "	    <attnum name=\"revs maxi\" unit=\"rpm\" min=\"5000\" max=\"20000\" va
 f << "	    <attnum name=\"revs limiter\" unit=\"rpm\" min=\"3000\" max=\"20000\" val=\""<<engineparams[2]<<"\"/>	 " << endl;
 f << "	    <attnum name=\"tickover\" unit=\"rpm\" val=\""<<engineparams[3]<<"\"/>	 " << endl;
 f << "	    <attnum name=\"fuel cons factor\" min=\"1.1\" max=\"1.3\" val=\""<<engineparams[4]<<"\"/>	 " << endl;
+f << "	    <attnum name=\"brake linear coefficient\" val=\"" << brakeLinearCoefficient << "\"/>" << endl;
+f << "	    <attnum name=\"brake coefficient\" val=\"" << brakeCoefficient << "\"/>" << endl;
 
 f << "	    <section name=\"data points\">	 " << endl;
 if (turboS == 1)

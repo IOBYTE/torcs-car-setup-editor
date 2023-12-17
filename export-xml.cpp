@@ -261,6 +261,24 @@ f << "        <attnum name=\"movt\" val=\"" << cardata.steeringWheel.movt << "\"
 f << "      </section>" << endl;
 f << endl;
 f << endl;
+if (!cardata.drivers.empty())
+{
+f << "      <section name=\"Driver\">" << std::endl;
+int index = 1;
+for (const auto & driver : cardata.drivers)
+{
+f << "        <section name=\"" << index++ << "\">" << endl;
+f << "          <attnum name=\"steer\" val=\"" << driver.steer << "\"/>" << endl;
+f << "          <attstr name=\"driver\" val=\"" << driver.driver << "\"/>" << endl;
+f << "          <attnum name=\"xpos\" val=\"" << driver.xpos << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << driver.ypos << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << driver.zpos << "\"/>" << endl;
+f << "        </section>" << endl;
+}
+f << "      </section>" << endl;
+f << endl;
+f << endl;
+}
 f << "      <section name=\"Light\">" << endl;
 int numberLight = 1;
 if (cardata.head1aS == 1)

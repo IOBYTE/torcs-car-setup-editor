@@ -12,6 +12,9 @@
     GNU General Public License for more details.
 */
 
+#include <list>
+#include <string>
+
 struct CarData
 {
     /* parameters */
@@ -201,4 +204,15 @@ struct CarData
         float angle = 0;
         float movt = 0;
     } steeringWheel;
+
+    // DRIVER
+    struct Driver
+    {
+        float steer = 0;
+        std::string driver;
+        float xpos = 0;
+        float ypos = 0;
+        float zpos = 0;
+    };
+    std::list<Driver> drivers;
 };

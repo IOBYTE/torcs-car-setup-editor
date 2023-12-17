@@ -727,8 +727,97 @@ void getXmlUnits (
 
 
     GLUI_Master.sync_live_all();
+}
+
+////////////////////////////////////////////////////////////////////
+
+bool hasXmlSection (
+    const std::string &section,
+    const std::string &subSection1 = "",
+    const std::string &subSection2 = "" )
+{
+    int line = 0;
+    int depth = 0;
+
+    /* SEARCH THE SECTION */
+    while (line < xmlLine.size())
+    {
+        if (xmlLine[line].find("<section") != std::string::npos)
+        {
+            depth++;
+            if (depth == 1 && xmlLine[line].find("name=\"" + section + "\"") != std::string::npos)
+                break;
+        }
+        else if (xmlLine[line].find("</section>") != std::string::npos)
+        {
+            depth--;
+        }
+        line++;
     }
 
+    if (depth != 1 || line + 1 >= xmlLine.size())
+    {
+        return false;
+    }
+
+    /* SEARCH THE SUBSECTION1 IF DEFINED*/
+    if (!subSection1.empty())
+    {
+        line++;
+
+        while (line < xmlLine.size())
+        {
+            if (xmlLine[line].find("<section") != std::string::npos)
+            {
+                depth++;
+                if (depth == 2 && xmlLine[line].find("name=\"" + subSection1 + "\"") != std::string::npos)
+                    break;
+            }
+            else if (xmlLine[line].find("</section>") != std::string::npos)
+            {
+                depth--;
+                if (depth < 1)
+                    return false;
+            }
+            line++;
+        }
+
+        if (depth != 2 || line + 1 >= xmlLine.size())
+        {
+            return false;
+        }
+    }
+
+    /* SEARCH THE SUBSECTION2 IF DEFINED*/
+    if (!subSection2.empty())
+    {
+        line++;
+
+        while (line < xmlLine.size())
+        {
+            if (xmlLine[line].find("<section") != std::string::npos)
+            {
+                depth++;
+                if (depth == 3 && xmlLine[line].find("name=\"" + subSection2 + "\"") != std::string::npos)
+                    break;
+            }
+            else if (xmlLine[line].find("</section>") != std::string::npos)
+            {
+                depth--;
+                if (depth < 2)
+                    return false;
+            }
+            line++;
+        }
+
+        if (depth != 3 || line + 1 >= xmlLine.size())
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 ///////////////////////////////////////////////////////////////////
 
@@ -1300,6 +1389,22 @@ void importxml( int param )
 
     getXmlVali (cardata.speedometerMinMax[0],"speedometer min value","Graphic Objects");
     getXmlVali (cardata.speedometerMinMax[1],"speedometer max value","Graphic Objects");
+
+    int index = 1;
+    std::string indexStr = "1";
+    while (hasXmlSection("Graphic Objects", "Driver", indexStr))
+    {
+        CarData::Driver driver;
+
+        getXmlValf (driver.steer, "steer", "Graphic Objects", "Driver", indexStr);
+        getXmlVal (driver.driver, "driver", "Graphic Objects", "Driver", indexStr);
+        getXmlValf (driver.xpos, "xpos", "Graphic Objects", "Driver", indexStr);
+        getXmlValf (driver.ypos, "ypos", "Graphic Objects", "Driver", indexStr);
+        getXmlValf (driver.zpos, "zpos", "Graphic Objects", "Driver", indexStr);
+
+        cardata.drivers.push_back(driver);
+        indexStr = std::to_string(++index);
+    }
 
     getXmlVal (cardata.steeringWheel.model, "model", "Graphic Objects", "Steer Wheel");
     getXmlVal (cardata.steeringWheel.hiResModel, "hi res model", "Graphic Objects", "Steer Wheel");

@@ -304,6 +304,13 @@ void savecardata( int i )
     printVal("#flame1",cardata.flame1,3);
     printVal("#flame2",cardata.flame2,3);
 
+    printStr("#model", cardata.steeringWheel.model);
+    printStr("#hiResModel", cardata.steeringWheel.hiResModel);
+    printValf("#xpos", cardata.steeringWheel.xpos);
+    printValf("#ypos", cardata.steeringWheel.ypos);
+    printValf("#zpos", cardata.steeringWheel.zpos);
+    printValf("#angle", cardata.steeringWheel.angle);
+    printValf("#movt", cardata.steeringWheel.movt);
 
     text1 =  "Saved: ";
     text1 += fichero2;

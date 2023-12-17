@@ -1301,6 +1301,14 @@ void importxml( int param )
     getXmlVali (cardata.speedometerMinMax[0],"speedometer min value","Graphic Objects");
     getXmlVali (cardata.speedometerMinMax[1],"speedometer max value","Graphic Objects");
 
+    getXmlVal (cardata.steeringWheel.model, "model", "Graphic Objects", "Steer Wheel");
+    getXmlVal (cardata.steeringWheel.hiResModel, "hi res model", "Graphic Objects", "Steer Wheel");
+    getXmlValf (cardata.steeringWheel.xpos, "xpos", "Graphic Objects", "Steer Wheel");
+    getXmlValf (cardata.steeringWheel.ypos, "ypos", "Graphic Objects", "Steer Wheel");
+    getXmlValf (cardata.steeringWheel.zpos, "zpos", "Graphic Objects", "Steer Wheel");
+    getXmlValf (cardata.steeringWheel.angle, "angle", "Graphic Objects", "Steer Wheel");
+    getXmlValf (cardata.steeringWheel.movt, "movt", "Graphic Objects", "Steer Wheel");
+
     getXmlVal (cardata.carRange1,"car","Ranges", "1");
     getXmlVal (cardata.carRange2,"car","Ranges", "2");
     getXmlVal (cardata.carRange3,"car","Ranges", "3");

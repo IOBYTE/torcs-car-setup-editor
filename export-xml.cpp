@@ -157,284 +157,294 @@ void savexml( int i )
 f << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
 f <<  endl;
 f << "<!--" << endl;
-f << "	    file                 : "<<cardata.carname<<".xml"<< endl;
+f << "	    file                 : " << cardata.carname<<".xml" << endl;
 f << "	    created              : " << asctime(localtime(&tAct)); /*we don't need the endl */
-f << "	    copyright            : (C) "<< getYear() << " by " << cardata.autorName << endl;
+f << "	    copyright            : (C) " << getYear() << " by " << cardata.autorName << endl;
 f << "	    email                : " << cardata.autorEmail << endl;
-f << "	    version              : $Id: "<<cardata.carname<<".xml $" << endl;
-f << "	    created with " << text  << " version: "  << TCSE_version << " created by Vicente Marti"        << endl;
-f << "	-->	 " << endl;
-f << "		 " << endl;
+f << "	    version              : $Id: " << cardata.carname << ".xml $" << endl;
+f << "	    created with " << text  << " version: " << TCSE_version << " created by Vicente Marti" << endl;
+f << "	-->" << endl;
+f << endl;
 f << "	<!--    This program is free software; you can redistribute it and/or modify  -->" << endl;
 f << "	<!--    it under the terms of the GNU General Public License as published by  -->" << endl;
 f << "	<!--    the Free Software Foundation; either version 2 of the License, or     -->" << endl;
 f << "	<!--    (at your option) any later version.                                   -->" << endl;
 f << "		 " << endl;
-f << "	<!DOCTYPE params SYSTEM \"../../../../src/libs/tgf/params.dtd\">" << endl;
-f << "		 " << endl;
-f << "	<params name=\""<< cardata.fullCarName <<"\" type=\"template\">" << endl;
-f << "	  <section name=\"Driver\">	 " << endl;
-f << "	    <!-- Position of the driver -->	 " << endl;
-f << "	    <attnum name=\"xpos\" val=\""<< cardata.driverPosition[0] <<"\" unit=\"m\"/>" << endl;
-f << "	    <attnum name=\"ypos\" val=\""<< cardata.driverPosition[1] <<"\" unit=\"m\"/>" << endl;
-f << "	    <attnum name=\"zpos\" val=\""<< cardata.driverPosition[2] <<"\" unit=\"m\"/>" << endl;
-f << "	  </section>" << endl;
-f << "		 " << endl;
-f << "	  <section name=\"Bonnet\">	 " << endl;
-f << "	    <!-- Position of the driver -->	 " << endl;
-f << "	    <attnum name=\"xpos\" val=\""<< cardata.bonnetPosition[0] <<"\" unit=\"m\"/>" << endl;
-f << "	    <attnum name=\"ypos\" val=\""<< cardata.bonnetPosition[1] <<"\" unit=\"m\"/>" << endl;
-f << "	    <attnum name=\"zpos\" val=\""<< cardata.bonnetPosition[2] <<"\" unit=\"m\"/>" << endl;
-f << "	  </section>" << endl;
-f << "		 " << endl;
-f << "	  <section name=\"Sound\">	 " << endl;
-f << "	 <attstr name=\"engine sample\" val=\""<< cardata.enginesample <<"\"/>" << endl;
-f << "	 <attnum name=\"rpm scale\" val=\""<< cardata.rmpscale <<"\"/>" << endl;
-f << "	  </section>	 " << endl;
-f << "		 " << endl;
-f << "	  <section name=\"Graphic Objects\">" << endl;
-f << "	    <attstr name=\"env\" val=\""<< cardata.graphicenv <<"\"/>" << endl;
-f << "	    <attstr name=\"wheel texture\" val=\""<<cardata.wheelTexture<<"\"/>	 " << endl;
-f << "	    <attstr name=\"shadow texture\" val=\""<<cardata.shadowTexture<<"\"/>	 " << endl;
-f << "	    <attstr name=\"tachometer texture\" val=\""<<cardata.tachometerTexture<<"\"/>	 " << endl;
-f << "	    <attnum name=\"tachometer min value\" val=\""<<cardata.tachometerMinMax[0]<<"\" unit=\"rpm\"/>	 " << endl;
-f << "	    <attnum name=\"tachometer max value\" val=\""<<cardata.tachometerMinMax[1]<<"\" unit=\"rpm\"/>	 " << endl;
-f << "	    <attstr name=\"speedometer texture\" val=\""<<cardata.speedometerTexture<<"\"/>	 " << endl;
-f << "	    <attnum name=\"speedometer min value\" val=\""<<cardata.speedometerMinMax[0]<<"\" unit=\"km/h\"/>	 " << endl;
-f << "	    <attnum name=\"speedometer max value\" val=\""<<cardata.speedometerMinMax[1]<<"\" unit=\"km/h\"/>	 " << endl;
-f << "		 " << endl;
-f << "		 " << endl;
-f << "	    <section name=\"Ranges\">	 " << endl;
-f << "	   <section name=\"1\">	 " << endl;
-f << "	    <attnum name=\"threshold\" val=\""<<cardata.carRange1dataA<<"\"/>	 " << endl;
-f << "	    <attstr name=\"car\" val=\""<<cardata.carRange1<<"\"/>	 " << endl;
-std::string yes_no;
-yes_no =(cardata.carRange1dataB==1)?"yes":"no";
-f << "	    <attstr name=\"wheels\" val=\""<< yes_no <<"\"/>	 " << endl;
-f << "	   </section>	 " << endl;
+f << "  <!DOCTYPE params SYSTEM \"../../../../src/libs/tgf/params.dtd\">" << endl;
+f << endl;
+f << "  <params name=\"" << cardata.fullCarName << "\" type=\"template\">" << endl;
+f << "    <section name=\"Driver\">" << endl;
+f << "      <!-- Position of the driver -->" << endl;
+f << "      <attnum name=\"xpos\" unit=\"m\" val=\"" << cardata.driverPosition[0] << "\"/>" << endl;
+f << "      <attnum name=\"ypos\" unit=\"m\" val=\"" << cardata.driverPosition[1] << "\"/>" << endl;
+f << "      <attnum name=\"zpos\" unit=\"m\" val=\"" << cardata.driverPosition[2] << "\"/>" << endl;
+f << "    </section>" << endl;
+f << endl;
+f << "    <section name=\"Bonnet\">" << endl;
+f << "      <!-- Position of the driver -->" << endl;
+f << "      <attnum name=\"xpos\" unit=\"m\" val=\"" << cardata.bonnetPosition[0] << "\"/>" << endl;
+f << "      <attnum name=\"ypos\" unit=\"m\" val=\"" << cardata.bonnetPosition[1] << "\"/>" << endl;
+f << "      <attnum name=\"zpos\" unit=\"m\" val=\"" << cardata.bonnetPosition[2] << "\"/>" << endl;
+f << "    </section>" << endl;
+f << endl;
+f << "    <section name=\"Sound\">" << endl;
+f << "      <attstr name=\"engine sample\" val=\"" << cardata.enginesample <<"\"/>" << endl;
+f << "      <attnum name=\"rpm scale\" val=\"" << cardata.rmpscale <<"\"/>" << endl;
+f << "    </section>" << endl;
+f << endl;
+f << "    <section name=\"Graphic Objects\">" << endl;
+f << "      <attstr name=\"env\" val=\"" << cardata.graphicenv << "\"/>" << endl;
+f << "      <attstr name=\"wheel texture\" val=\"" << cardata.wheelTexture << "\"/>" << endl;
+f << "      <attstr name=\"shadow texture\" val=\"" << cardata.shadowTexture << "\"/>" << endl;
+f << "      <attstr name=\"tachometer texture\" val=\"" << cardata.tachometerTexture << "\"/>" << endl;
+f << "      <attnum name=\"tachometer min value\" unit=\"rpm\" val=\"" << cardata.tachometerMinMax[0] << "\"/>" << endl;
+f << "      <attnum name=\"tachometer max value\" unit=\"rpm\" val=\"" << cardata.tachometerMinMax[1] << "\"/>" << endl;
+f << "      <attstr name=\"speedometer texture\" val=\"" << cardata.speedometerTexture << "\"/>	 " << endl;
+f << "      <attnum name=\"speedometer min value\" unit=\"km/h\" val=\"" << cardata.speedometerMinMax[0] << "\"/>" << endl;
+f << "      <attnum name=\"speedometer max value\" unit=\"km/h\" val=\"" << cardata.speedometerMinMax[1] << "\"/>" << endl;
+f << endl;
+f << endl;
+f << "      <section name=\"Ranges\">" << endl;
+f << "        <section name=\"1\">" << endl;
+f << "          <attnum name=\"threshold\" val=\"" << cardata.carRange1dataA << "\"/>" << endl;
+f << "          <attstr name=\"car\" val=\"" << cardata.carRange1 << "\"/>" << endl;
+std::string yes_no =(cardata.carRange1dataB==1)?"yes":"no";
+f << "          <attstr name=\"wheels\" val=\"" << yes_no << "\"/>" << endl;
+f << "        </section>" << endl;
 if (cardata.carRange2dataC == 1)
 {
-f << "	   <section name=\"2\">	 " << endl;
-f << "	    <attnum name=\"threshold\" val=\""<<cardata.carRange2dataA<<"\"/>	 " << endl;
-f << "	    <attstr name=\"car\" val=\""<<cardata.carRange2<<"\"/>	 " << endl;
+f << "        <section name=\"2\">" << endl;
+f << "          <attnum name=\"threshold\" val=\"" << cardata.carRange2dataA << "\"/>" << endl;
+f << "          <attstr name=\"car\" val=\"" << cardata.carRange2 << "\"/>" << endl;
 yes_no =(cardata.carRange2dataB==1)?"yes":"no";
-f << "	    <attstr name=\"wheels\" val=\""<< yes_no <<"\"/>	 " << endl;
-f << "	   </section>	 " << endl;
+f << "          <attstr name=\"wheels\" val=\"" << yes_no << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.carRange3dataC == 1)
 {
-f << "	   <section name=\"3\">	 " << endl;
-f << "	    <attnum name=\"threshold\" val=\""<<cardata.carRange3dataA<<"\"/>	 " << endl;
-f << "	    <attstr name=\"car\" val=\""<<cardata.carRange3<<"\"/>	 " << endl;
+f << "        <section name=\"3\">" << endl;
+f << "          <attnum name=\"threshold\" val=\"" << cardata.carRange3dataA << "\"/>" << endl;
+f << "          <attstr name=\"car\" val=\"" << cardata.carRange3 << "\"/>" << endl;
 yes_no =(cardata.carRange3dataB==1)?"yes":"no";
-f << "	    <attstr name=\"wheels\" val=\""<< yes_no <<"\"/>	 " << endl;
-f << "	   </section>	 " << endl;
+f << "          <attstr name=\"wheels\" val=\"" << yes_no << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.carRange4dataC == 1)
 {
-f << "	   <section name=\"4\">	 " << endl;
-f << "	    <attnum name=\"threshold\" val=\""<<cardata.carRange4dataA<<"\"/>	 " << endl;
-f << "	    <attstr name=\"car\" val=\""<<cardata.carRange4<<"\"/>	 " << endl;
+f << "        <section name=\"4\">" << endl;
+f << "          <attnum name=\"threshold\" val=\"" << cardata.carRange4dataA << "\"/>" << endl;
+f << "          <attstr name=\"car\" val=\"" << cardata.carRange4 << "\"/>" << endl;
 yes_no =(cardata.carRange4dataB==1)?"yes":"no";
-f << "	    <attstr name=\"wheels\" val=\""<< yes_no <<"\"/>	 " << endl;
-f << "	   </section>	 " << endl;
+f << "          <attstr name=\"wheels\" val=\"" << yes_no << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.carRange5dataC == 1)
 {
-f << "	   <section name=\"5\">	 " << endl;
-f << "	    <attnum name=\"threshold\" val=\""<<cardata.carRange5dataA<<"\"/>	 " << endl;
-f << "	    <attstr name=\"car\" val=\""<<cardata.carRange5<<"\"/>	 " << endl;
+f << "        <section name=\"5\">" << endl;
+f << "          <attnum name=\"threshold\" val=\"" << cardata.carRange5dataA << "\"/>" << endl;
+f << "          <attstr name=\"car\" val=\"" << cardata.carRange5 << "\"/>" << endl;
 yes_no =(cardata.carRange5dataB==1)?"yes":"no";
-f << "	    <attstr name=\"wheels\" val=\""<< yes_no <<"\"/>	 " << endl;
-f << "	   </section>	 " << endl;
+f << "          <attstr name=\"wheels\" val=\"" << yes_no << "\"/>" << endl;
+f << "        </section>" << endl;
 }
-f << "	    </section>	 " << endl;
-f << "	  	 " << endl;
-f << "		 " << endl;
-f << "	    <section name=\"Light\">	 " << endl;
+f << "      </section>" << endl;
+f << endl;
+f << endl;
+f << "      <section name=\"Steer Wheel\">" << endl;
+f << "        <attstr name=\"model\" val=\"" << cardata.steeringWheel.model << "\"/>" << endl;
+f << "        <attstr name=\"hi res model\" val=\"" << cardata.steeringWheel.hiResModel << "\"/>" << endl;
+f << "        <attnum name=\"xpos\" val=\"" << cardata.steeringWheel.xpos << "\"/>" << endl;
+f << "        <attnum name=\"ypos\" val=\"" << cardata.steeringWheel.ypos << "\"/>" << endl;
+f << "        <attnum name=\"zpos\" val=\"" << cardata.steeringWheel.zpos << "\"/>" << endl;
+f << "        <attnum name=\"angle\" val=\"" << cardata.steeringWheel.angle << "\"/>" << endl;
+f << "        <attnum name=\"movt\" val=\"" << cardata.steeringWheel.movt << "\"/>" << endl;
+f << "      </section>" << endl;
+f << endl;
+f << endl;
+f << "      <section name=\"Light\">" << endl;
 int numberLight = 1;
 if (cardata.head1aS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\"" << numberLight << "\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"head1\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.head1a[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.head1a[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.head1a[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.head1a[3]<<"\"/>	 " << endl;
-f << "	      </section>	 " << endl;
+f << "          <attstr name=\"type\" val=\"head1\"/>" << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.head1a[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.head1a[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.head1a[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.head1a[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.head1bS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\"" << numberLight << "\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"head1\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.head1b[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.head1b[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.head1b[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.head1b[3]<<"\"/>	 " << endl;
-f << "	      </section>	 " << endl;
+f << "          <attstr name=\"type\" val=\"head1\"/>" << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.head1b[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.head1b[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.head1b[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.head1b[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.head2aS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\"" << numberLight << "\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"head2\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.head2a[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.head2a[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.head2a[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.head2a[3]<<"\"/>	 " << endl;
-f << "	      </section>	 " << endl;
+f << "          <attstr name=\"type\" val=\"head2\"/>" << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.head2a[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.head2a[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.head2a[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.head2a[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.head2bS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\"" << numberLight << "\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"head2\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.head2b[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.head2b[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.head2b[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.head2b[3]<<"\"/>	 " << endl;
-f << "	      </section>	 " << endl;
+f << "          <attstr name=\"type\" val=\"head2\"/>" << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.head2b[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.head2b[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.head2b[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.head2b[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.rearaS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\"" << numberLight << "\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"rear\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.reara[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.reara[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.reara[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.reara[3]<<"\"/>	 " << endl;
-f << "	      </section>	 " << endl;
+f << "          <attstr name=\"type\" val=\"rear\"/>" << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.reara[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.reara[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.reara[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.reara[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.rearbS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\"" << numberLight << "\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"rear\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.rearb[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.rearb[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.rearb[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.rearb[3]<<"\"/>	 " << endl;
-f << "	      </section>	 " << endl;
+f << "          <attstr name=\"type\" val=\"rear\"/>" << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.rearb[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.rearb[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.rearb[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.rearb[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.brakeaS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\"" << numberLight << "\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"brake\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.brakea[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.brakea[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.brakea[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.brakea[3]<<"\"/>	 " << endl;
-f << "	      </section>	 " << endl;
+f << "          <attstr name=\"type\" val=\"brake\"/>" << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.brakea[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.brakea[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.brakea[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.brakea[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.brakebS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\"" << numberLight << "\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"brake\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.brakeb[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.brakeb[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.brakeb[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.brakeb[3]<<"\"/>	 " << endl;
-f << "	      </section>	 " << endl;
+f << "          <attstr name=\"type\" val=\"brake\"/>	 " << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.brakeb[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.brakeb[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.brakeb[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.brakeb[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.rearcS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\"" << numberLight << "\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"rear\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.rearc[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.rearc[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.rearc[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.rearc[3]<<"\"/>	 " << endl;
-f << "	      </section>	 " << endl;
+f << "          <attstr name=\"type\" val=\"rear\"/>" << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.rearc[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.rearc[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.rearc[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.rearc[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.reardS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\"" << numberLight << "\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"rear\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.reard[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.reard[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.reard[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.reard[3]<<"\"/>	 " << endl;
-f << "	      </section>	 " << endl;
+f << "          <attstr name=\"type\" val=\"rear\"/>" << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.reard[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.reard[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.reard[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.reard[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.brakecS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\"" << numberLight << "\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"brake\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.brakec[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.brakec[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.brakec[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.brakec[3]<<"\"/>	 " << endl;
-f << "	      </section>	 " << endl;
+f << "          <attstr name=\"type\" val=\"brake\"/>	 " << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.brakec[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.brakec[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.brakec[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.brakec[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.brakedS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\""<<numberLight<<"\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"brake\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.braked[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.braked[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.braked[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.braked[3]<<"\"/>	 " << endl;
-f << "	      </section>      	 " << endl;
+f << "          <attstr name=\"type\" val=\"brake\"/>" << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.braked[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.braked[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.braked[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.braked[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.brake2aS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\"" << numberLight << "\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"brake2\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.brake2a[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.brake2a[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.brake2a[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.brake2a[3]<<"\"/>	 " << endl;
-f << "	      </section>	 " << endl;
+f << "          <attstr name=\"type\" val=\"brake2\"/>" << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.brake2a[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.brake2a[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.brake2a[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.brake2a[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
 if (cardata.brake2bS == 1)
 {
-f << "	      <section name=\""<<numberLight<<"\">	 " << endl;
+f << "        <section name=\"" << numberLight << "\">" << endl;
 numberLight++;
-f << "	 <attstr name=\"type\" val=\"brake2\"/>	 " << endl;
-f << "	 <attnum name=\"xpos\" val=\""<<cardata.brake2b[0]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"ypos\" val=\""<<cardata.brake2b[1]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"zpos\" val=\""<<cardata.brake2b[2]<<"\"/>	 " << endl;
-f << "	 <attnum name=\"size\" val=\""<<cardata.brake2b[3]<<"\"/>	 " << endl;
-f << "	      </section>      	 " << endl;
+f << "          <attstr name=\"type\" val=\"brake2\"/>" << endl;
+f << "          <attnum name=\"xpos\" val=\"" << cardata.brake2b[0] << "\"/>" << endl;
+f << "          <attnum name=\"ypos\" val=\"" << cardata.brake2b[1] << "\"/>" << endl;
+f << "          <attnum name=\"zpos\" val=\"" << cardata.brake2b[2] << "\"/>" << endl;
+f << "          <attnum name=\"size\" val=\"" << cardata.brake2b[3] << "\"/>" << endl;
+f << "        </section>" << endl;
 }
-f << "	    </section>	 " << endl;
-f << "		 " << endl;
-f << "	    " << endl;
-f << "	  </section>	 " << endl;
-f << "		 " << endl;
-f << "	  <section name=\"Car\">	 " << endl;
-f << "	    <attstr name=\"category\" val=\""<< cardata.carCategory <<"\"/>	 " << endl;
-f << "	    <attnum name=\"body length\" unit=\"m\" val=\""<< cardata.carBodyDimensions[0] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"body width\" unit=\"m\" val=\""<< cardata.carBodyDimensions[1] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"body height\" unit=\"m\" val=\""<< cardata.carBodyDimensions[2] <<"\"/>	 " << endl;
-f << "		 " << endl;
-f << "	    <!-- collision bounding box -->	 " << endl;
-f << "	    <attnum name=\"overall length\" unit=\"m\" val=\""<< cardata.carOverallDimensions[0] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"overall width\" unit=\"m\" val=\""<< cardata.carOverallDimensions[1] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"mass\" unit=\"kg\" val=\""<< cardata.massdata[6] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"GC height\" unit=\"m\" val=\""<< cardata.massdata[7] <<"\"/>	 " << endl;
-f << "		 " << endl;
-f << "	    <!-- weight bias -->	 " << endl;
-f << "	    <attnum name=\"front-rear weight repartition\" min=\"0.1\" max=\"0.9\" val=\""<< cardata.massdata[0] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"front right-left weight repartition\" min=\"0.4\" max=\"0.6\" val=\""<< cardata.massdata[1] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"rear right-left weight repartition\" min=\"0.4\" max=\"0.6\" val=\""<< cardata.massdata[2] <<"\"/>	 " << endl;
-f << "		 " << endl;
-f << "	    <!-- used for inertia, smaller values indicate better mass centering -->	 " << endl;
-f << "	    <attnum name=\"mass repartition coefficient\" max=\"1.0\" min=\"0.4\" val=\""<< cardata.massdata[3] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"fuel tank\" unit=\"l\" val=\""<< cardata.massdata[4] <<"\"/>	 " << endl;
-f << "	    <attnum name=\"initial fuel\" unit=\"l\" min=\"1.0\" max=\"100.0\" val=\""<< cardata.massdata[5] <<"\"/>	 " << endl;
-f << "	  </section>	 " << endl;
-f << "		 " << endl;
+f << "      </section>" << endl;
+f << endl;
+f << endl;
+f << "    </section>" << endl;
+f << endl;
+f << "    <section name=\"Car\">" << endl;
+f << "      <attstr name=\"category\" val=\"" << cardata.carCategory << "\"/>" << endl;
+f << "      <attnum name=\"body length\" unit=\"m\" val=\"" << cardata.carBodyDimensions[0] << "\"/>" << endl;
+f << "      <attnum name=\"body width\" unit=\"m\" val=\"" << cardata.carBodyDimensions[1] << "\"/>" << endl;
+f << "      <attnum name=\"body height\" unit=\"m\" val=\"" << cardata.carBodyDimensions[2] << "\"/>" << endl;
+f << endl;
+f << "      <!-- collision bounding box -->" << endl;
+f << "      <attnum name=\"overall length\" unit=\"m\" val=\"" << cardata.carOverallDimensions[0] << "\"/>" << endl;
+f << "      <attnum name=\"overall width\" unit=\"m\" val=\"" << cardata.carOverallDimensions[1] << "\"/>" << endl;
+f << "      <attnum name=\"mass\" unit=\"kg\" val=\"" << cardata.massdata[6] << "\"/>" << endl;
+f << "      <attnum name=\"GC height\" unit=\"m\" val=\"" << cardata.massdata[7] << "\"/>" << endl;
+f << endl;
+f << "      <!-- weight bias -->" << endl;
+f << "      <attnum name=\"front-rear weight repartition\" min=\"0.1\" max=\"0.9\" val=\"" << cardata.massdata[0] << "\"/>" << endl;
+f << "      <attnum name=\"front right-left weight repartition\" min=\"0.4\" max=\"0.6\" val=\"" << cardata.massdata[1] << "\"/>" << endl;
+f << "      <attnum name=\"rear right-left weight repartition\" min=\"0.4\" max=\"0.6\" val=\"" << cardata.massdata[2] << "\"/>" << endl;
+f << endl;
+f << "      <!-- used for inertia, smaller values indicate better mass centering -->" << endl;
+f << "      <attnum name=\"mass repartition coefficient\" max=\"1.0\" min=\"0.4\" val=\"" << cardata.massdata[3] << "\"/>" << endl;
+f << "      <attnum name=\"fuel tank\" unit=\"l\" val=\""<< cardata.massdata[4] << "\"/>	 " << endl;
+f << "      <attnum name=\"initial fuel\" unit=\"l\" min=\"1.0\" max=\"100.0\" val=\"" << cardata.massdata[5] << "\"/>" << endl;
+f << "    </section>" << endl;
+f << endl;
 if (cardata.flameS ==1)
 {
 f << "	  <section name=\"Exhaust\">	 " << endl;

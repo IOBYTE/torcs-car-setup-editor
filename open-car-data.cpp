@@ -391,6 +391,24 @@ void opencardata( int j )
     f >> textdata; //#flame2
     for (i=0; i<3; i++) {f >> cardata.flame2[i];}
 
+    f >> textdata; //#model
+    if (textdata == "#model")
+    {
+        f >> cardata.steeringWheel.model;
+        f >> textdata; //#hiResModel
+        f >> cardata.steeringWheel.hiResModel;
+        f >> textdata; //#xpos
+        f >> cardata.steeringWheel.xpos;
+        f >> textdata; //#ypos
+        f >> cardata.steeringWheel.ypos;
+        f >> textdata; //#zpos
+        f >> cardata.steeringWheel.zpos;
+        f >> textdata; //#angle
+        f >> cardata.steeringWheel.angle;
+        f >> textdata; //#movt
+        f >> cardata.steeringWheel.movt;
+    }
+
     f.close();  //cierre del fichero
 
     gearboxRatioSpeed ( 1 );

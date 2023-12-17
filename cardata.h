@@ -189,4 +189,16 @@ struct CarData
     float flamePower = 0.3;
     float flame1[3] = {-1.15,-0.31,0.57};
     float flame2[3] = {-1.15,0.31,0.57};
+
+    // STEER WHEEL
+    struct SteeringWheel
+    {
+        std::string model;
+        std::string hiResModel;
+        float xpos = 0;
+        float ypos = 0;
+        float zpos = 0;
+        float angle = 0;
+        float movt = 0;
+    } steeringWheel;
 };

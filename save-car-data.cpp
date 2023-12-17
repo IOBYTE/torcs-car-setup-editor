@@ -130,23 +130,6 @@ void printStr (std::string section, std::string mystring)
     }
 }
 
-void printEngineParams()
-{
-    ofstream f;
-    f.open(fichero2, ios::app);
-    if(!f)
-        cout << "Error obrint el fitxer" << endl;
-    else
-    {
-        f << "#engineparams" << endl;
-        f << cardata.engine.inertia << " "
-          << cardata.engine.revsMaxi << " "
-          << cardata.engine.revsLimiter << " "
-          << cardata.engine.tickover << " "
-          << cardata.engine.fuelConsFactor << endl;
-        f.close();
-    }
-}
 
 void savecardata( int i )
 {
@@ -194,14 +177,18 @@ void savecardata( int i )
     }
     printValf("#TorcsCarSetupEditorVersion",TCSE_version);
     printStr("#carname",cardata.carname);
-    printEngineParams();
-    printValf("engineCapacity", cardata.engine.capacity);
+    printValf("#inertia", cardata.engine.inertia);
+    printValf("#revsMaxi", cardata.engine.revsMaxi);
+    printValf("#revsLimiter", cardata.engine.revsLimiter);
+    printValf("#tickover", cardata.engine.tickover);
+    printValf("#fuelConsFactor", cardata.engine.fuelConsFactor);
+    printValf("#engineCapacity", cardata.engine.capacity);
     printStr("#engineCapacityUnits", cardata.engine.capacity_units[cardata.engine.curr_capacity_units]);
     printVali("#engineCylinders", cardata.engine.cylinders);
     printStr("#engineShape", cardata.engine.shape[cardata.engine.curr_shape]);
     printStr("#enginePosition", cardata.engine.position[cardata.engine.curr_position]);
-    printValf("brakeLinearCoefficient", cardata.engine.brakeLinearCoefficient);
-    printValf("brakeCoefficient", cardata.engine.brakeCoefficient);
+    printValf("#brakeLinearCoefficient", cardata.engine.brakeLinearCoefficient);
+    printValf("#brakeCoefficient", cardata.engine.brakeCoefficient);
     printVal("#rpmValue",cardata.engine.rpmValue,21);
     printVal("#tqValue",cardata.engine.tqValue,21);
     printVali("#turboS",cardata.engine.turboS);

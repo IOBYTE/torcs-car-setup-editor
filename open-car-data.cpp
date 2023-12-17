@@ -47,26 +47,26 @@ void activateDeativateGraphicRanges ( int k );
 
 void opencardata( int j )
 {
-        switch ( j )
+    switch ( j )
     {
-       case 1:
-           fichero3[0]='\0';
-           strcat(fichero3,"car-setups/");
-           strcat(fichero3,cardata.carname.c_str());
-           strcat(fichero3,"/");
-           strcat(fichero3,cardata.carname.c_str());
-           strcat(fichero3,".txt");
-           break;
-       case 2:
-           fichero3[0]='\0';
-           strcat(fichero3,"car-setups/");
-           strcat(fichero3,cardata.carname.c_str());
-           strcat(fichero3,"/");
-           strcat(fichero3,cardata.carname.c_str());
-           strcat(fichero3,"_");
-           strcat(fichero3,trackname.c_str());
-           strcat(fichero3,".txt");
-           break;
+    case 1:
+        fichero3[0]='\0';
+        strcat(fichero3,"car-setups/");
+        strcat(fichero3,cardata.carname.c_str());
+        strcat(fichero3,"/");
+        strcat(fichero3,cardata.carname.c_str());
+        strcat(fichero3,".txt");
+        break;
+    case 2:
+        fichero3[0]='\0';
+        strcat(fichero3,"car-setups/");
+        strcat(fichero3,cardata.carname.c_str());
+        strcat(fichero3,"/");
+        strcat(fichero3,cardata.carname.c_str());
+        strcat(fichero3,"_");
+        strcat(fichero3,trackname.c_str());
+        strcat(fichero3,".txt");
+        break;
     }
 
     ifstream f;  //fichero de salid
@@ -74,10 +74,10 @@ void opencardata( int j )
     float tcseFileVersion;
     f.open(fichero3);  //opening the file or creating it if it does not exist
     if(!f)
-        {
+    {
         cout << "Error opening the file " << fichero3 << endl;
         warningMsg(1);
-        }
+    }
     else
     { //operacions en el fitxer
     getline(f, bufer);
@@ -89,24 +89,43 @@ void opencardata( int j )
     }
     f >> textdata; //#carname
     f >> cardata.carname;
-    f >> textdata; //#engineparams
-    f >> cardata.engine.inertia;
-    f >> cardata.engine.revsMaxi;
-    f >> cardata.engine.revsLimiter;
-    f >> cardata.engine.tickover;
-    f >> cardata.engine.fuelConsFactor;
-    f >> textdata; //#rpmValue or #engineCapacity
-    if (textdata == "engineCapacity")
+    f >> textdata; //#engineparams or #inertia
+    if (textdata == "#engineparams")
     {
-	f >> cardata.engine.capacity;
-	f >> textdata; // #engineCapacityUnits
-	string engineCapacityUnits;
-	f >> engineCapacityUnits;
-	for (int i = 0; i < 3; i++)
-	{
+        f >> cardata.engine.inertia;
+        f >> cardata.engine.revsMaxi;
+        f >> cardata.engine.revsLimiter;
+        f >> cardata.engine.tickover;
+        f >> cardata.engine.fuelConsFactor;
+    }
+    else if (textdata == "#inertia")
+    {
+        f >> cardata.engine.inertia;
+        f >> textdata; //#revsMaxi
+        f >> cardata.engine.revsMaxi;
+        f >> textdata; //#revsLimiter
+        f >> cardata.engine.revsLimiter;
+        f >> textdata; //#tickover
+        f >> cardata.engine.tickover;
+        f >> textdata; //#fuelConsFactor
+        f >> cardata.engine.fuelConsFactor;
+    }
+    else
+    {
+        cerr << "expected #engineparams or #inertia but found " << textdata << endl;
+    }
+    f >> textdata; //#rpmValue or #engineCapacity
+    if (textdata == "#engineCapacity")
+    {
+        f >> cardata.engine.capacity;
+        f >> textdata; // #engineCapacityUnits
+        string engineCapacityUnits;
+        f >> engineCapacityUnits;
+        for (int i = 0; i < 3; i++)
+        {
             if (engineCapacityUnits == cardata.engine.capacity_units[i])
-	    {
-		cardata.engine.curr_capacity_units = i;
+            {
+                cardata.engine.curr_capacity_units = i;
 		list_engine_capacity_units->set_int_val(cardata.engine.curr_capacity_units);
 		break;
 	    }
@@ -136,15 +155,23 @@ void opencardata( int j )
 		list_engine_position->set_int_val(cardata.engine.curr_position);
 		break;
 	    }
-	}
-	f >> textdata; //#rpmValue or #brakeLinearCoefficient
+        }
+        f >> textdata; //#rpmValue or #brakeLinearCoefficient
     }
-    if (textdata == "brakeLinearCoefficient")
+    else if (textdata != "#rpmValue" && textdata != "#engineCapacity")
+    {
+        cerr << "expected #rpmValue or #engineCapacity but found " << textdata << endl;
+    }
+    if (textdata == "#brakeLinearCoefficient")
     {
         f >> cardata.engine.brakeLinearCoefficient;
         f >> textdata; //#"brakeCoefficient"
         f >> cardata.engine.brakeCoefficient;
         f >> textdata; //#rpmValue
+    }
+    else if (textdata != "#rpmValue")
+    {
+        cerr << "expected #rpmValue but found " << textdata << endl;
     }
     for (i=0; i<21; i++) {f >> cardata.engine.rpmValue[i];}
     f >> textdata; //#tqValue

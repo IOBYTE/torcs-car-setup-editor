@@ -35,7 +35,6 @@ set(srcs
 	read-dir.cpp
 	warningWindow.cpp
 	cardata.h
-	cardatadef.h
 	portability.h
 	)
 

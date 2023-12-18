@@ -167,577 +167,15 @@ string bufer;
     }
 }
 
-void getXmlValf (
-    float &valueRead,
-    string name = "revs limiter",
-    string section = "Engine",
-    string subSection1 = "subSection1",
-    string subSection2 = "subSection2" )
-{
-      /* find */
-    //cout << xmlLine[8] << endl;
-    int idxSection = 0;
-    int idxSubSection1 = 0;
-    int idxSubSection2 = 0;
-    int idxAtt = 0;
-    int idx = 0;
-    int idx1 = 0;
-    int idx2 = 0;
-    int line = 0;
-    string val = "val=\"";
-    string valueString;
-
-    /* SEARCH THE SECTION */
-    while ( line < xmlLine.size() )
-    {
-    idxSection = xmlLine[line].find("name=\"" + section +  "\"" );
-    //cout << "idx: " << idxSection << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (xmlLine[line].find("<section") == std::string::npos)
-    {
-        idxSection = -1;
-    }
-    if (idxSection > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Section " << "name=\"" + section +  "\""  << " not found." << endl;
-        }
-    else
-{ //   else 1
-
-    line++;
-    /* SEARCH THE SUBSECTION1 IF DEFINED*/
-    if (subSection1 != "subSection1")
-    {
-    while ( line < xmlLine.size() )
-    {
-    idxSubSection1 = xmlLine[line].find("name=\"" + subSection1 +  "\"" );
-    //cout << "idx: " << idxSection << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (idxSubSection1 > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Section " << subSection1 << " not found." << endl;
-        }
-    }
-    //line++;
-
-    /* SEARCH THE SUBSECTION2 IF DEFINED*/
-    if (subSection2 != "subSection2")
-    {
-    while ( line < xmlLine.size() )
-    {
-    idxSubSection2 = xmlLine[line].find("name=\"" + subSection2 +  "\"");
-    //cout << "idx: " << idxSection << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (idxSubSection2 > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Section " << subSection2 << " not found." << endl;
-        }
-    }
-    //line++;
-
-    while ( line < xmlLine.size() )
-    {
-    idxAtt = xmlLine[line].find("name=\"" + name +  "\"" );
-    //cout << "idx: " << idxAtt << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (idxAtt > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Name name=\"" << name << "\" not found." << endl;
-        }
-    else
-{ // else 2
-    while ( line < xmlLine.size() )
-    {
-    idx = xmlLine[line].find(val);
-    //cout << "idx: " << idx << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (idx > 0) break;
-    line++;
-    }
-    if ( idx < 0 )
-    {
-        cout << "Value " << val << " not found" << endl;
-    }
-    else
-    { // else 3
-    idx1 = idx + val.length();
-    idx2 = xmlLine[line].find("\"",idx1);
-    valueString.assign(xmlLine[line],idx1,idx2-idx1);
-    //cout << "Value string: " << valueString << endl;
-    if (xmlLine[line].find("<attnum") != std::string::npos)
-    {
-        valueRead = atof( valueString.c_str() ); /* atoi --> int */
-        cout << "Value " << section << ":" << name << " read: " << valueRead << endl;
-    }
-    }//else3
-}//else2
-}//else1
-
-
-    GLUI_Master.sync_live_all();
-    }
-///////////////////////////////////////////////////////////////////
-
-void getXmlVali (
-    int &valueRead,
-    string name = "revs limiter",
-    string section = "Engine",
-    string subSection1 = "subSection1",
-    string subSection2 = "subSection2" )
-{
-
-   /* find */
-    //cout << xmlLine[8] << endl;
-    int idxSection = 0;
-    int idxSubSection1 = 0;
-    int idxSubSection2 = 0;
-    int idxAtt = 0;
-    int idx = 0;
-    int idx1 = 0;
-    int idx2 = 0;
-    int line = 0;
-    string val = "val=\"";
-    string valueString;
-
-    /* SEARCH THE SECTION */
-    while ( line < xmlLine.size() )
-    {
-    idxSection = xmlLine[line].find("name=\"" + section +  "\"" );
-    //cout << "idx: " << idxSection << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (xmlLine[line].find("<section") == std::string::npos)
-    {
-        idxSection = -1;
-    }
-    if (idxSection > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Section " << "name=\"" + section +  "\""  << " not found." << endl;
-        }
-    else
-{ //   else 1
-
-    line++;
-    /* SEARCH THE SUBSECTION1 IF DEFINED*/
-    if (subSection1 != "subSection1")
-    {
-    while ( line < xmlLine.size() )
-    {
-    idxSubSection1 = xmlLine[line].find("name=\"" + subSection1 +  "\"" );
-    //cout << "idx: " << idxSection << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (idxSubSection1 > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Section " << subSection1 << " not found." << endl;
-        }
-    }
-    //line++;
-
-    /* SEARCH THE SUBSECTION2 IF DEFINED*/
-    if (subSection2 != "subSection2")
-    {
-    while ( line < xmlLine.size() )
-    {
-    idxSubSection2 = xmlLine[line].find("name=\"" + subSection2 +  "\"");
-    //cout << "idx: " << idxSection << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (idxSubSection2 > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Section " << subSection2 << " not found." << endl;
-        }
-    }
-    //line++;
-
-    while ( line < xmlLine.size() )
-    {
-    idxAtt = xmlLine[line].find("name=\"" + name +  "\"" );
-    //cout << "idx: " << idxAtt << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (idxAtt > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Name name=\"" << name << "\" not found." << endl;
-        }
-    else
-{ // else 2
-    while ( line < xmlLine.size() )
-    {
-    idx = xmlLine[line].find(val);
-    //cout << "idx: " << idx << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (idx > 0) break;
-    line++;
-    }
-    if ( idx < 0 )
-    {
-        cout << "Value " << val << " not found" << endl;
-    }
-    else
-    { // else 3
-    idx1 = idx + val.length();
-    idx2 = xmlLine[line].find("\"",idx1);
-    valueString.assign(xmlLine[line],idx1,idx2-idx1);
-    //cout << "Value string: " << valueString << endl;
-    if (xmlLine[line].find("<attnum") != std::string::npos)
-    {
-        valueRead = atoi( valueString.c_str() ); /* atoi --> int */
-        cout << "Value " << section << ":" << name << " read: " << valueRead << endl;
-    }
-    }//else3
-}//else2
-}//else1
-
-
-    GLUI_Master.sync_live_all();
-    }
-
 ////////////////////////////////////////////////////////////////////
 
-void getXmlVal (
-    std::string &valueRead,
-    string name = "revs limiter",
-    string section = "Engine",
-    string subSection1 = "subSection1",
-    string subSection2 = "subSection2" )
-{
-
-   /* find */
-    //cout << xmlLine[8] << endl;
-    int idxSection = 0;
-    int idxSubSection1 = 0;
-    int idxSubSection2 = 0;
-    int idxAtt = 0;
-    int idx = 0;
-    int idx1 = 0;
-    int idx2 = 0;
-    int line = 0;
-    int endOfSubSection2 = -1;
-    int endOfSubSection1 = -1;
-    string val = "val=\"";
-    string valueString;
-
-    /* SEARCH THE SECTION */
-    while ( line < xmlLine.size() )
-    {
-    idxSection = xmlLine[line].find("name=\"" + section +  "\"" );
-    //cout << "idx: " << idxSection << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (xmlLine[line].find("<section") == std::string::npos)
-    {
-        idxSection = -1;
-    }
-    if (idxSection > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Section " << "name=\"" + section +  "\""  << " not found." << endl;
-        }
-    else
-{ //   else 1
-
-    line++;
-    /* SEARCH THE SUBSECTION1 IF DEFINED*/
-    if (subSection1 != "subSection1")
-    {
-    while ( line < xmlLine.size() )
-    {
-    idxSubSection1 = xmlLine[line].find("name=\"" + subSection1 +  "\"" );
-    //cout << "idx: " << idxSection << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (idxSubSection1 > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Section " << subSection1 << " not found." << endl;
-        }
-    }
-    //line++;
-
-    /* SEARCH THE SUBSECTION2 IF DEFINED*/
-    if (subSection2 != "subSection2")
-    {
-    while ( line < xmlLine.size())
-    {
-    idxSubSection2 = xmlLine[line].find("name=\"" + subSection2 +  "\"");
-    //cout << "idx: " << idxSection << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-
-/*
-    int startOfSubSection2 = -1;
-    int startOfSubSection2T = -1;
-    int endOfSubSection2T = -1;
-    startOfSubSection2 = xmlLine.at(line).find("<section");
-    endOfSubSection2 = xmlLine.at(line).find("</section>");
-    if (startOfSubSection2 >= 0 )
-    {
-        startOfSubSection2T = 1;
-    }
-    if (endOfSubSection2 >= 0 && startOfSubSection2T == 1)
-    {
-        startOfSubSection2T = -1;
-        endOfSubSection2T = -1;
-    }
-    if (endOfSubSection2 >= 0 && startOfSubSection2T == -1)
-    {
-        startOfSubSection2T = -1;
-        endOfSubSection2T = 1;
-    }
-    if (endOfSubSection2T == 1)
-    {
-     cout << "Value " << val << " not found" << endl;   break;
-    }
- */
-    if (idxSubSection2 > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Section " << subSection2 << " not found." << endl;
-        }
-    }
-    //line++;
-
-    while ( line < xmlLine.size() )
-    {
-    idxAtt = xmlLine[line].find("name=\"" + name +  "\"" );
-    //cout << "idx: " << idxAtt << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (idxAtt > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Name name=\"" << name << "\" not found." << endl;
-        }
-    else
-{ // else 2
-    while ( line < xmlLine.size() )
-    {
-    idx = xmlLine[line].find(val);
-    //cout << "idx: " << idx << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (idx > 0) break;
-    line++;
-
-    }
-    if ( idx < 0 )
-    {
-        cout << "Value " << val << " not found" << endl;
-    }
-    else
-    { // else 3
-    idx1 = idx + val.length();
-    idx2 = xmlLine[line].find("\"",idx1);
-    valueString.assign(xmlLine[line],idx1,idx2-idx1);
-    valueRead = valueString;
-    cout << "Value " << section << ":" << name << " read: " << valueRead << endl;
-   }//else3
-}//else2
-}//else1
-
-
-    GLUI_Master.sync_live_all();
-    }
-
-////////////////////////////////////////////////////////////////////
-
-void getXmlUnits (
-    std::string &valueRead,
-    const std::string &name,
+bool findSection(
+    int &line,
+    int &depth,
     const std::string &section,
     const std::string &subSection1 = "",
     const std::string &subSection2 = "" )
 {
-
-   /* find */
-    //cout << xmlLine[8] << endl;
-    int idxSection = 0;
-    int idxSubSection1 = 0;
-    int idxSubSection2 = 0;
-    int idxAtt = 0;
-    int idx = 0;
-    int idx1 = 0;
-    int idx2 = 0;
-    int line = 0;
-    int endOfSubSection2 = -1;
-    int endOfSubSection1 = -1;
-    string units = "unit=\"";
-    string valueString;
-
-    /* SEARCH THE SECTION */
-    while ( line < xmlLine.size() )
-    {
-    idxSection = xmlLine[line].find("name=\"" + section +  "\"" );
-    //cout << "idx: " << idxSection << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (xmlLine[line].find("<section") == std::string::npos)
-    {
-        idxSection = -1;
-    }
-    if (idxSection > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Section " << "name=\"" + section +  "\""  << " not found." << endl;
-        }
-    else
-{ //   else 1
-
-    line++;
-    /* SEARCH THE SUBSECTION1 IF DEFINED*/
-    if (!subSection1.empty())
-    {
-    while ( line < xmlLine.size() )
-    {
-    idxSubSection1 = xmlLine[line].find("name=\"" + subSection1 +  "\"" );
-    //cout << "idx: " << idxSection << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (idxSubSection1 > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Section " << subSection1 << " not found." << endl;
-        }
-    }
-    //line++;
-
-    /* SEARCH THE SUBSECTION2 IF DEFINED*/
-    if (!subSection2.empty())
-    {
-    while ( line < xmlLine.size())
-    {
-    idxSubSection2 = xmlLine[line].find("name=\"" + subSection2 +  "\"");
-    //cout << "idx: " << idxSection << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-
-/*
-    int startOfSubSection2 = -1;
-    int startOfSubSection2T = -1;
-    int endOfSubSection2T = -1;
-    startOfSubSection2 = xmlLine.at(line).find("<section");
-    endOfSubSection2 = xmlLine.at(line).find("</section>");
-    if (startOfSubSection2 >= 0 )
-    {
-        startOfSubSection2T = 1;
-    }
-    if (endOfSubSection2 >= 0 && startOfSubSection2T == 1)
-    {
-        startOfSubSection2T = -1;
-        endOfSubSection2T = -1;
-    }
-    if (endOfSubSection2 >= 0 && startOfSubSection2T == -1)
-    {
-        startOfSubSection2T = -1;
-        endOfSubSection2T = 1;
-    }
-    if (endOfSubSection2T == 1)
-    {
-     cout << "Value " << val << " not found" << endl;   break;
-    }
- */
-    if (idxSubSection2 > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Section " << subSection2 << " not found." << endl;
-        }
-    }
-    //line++;
-
-    while ( line < xmlLine.size() )
-    {
-    idxAtt = xmlLine[line].find("name=\"" + name +  "\"" );
-    //cout << "idx: " << idxAtt << endl;
-    //cout << "Line " << line << ": "<< xmlLine[line] << endl;
-    if (idxAtt > 0) break;
-    line++;
-    }
-
-    if ( line + 1 >= xmlLine.size() )
-        {
-        cout << "Name name=\"" << name << "\" not found." << endl;
-        }
-    else
-{ // else 2
-    while ( line < xmlLine.size() )
-    {
-        idx = xmlLine[line].find(units);
-        cout << "idx: " << idx << endl;
-        cout << "Line " << line << ": "<< xmlLine[line] << endl;
-        if (idx > 0)
-            break;
-        line++;
-    }
-    if ( idx < 0 )
-    {
-        cout << "Units " << units << " not found" << endl;
-    }
-    else
-    { // else 3
-    idx1 = idx + units.length();
-    idx2 = xmlLine[line].find("\"",idx1);
-    valueString.assign(xmlLine[line],idx1,idx2-idx1);
-    valueRead = valueString;
-    cout << "Units " << section << ":" << name << " read: " << valueRead << endl;
-   }//else3
-}//else2
-}//else1
-
-
-    GLUI_Master.sync_live_all();
-}
-
-////////////////////////////////////////////////////////////////////
-
-bool hasXmlSection (
-    const std::string &section,
-    const std::string &subSection1 = "",
-    const std::string &subSection2 = "" )
-{
-    int line = 0;
-    int depth = 0;
 
     /* SEARCH THE SECTION */
     while (line < xmlLine.size())
@@ -817,6 +255,219 @@ bool hasXmlSection (
     }
 
     return true;
+}
+
+///////////////////////////////////////////////////////////////////
+
+bool hasXmlSection (
+    const std::string &section,
+    const std::string &subSection1 = "",
+    const std::string &subSection2 = "" )
+{
+    int line = 0;
+    int depth = 0;
+
+    return findSection(line, depth, section, subSection1, subSection2);
+}
+
+////////////////////////////////////////////////////////////////////
+
+bool getXmlValf (
+    float &valueRead,
+    const std::string &name,
+    const std::string &section,
+    const std::string &subSection1 = "",
+    const std::string &subSection2 = "" )
+{
+    int line = 0;
+    int depth = 0;
+
+    if (!findSection(line, depth, section, subSection1, subSection2))
+	 return false;
+
+    line++;
+
+    while ( line < xmlLine.size() )
+    {
+        if (xmlLine[line].find("<attnum") != std::string::npos &&
+            xmlLine[line].find("name=\"" + name +  "\"" ) != std::string::npos)
+        {
+            int idx = 0;
+            const std::string val = "val=\"";
+            if ((idx = xmlLine[line].find(val)) != std::string::npos)
+            {
+                int idx1 = idx + val.length();
+                int idx2 = xmlLine[line].find("\"",idx1);
+                std::string valueString;
+                valueString.assign(xmlLine[line],idx1,idx2-idx1);
+                valueRead = atof( valueString.c_str() );
+                cout << "Value " << section << ":"
+                     << (subSection1.empty() ? "" : (subSection1 + ':'))
+                     << (subSection2.empty() ? "" : (subSection2 + ':'))
+		     << name << " read: " << valueRead << endl;
+
+                GLUI_Master.sync_live_all();
+
+                return true;
+            }
+            return false;
+        }
+        else if (xmlLine[line].find("</section>") != std::string::npos)
+            return false;
+        line++;
+    }
+
+    return false;
+}
+
+///////////////////////////////////////////////////////////////////
+
+bool getXmlVali (
+    int &valueRead,
+    const std::string &name,
+    const std::string &section,
+    const std::string &subSection1 = "",
+    const std::string &subSection2 = "" )
+{
+    int line = 0;
+    int depth = 0;
+
+    if (!findSection(line, depth, section, subSection1, subSection2))
+	 return false;
+
+    line++;
+
+    while ( line < xmlLine.size() )
+    {
+        if (xmlLine[line].find("<attnum") != std::string::npos &&
+            xmlLine[line].find("name=\"" + name +  "\"" ) != std::string::npos)
+        {
+            int idx = 0;
+            const std::string val = "val=\"";
+            if ((idx = xmlLine[line].find(val)) != std::string::npos)
+            {
+                int idx1 = idx + val.length();
+                int idx2 = xmlLine[line].find("\"",idx1);
+                std::string valueString;
+                valueString.assign(xmlLine[line],idx1,idx2-idx1);
+                valueRead = atoi( valueString.c_str() );
+                cout << "Value " << section << ":"
+                     << (subSection1.empty() ? "" : (subSection1 + ':'))
+                     << (subSection2.empty() ? "" : (subSection2 + ':'))
+		     << name << " read: " << valueRead << endl;
+
+                GLUI_Master.sync_live_all();
+
+                return true;
+            }
+            return false;
+        }
+        else if (xmlLine[line].find("</section>") != std::string::npos)
+            return false;
+        line++;
+    }
+
+    return false;
+}
+
+////////////////////////////////////////////////////////////////////
+
+bool getXmlVal (
+    std::string &valueRead,
+    const std::string &name,
+    const std::string &section,
+    const std::string &subSection1 = "",
+    const std::string &subSection2 = "" )
+{
+    int line = 0;
+    int depth = 0;
+
+    if (!findSection(line, depth, section, subSection1, subSection2))
+	 return false;
+
+    line++;
+
+    while ( line < xmlLine.size() )
+    {
+        if (xmlLine[line].find("<attstr") != std::string::npos &&
+            xmlLine[line].find("name=\"" + name +  "\"" ) != std::string::npos)
+        {
+            int idx = 0;
+            const std::string val = "val=\"";
+            if ((idx = xmlLine[line].find(val)) != std::string::npos)
+            {
+                int idx1 = idx + val.length();
+                int idx2 = xmlLine[line].find("\"",idx1);
+                std::string valueString;
+                valueString.assign(xmlLine[line],idx1,idx2-idx1);
+                valueRead = valueString;
+                cout << "Value " << section << ":"
+                     << (subSection1.empty() ? "" : (subSection1 + ':'))
+                     << (subSection2.empty() ? "" : (subSection2 + ':'))
+		     << name << " read: " << valueRead << endl;
+
+                GLUI_Master.sync_live_all();
+
+                return true;
+            }
+            return false;
+        }
+        else if (xmlLine[line].find("</section>") != std::string::npos)
+            return false;
+        line++;
+    }
+
+    return false;
+}
+
+////////////////////////////////////////////////////////////////////
+
+bool getXmlUnits (
+    std::string &valueRead,
+    const std::string &name,
+    const std::string &section,
+    const std::string &subSection1 = "",
+    const std::string &subSection2 = "" )
+{
+    int line = 0;
+    int depth = 0;
+
+    if (!findSection(line, depth, section, subSection1, subSection2))
+	 return false;
+
+    line++;
+
+    while ( line < xmlLine.size() )
+    {
+        if (xmlLine[line].find("<attnum") != std::string::npos &&
+            xmlLine[line].find("name=\"" + name +  "\"" ) != std::string::npos)
+        {
+            int idx = 0;
+            const std::string val = "unit=\"";
+            if ((idx = xmlLine[line].find(val)) != std::string::npos)
+            {
+                int idx1 = idx + val.length();
+                int idx2 = xmlLine[line].find("\"",idx1);
+                std::string valueString;
+                valueString.assign(xmlLine[line],idx1,idx2-idx1);
+                valueRead = valueString;
+                cout << "Value " << section << ":"
+                     << (subSection1.empty() ? "" : (subSection1 + ':'))
+                     << (subSection2.empty() ? "" : (subSection2 + ':'))
+		     << name << " read: " << valueRead << endl;
+
+                GLUI_Master.sync_live_all();
+
+                return true;
+            }
+            return false;
+        }
+        else if (xmlLine[line].find("</section>") != std::string::npos)
+            return false;
+        line++;
+    }
+
+    return false;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -1392,6 +1043,7 @@ void importxml( int param )
 
     int index = 1;
     std::string indexStr = "1";
+    cardata.drivers.clear();
     while (hasXmlSection("Graphic Objects", "Driver", indexStr))
     {
         CarData::Driver driver;

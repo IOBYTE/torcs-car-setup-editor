@@ -183,7 +183,7 @@ void savecardata( int i )
     printValf("#tickover", cardata.engine.tickover);
     printValf("#fuelConsFactor", cardata.engine.fuelConsFactor);
     printValf("#engineCapacity", cardata.engine.capacity);
-    printStr("#engineCapacityUnits", cardata.engine.capacity_units[cardata.engine.curr_capacity_units]);
+    printStr("#engineCapacityUnits", "l");
     printVali("#engineCylinders", cardata.engine.cylinders);
     printStr("#engineShape", cardata.engine.shape[cardata.engine.curr_shape]);
     printStr("#enginePosition", cardata.engine.position[cardata.engine.curr_position]);

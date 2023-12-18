@@ -39,9 +39,7 @@ struct CarData
         float cvValue[21] = { 0 };
         int turboS = 0;
         float turbo[3] = {3000.0, 1.0, 0.75};
-        float capacity = 0;
-        const char *capacity_units[3] = { "l", "cc", "ci" };
-        int curr_capacity_units = 0;
+        float capacity = 0; // l
         int cylinders = 0;
         const char *shape[4] = { "v", "l", "h", "w" };
         int curr_shape = 0;
@@ -198,9 +196,9 @@ struct CarData
     {
         std::string model;
         std::string hiResModel;
-        float xpos = 0;
-        float ypos = 0;
-        float zpos = 0;
+        float xpos = 0; // m
+        float ypos = 0; // m
+        float zpos = 0; // m
         float angle = 0;
         float movt = 0;
     } steeringWheel;
@@ -210,9 +208,9 @@ struct CarData
     {
         float steer = 0;
         std::string driver;
-        float xpos = 0;
-        float ypos = 0;
-        float zpos = 0;
+        float xpos = 0; // m
+        float ypos = 0; // m
+        float zpos = 0; // m
     };
     std::list<Driver> drivers;
 };

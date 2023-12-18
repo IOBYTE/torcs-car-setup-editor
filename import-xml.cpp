@@ -37,7 +37,6 @@ extern std::string text1;
 extern int   main_window;
 extern CarData cardata;
 
-extern GLUI_Listbox *list_engine_capacity_units;
 extern GLUI_Listbox *list_engine_shape;
 extern GLUI_Listbox *list_engine_position;
 extern GLUI_Listbox *list_drivetrain_type;
@@ -320,6 +319,103 @@ bool getXmlValf (
     return false;
 }
 
+
+bool getXmlValUnitf (
+    float &valueRead,
+    const std::string &units,
+    const std::string &name,
+    const std::string &section,
+    const std::string &subSection1 = "",
+    const std::string &subSection2 = "" )
+{
+    int line = 0;
+    int depth = 0;
+
+    if (!findSection(line, depth, section, subSection1, subSection2))
+	 return false;
+
+    line++;
+
+    while ( line < xmlLine.size() )
+    {
+        if (xmlLine[line].find("<attnum") != std::string::npos &&
+            xmlLine[line].find("name=\"" + name +  "\"" ) != std::string::npos)
+        {
+            int idx = 0;
+            const std::string val = "val=\"";
+            if ((idx = xmlLine[line].find(val)) != std::string::npos)
+            {
+                int idx1 = idx + val.length();
+                int idx2 = xmlLine[line].find("\"",idx1);
+                std::string valueString;
+                valueString.assign(xmlLine[line],idx1,idx2-idx1);
+                float value = atof( valueString.c_str() );
+
+		const std::string unit("unit=\"");
+		if ((idx = xmlLine[line].find(unit)) != std::string::npos)
+		{
+                    idx1 = idx + unit.length();
+                    idx2 = xmlLine[line].find("\"",idx1);
+		    std::string unitsRead;
+                    unitsRead.assign(xmlLine[line],idx1,idx2-idx1);
+		    if (!unitsRead.empty() && unitsRead != units)
+		    {
+			float coeff = 1.0;
+			std::cout << "converting " << unitsRead << " to " << units << std::endl;
+			if (units == "m")
+			{
+			    if (unitsRead == "mm")
+                                coeff = 0.001f;
+                            else if (unitsRead == "feet" || unitsRead == "ft")
+                                coeff = 0.304801f;
+                            else if (unitsRead == "km")
+                                coeff = 1000.0;
+                            else if (unitsRead == "cm")
+                                coeff = 0.01f;
+                            else if (unitsRead == "in" || unitsRead == "inch" || unitsRead == "inches")
+                                coeff = 0.0254f;
+			    else
+			    {
+				std::cerr << "Can't convert " << unitsRead << " to " << units << std::endl;
+			    }
+                        }
+			else if (units == "l")
+			{
+			    if (unitsRead == "cc")
+                                coeff = 0.001f;
+                            else if (unitsRead == "ci")
+                                coeff = 0.0163871f;
+			    else
+			    {
+				std::cerr << "Can't convert " << unitsRead << " to " << units << std::endl;
+			    }
+			}
+			valueRead = value * coeff;
+		    }
+		    else
+			valueRead = value;
+		}
+		else
+		    valueRead = value;
+
+                cout << "Value " << section << ":"
+                     << (subSection1.empty() ? "" : (subSection1 + ':'))
+                     << (subSection2.empty() ? "" : (subSection2 + ':'))
+		     << name << " read: " << valueRead << endl;
+
+                GLUI_Master.sync_live_all();
+
+                return true;
+            }
+            return false;
+        }
+        else if (xmlLine[line].find("</section>") != std::string::npos)
+            return false;
+        line++;
+    }
+
+    return false;
+}
 ///////////////////////////////////////////////////////////////////
 
 bool getXmlVali (
@@ -666,20 +762,8 @@ void importxml( int param )
     getXmlValf (cardata.engine.tickover,"tickover","Engine");
     getXmlValf (cardata.engine.fuelConsFactor,"fuel cons factor","Engine");
 
-    getXmlValf (cardata.engine.capacity, "capacity","Engine");
-    string engineCapacityUnits;
-    getXmlUnits (engineCapacityUnits, "capacity","Engine");
-    for (int i = 0; i < 3; i++)
-    {
-        if (engineCapacityUnits == cardata.engine.capacity_units[i])
-        {
-            cardata.engine.curr_capacity_units = i;
-            list_engine_capacity_units->set_int_val(cardata.engine.curr_capacity_units);
-	    break;
-        }
-    }
-
-    getXmlVali (cardata.engine.cylinders, "cylinders","Engine");
+    getXmlValUnitf (cardata.engine.capacity, "l", "capacity", "Engine");
+    getXmlVali (cardata.engine.cylinders, "cylinders", "Engine");
     string engineShape;
     getXmlVal (engineShape, "shape","Engine");
     for (int i = 0; i < 4; i++)
@@ -1050,9 +1134,9 @@ void importxml( int param )
 
         getXmlValf (driver.steer, "steer", "Graphic Objects", "Driver", indexStr);
         getXmlVal (driver.driver, "driver", "Graphic Objects", "Driver", indexStr);
-        getXmlValf (driver.xpos, "xpos", "Graphic Objects", "Driver", indexStr);
-        getXmlValf (driver.ypos, "ypos", "Graphic Objects", "Driver", indexStr);
-        getXmlValf (driver.zpos, "zpos", "Graphic Objects", "Driver", indexStr);
+        getXmlValUnitf (driver.xpos, "m", "xpos", "Graphic Objects", "Driver", indexStr);
+        getXmlValUnitf (driver.ypos, "m", "ypos", "Graphic Objects", "Driver", indexStr);
+        getXmlValUnitf (driver.zpos, "m", "zpos", "Graphic Objects", "Driver", indexStr);
 
         cardata.drivers.push_back(driver);
         indexStr = std::to_string(++index);
@@ -1060,9 +1144,9 @@ void importxml( int param )
 
     getXmlVal (cardata.steeringWheel.model, "model", "Graphic Objects", "Steer Wheel");
     getXmlVal (cardata.steeringWheel.hiResModel, "hi res model", "Graphic Objects", "Steer Wheel");
-    getXmlValf (cardata.steeringWheel.xpos, "xpos", "Graphic Objects", "Steer Wheel");
-    getXmlValf (cardata.steeringWheel.ypos, "ypos", "Graphic Objects", "Steer Wheel");
-    getXmlValf (cardata.steeringWheel.zpos, "zpos", "Graphic Objects", "Steer Wheel");
+    getXmlValUnitf (cardata.steeringWheel.xpos, "m", "xpos", "Graphic Objects", "Steer Wheel");
+    getXmlValUnitf (cardata.steeringWheel.ypos, "m", "ypos", "Graphic Objects", "Steer Wheel");
+    getXmlValUnitf (cardata.steeringWheel.zpos, "m", "zpos", "Graphic Objects", "Steer Wheel");
     getXmlValf (cardata.steeringWheel.angle, "angle", "Graphic Objects", "Steer Wheel");
     getXmlValf (cardata.steeringWheel.movt, "movt", "Graphic Objects", "Steer Wheel");
 

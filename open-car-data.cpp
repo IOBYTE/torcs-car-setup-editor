@@ -119,18 +119,8 @@ void opencardata( int j )
     {
         f >> cardata.engine.capacity;
         f >> textdata; // #engineCapacityUnits
-        string engineCapacityUnits;
-        f >> engineCapacityUnits;
-        for (int i = 0; i < 3; i++)
-        {
-            if (engineCapacityUnits == cardata.engine.capacity_units[i])
-            {
-                cardata.engine.curr_capacity_units = i;
-		list_engine_capacity_units->set_int_val(cardata.engine.curr_capacity_units);
-		break;
-	    }
-	}
-	f >> textdata; // #engineCylinders
+        f >> textdata; // no longer used
+ 	f >> textdata; // #engineCylinders
 	f >> cardata.engine.cylinders;
 	f >> textdata; // #engineShape
 	string engineShape;

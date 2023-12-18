@@ -508,7 +508,7 @@ f << "		 " << endl;
 f << "		 " << endl;
 f << "	  <!-- Same engine for every one -->	 " << endl;
 f << "	  <section name=\"Engine\">	 " << endl;
-f << "	    <attnum name=\"capacity\" unit=\"" << cardata.engine.capacity_units[cardata.engine.curr_capacity_units] << "\" val=\"" << cardata.engine.capacity << "\"/>" << endl;
+f << "	    <attnum name=\"capacity\" unit=\"l\" val=\"" << cardata.engine.capacity << "\"/>" << endl;
 f << "	    <attnum name=\"cylinders\" val=\"" << cardata.engine.cylinders << "\"/>" << endl;
 f << "	    <attstr name=\"shape\" val=\"" << cardata.engine.shape[cardata.engine.curr_shape] << "\"/>" << endl;
 f << "	    <attstr name=\"position\" val=\"" << cardata.engine.position[cardata.engine.curr_position] << "\"/>" << endl;

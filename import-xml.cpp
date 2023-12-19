@@ -390,6 +390,15 @@ bool getXmlValUnitf (
 				std::cerr << "Can't convert " << unitsRead << " to " << units << std::endl;
 			    }
 			}
+			else if (units == "rad")
+			{
+			    if (unitsRead == "deg")
+                                coeff = static_cast<float>(M_PI/180.0);
+			    else
+			    {
+				std::cerr << "Can't convert " << unitsRead << " to " << units << std::endl;
+			    }
+			}
 			valueRead = value * coeff;
 		    }
 		    else
@@ -1132,7 +1141,7 @@ void importxml( int param )
     {
         CarData::Driver driver;
 
-        getXmlValf (driver.steer, "steer", "Graphic Objects", "Driver", indexStr);
+        getXmlValUnitf (driver.steer, "rad", "steer", "Graphic Objects", "Driver", indexStr);
         getXmlVal (driver.driver, "driver", "Graphic Objects", "Driver", indexStr);
         getXmlValUnitf (driver.xpos, "m", "xpos", "Graphic Objects", "Driver", indexStr);
         getXmlValUnitf (driver.ypos, "m", "ypos", "Graphic Objects", "Driver", indexStr);
@@ -1147,6 +1156,7 @@ void importxml( int param )
     getXmlValUnitf (cardata.steeringWheel.xpos, "m", "xpos", "Graphic Objects", "Steer Wheel");
     getXmlValUnitf (cardata.steeringWheel.ypos, "m", "ypos", "Graphic Objects", "Steer Wheel");
     getXmlValUnitf (cardata.steeringWheel.zpos, "m", "zpos", "Graphic Objects", "Steer Wheel");
+    // no units are normally specified but degrees are assumed rather than the default of radians
     getXmlValf (cardata.steeringWheel.angle, "angle", "Graphic Objects", "Steer Wheel");
     getXmlValf (cardata.steeringWheel.movt, "movt", "Graphic Objects", "Steer Wheel");
 

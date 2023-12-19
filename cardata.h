@@ -199,14 +199,14 @@ struct CarData
         float xpos = 0; // m
         float ypos = 0; // m
         float zpos = 0; // m
-        float angle = 0;
+        float angle = 0; // deg (no units normally specified but degrees assumed)
         float movt = 0;
     } steeringWheel;
 
     // DRIVER
     struct Driver
     {
-        float steer = 0;
+        float steer = 0; // rad
         std::string driver;
         float xpos = 0; // m
         float ypos = 0; // m
